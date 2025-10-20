@@ -10,7 +10,7 @@ A game in console or GUI gameplay. You choose!
   - https://www.geeksforgeeks.org/system-design/builder-design-pattern/
 
 ### What are the new thing I'll learn doing this project:
-  - Swing framework to build the GUI
+  - JavaFX framework to build the GUI
   - Model-View-Controller design pattern
   - Maven Build Automation
   - Annotation based user input validation
@@ -71,3 +71,18 @@ Encapsulates object construction logic in a separate Builder class.
   - Allows flexible and controlled object creation.
   - Supports different variations of a product using the same process.
   - Improves readability and maintainability by avoiding long constructors with many parameters.
+
+## Resources used during the development
+ - https://maven.apache.org/guides/getting-started/maven-in-five-minutes.html
+
+
+
+
+Database
+	- Role
+				- Hero
+				- Villain
+	-Artifacts
+				- Weapon
+				- Armor
+				- Helm 
