@@ -76,7 +76,11 @@ Encapsulates object construction logic in a separate Builder class.
  - https://maven.apache.org/guides/getting-started/maven-in-five-minutes.html
 
 
+## Maven Tips
 
+ To generate a pom.xml file:
+ - mvn archetype:generate -DgroupId=com.mycompany.app -DartifactId=my-app -DarchetypeArtifactId=maven-archetype-quickstart 
+ 	-DarchetypeVersion=1.5 -DinteractiveMode=false
 
 Database
 	- Role
