@@ -82,11 +82,8 @@ Encapsulates object construction logic in a separate Builder class.
  - mvn archetype:generate -DgroupId=com.mycompany.app -DartifactId=my-app -DarchetypeArtifactId=maven-archetype-quickstart 
  	-DarchetypeVersion=1.5 -DinteractiveMode=false
 
-Database
-	- Role
-				- Hero
-				- Villain
-	-Artifacts
-				- Weapon
-				- Armor
-				- Helm 
+Step by Step Development:
+	- Database = Docker-compose (script to install it and mount the data) + Maven Dependency to get the .jar for JDBC + Flyway (Library to do migrations) + JDBC (Driver to connect to the DB)
+	- MVC = Model (Hero, Villain, Artifact) + View (Console, GUI) + Controller (The bridge between Model & View)
+	- GUI = JavaFX
+	- Validation = Jakarta using Hibernate Validation
