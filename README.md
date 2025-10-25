@@ -10,7 +10,7 @@ A game in console or GUI gameplay. You choose!
   - https://www.geeksforgeeks.org/system-design/builder-design-pattern/
 
 ### What are the new thing I'll learn doing this project:
-  - JavaFX framework to build the GUI
+  - Swing to build the GUI
   - Model-View-Controller design pattern
   - Maven Build Automation
   - Annotation based user input validation
@@ -82,8 +82,16 @@ Encapsulates object construction logic in a separate Builder class.
  - mvn archetype:generate -DgroupId=com.mycompany.app -DartifactId=my-app -DarchetypeArtifactId=maven-archetype-quickstart 
  	-DarchetypeVersion=1.5 -DinteractiveMode=false
 
-Step by Step Development:
+## Step-by-Step Development:
+
 	- Database = Docker-compose (script to install it and mount the data) + Maven Dependency to get the .jar for JDBC + Flyway (Library to do migrations) + JDBC (Driver to connect to the DB)
 	- MVC = Model (Hero, Villain, Artifact) + View (Console, GUI) + Controller (The bridge between Model & View)
-	- GUI = JavaFX
+	- GUI = Swing
 	- Validation = Jakarta using Hibernate Validation
+
+## Why Swing instead of JavaFX
+
+	At first, I tried to develop the project using the JavaFX module but while trying to set it up I realized that I couldn't implement it in a proper manner.
+
+	- JavaFX can be open only one time per JVM
+	- It has launch lifecyle limits

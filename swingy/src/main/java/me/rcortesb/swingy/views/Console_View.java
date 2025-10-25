@@ -6,7 +6,7 @@ public class Console_View extends View {
 	public String getView() {
 		return "console_view";
 	}
-	public void welcomeInterface() {
+	public void launchApp() {
 		System.out.println("\n--------------------------------------------\n");
 		System.out.println("Welcome to Achieve The Border!!");
 		System.out.println("Currently you're in view_mode=console, type \"set view_mode=gui\" to change to a graphic interface");

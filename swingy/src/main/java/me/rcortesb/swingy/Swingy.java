@@ -1,23 +1,9 @@
 package me.rcortesb.swingy;
 import me.rcortesb.swingy.controller.Controller;
-import me.rcortesb.swingy.views.View;
-import me.rcortesb.swingy.views.ViewFactory;
+import me.rcortesb.swingy.views.Console_View;
+import me.rcortesb.swingy.views.GUI_View;
 
 public class Swingy {
-    public static void main(String[] args) {
-		String mode = handle_input(args);
-		System.out.println("You have choosen mode: " + mode);
-
-		/*
-			Here goes the View + DB Connection
-		*/
-		Controller controller = Controller.getController();
-		View view = ViewFactory.getViewFactory().chooseView(mode);
-		view.welcomeInterface();
-
-		
-		
-    }
 
 	private static String handle_input(String[] args) {
 		try {
@@ -32,4 +18,16 @@ public class Swingy {
 		}
 		return args[0];
 	}
+
+	public static void main(String[] args) {
+		String mode = handle_input(args);
+		Controller controller = Controller.getController();
+
+		if (mode.equals("gui"))
+			controller.registerView(new GUI_View());
+		else
+			controller.registerView(new Console_View());
+
+		controller.getView().launchApp();
+    }
 }
