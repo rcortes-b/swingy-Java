@@ -1,5 +1,6 @@
 package me.rcortesb.swingy.views;
 import me.rcortesb.swingy.gui_utilities.CustomButtons;
+import me.rcortesb.swingy.gui_utilities.CustomLabels;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -43,7 +44,7 @@ public class GUI_View extends View {
 		gameTitle.setForeground(Color.WHITE);
     	gameTitle.setAlignmentX(Component.CENTER_ALIGNMENT);	
 	
-		//asdasdasdasdsadasdasdasdasddasda
+
 		panel.setBackground(Color.DARK_GRAY);
 		panel.add(Box.createVerticalStrut(20));
 		panel.add(gameTitle);
@@ -55,11 +56,44 @@ public class GUI_View extends View {
 		panel.add(tutorialButton);
 		panel.add(Box.createVerticalStrut(30));
 		panel.add(exitGameButton);
+		frame.add(panel, BorderLayout.CENTER);
 
-		frame.add(panel);
+		frame.add(menuBanner(), BorderLayout.SOUTH);
+
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
+	}
+	public JPanel menuBanner() {
+		JLabel socialMessage = new JLabel("Check out my social media and my contact info!");
+		socialMessage.setFont(new Font("SansSerif", Font.BOLD, 16));
+		socialMessage.setForeground(Color.YELLOW);
+		socialMessage.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		JPanel southWrapper = new JPanel();
+		southWrapper.setLayout(new BoxLayout(southWrapper, BoxLayout.Y_AXIS));
+		southWrapper.add(socialMessage);
+		southWrapper.add(Box.createVerticalStrut(5));
+
+		JPanel panel = new JPanel();
+		panel.setLayout(new FlowLayout());
+
+		CustomLabels socialLabels = new CustomLabels();
+		JLabel linkedinURL = socialLabels.getSocialMenuLabels("https://www.linkedin.com/in/raulcortesb");
+		JLabel githubURL = socialLabels.getSocialMenuLabels("https://github.com/rcortes-b");
+		JLabel mailAddress = socialLabels.getSocialMenuLabels("raulcortes.dev@gmail.com");
+
+
+		panel.setBackground(Color.DARK_GRAY);
+		panel.add(githubURL);
+		panel.add(Box.createHorizontalStrut(10));
+		panel.add(linkedinURL);
+		panel.add(Box.createHorizontalStrut(10));
+		panel.add(mailAddress);
+		southWrapper.add(panel);
+		southWrapper.setBackground(Color.DARK_GRAY);
+
+		return southWrapper;
 	}
 	public void displayGameOptions() {
 
