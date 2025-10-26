@@ -24,10 +24,8 @@ public class Swingy {
 		Controller controller = Controller.getController();
 
 		if (mode.equals("gui"))
-			controller.registerView(new GUI_View());
+			controller.applyView("gui", true);
 		else
-			controller.registerView(new Console_View());
-
-		controller.getView().launchApp();
+			controller.applyView("console", true);
     }
 }

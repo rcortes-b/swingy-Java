@@ -1,4 +1,6 @@
 package me.rcortesb.swingy.gui_utilities;
+import me.rcortesb.swingy.views.GUI_View;
+import me.rcortesb.swingy.controller.Controller;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -14,10 +16,12 @@ public class CustomButtons {
 				button.addActionListener(e -> System.out.println("Start game from the menu still to develop"));
 				break ;
 			case "Create a Hero":
-				button.addActionListener(e -> System.out.println("Create a hero from the menu still to develop"));
+				button.addActionListener(e -> Controller.getView().loadMenu2());
+				//button.addActionListener(e -> System.out.println("Create a hero from the menu still to develop"));
 				break ;
-			case "Tutorial":
-				button.addActionListener(e -> System.out.println("Tutorial from the menu still to develop"));
+			case "Change to Console Mode":
+				button.addActionListener(e -> Controller.applyView("console", false));
+
 				break ;
 			case "Exit":
 				button.addActionListener(e -> System.exit(0));
