@@ -2,35 +2,47 @@ package me.rcortesb.swingy.controller;
 import me.rcortesb.swingy.views.*;
 public class Controller {
 	private static Controller controller = new Controller();
-	private static View viewController;
-	private static GameStatus status = GameStatus.IN_MENU;  
+	private static GUI_View gui;
+	private static Console_View console;
+	private static GameStatus status;  
 
-	private Controller() {}
+	private Controller() {
+		this.gui = null;
+		this.console = null;
+		this.status = GameStatus.IN_MENU;
+	}
 
 	public static Controller getController() {
 		return controller;
 	}
-	public static void registerView(View view) {
-		viewController = view;
+	
+	public static GUI_View getGUI() {
+		return gui;
 	}
-	public static void applyView(String viewUI, boolean launchMode) {
-		if (launchMode == false)
-			viewController.deleteUI();
-		if (viewUI.equals("gui"))
-			registerView(new GUI_View());
-		else
-			registerView(new Console_View());
+
+	public static Console_View getConsole() {
+		return console;
+	}
+
+	public static void loadConsole(boolean launchMode) {
+		if (console == null)
+			console = new Console_View();
 		if (launchMode == true)
-			viewController.launchApp();
-		else {
-			viewController.getView();
-			viewController.loadUI(status);
-		}
+			console.launchConsole();
+		else
+			console.setView();
 	}
+	
+	public static void loadGUI() {
+		if (gui == null)
+			gui = new GUI_View();
+		gui.setView();
+	}
+
 	public static void setStatus(GameStatus mode) {
 		status = mode;
 	}
-	public static View getView() {
-		return viewController;
+	public static GameStatus getStatus() {
+		return status;
 	}
 }

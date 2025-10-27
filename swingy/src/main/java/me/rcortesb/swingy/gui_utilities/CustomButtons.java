@@ -16,15 +16,15 @@ public class CustomButtons {
 				button.addActionListener(e -> System.out.println("Start game from the menu still to develop"));
 				break ;
 			case "Create a Hero":
-				button.addActionListener(e -> Controller.getView().loadMenu2());
+				button.addActionListener(e -> Controller.getController().getGUI().loadMenu());
 				//button.addActionListener(e -> System.out.println("Create a hero from the menu still to develop"));
 				break ;
 			case "Change to Console Mode":
-				button.addActionListener(e -> Controller.applyView("console", false));
+				button.addActionListener(e -> Controller.getController().getGUI().changeViewMode());
 
 				break ;
 			case "Exit":
-				button.addActionListener(e -> System.exit(0));
+				button.addActionListener(e -> Controller.getController().getGUI().deleteGUI());
 		}
 		return button;
 	}

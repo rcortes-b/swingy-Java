@@ -1,20 +1,32 @@
 package me.rcortesb.swingy.views;
-import me.rcortesb.swingy.controller.Controller;
+import me.rcortesb.swingy.controller.*;
 import java.util.Scanner;
-public class Console_View extends View {
-	private Scanner myObj = new Scanner(System.in);
+public class Console_View implements ViewModel {
+	private static Scanner myObj = new Scanner(System.in);
 
-	public String getView() {
-		return "console_view";
-	}
-	public void loadMenu2() {}
-	public void launchApp() {
+	public void launchConsole() {
 		System.out.println("\n--------------------------------------------\n");
 		System.out.println("Welcome to Achieve The Border!!");
 		System.out.println("Currently you're in view_mode=console, type \"set view_mode=gui\" to change to a graphic interface");
-		this.loadMenu();
+		loadMenu();
 	}
-
+	public void	setView() {
+		GameStatus status = Controller.getController().getStatus();
+		switch (status) {
+			case IN_MENU:
+				this.loadMenu();
+				break ;
+			case IN_CREATE_HERO:
+				System.out.println("Load in create hero");
+				break ;
+			case IN_GAME:
+				System.out.println("Load in game");
+				break ;
+			case IN_BATTLE:
+				System.out.println("Load in battle");
+				break ;
+		}
+	}
 	public void loadMenu() {
 		try {
 			System.out.println("\nWhat do you want to do?");
@@ -26,7 +38,7 @@ public class Console_View extends View {
 			String userInput = myObj.nextLine();
 			handleUserInput(userInput);
 		} catch (Exception e) {
-			this.exitFromGame(1);
+			exitFromGame(1);
 		}
 	}
 
@@ -37,7 +49,7 @@ public class Console_View extends View {
 		System.out.println("\t- \"s\" -> Move 1 step to the South");
 		System.out.println("\t- \"a\" -> Move 1 step to the West");
 		System.out.println("\t- \"set view_mode=<gui,console>\" -> Change between user interfaces.");
-		this.loadMenu();
+		loadMenu();
 	}
 
 	private void exitFromGame(int exitCode) {
@@ -45,14 +57,14 @@ public class Console_View extends View {
 		System.exit(exitCode);
 	}
 
-	public void deleteUI() {
-		myObj.close();
+	public void changeViewMode() {
+		Controller.getController().loadGUI();
 	}
 
 	private void handleUserInput(String userInput) {
 		try {
 			if (userInput.equals("set view_mode=gui"))
-				Controller.applyView("gui", false);
+				this.changeViewMode();
 			else {
 				int value = Character.getNumericValue(userInput.charAt(0));
 				if (userInput.length() != 1 || (value < 1 || value > 4)) {
@@ -69,16 +81,16 @@ public class Console_View extends View {
 								System.out.println("Here goes the hero creation!");
 								break;
 						case 3:
-								Controller.applyView("gui", false);
+								this.changeViewMode();
 								break;
 						case 4:
-								this.exitFromGame(0);
+								exitFromGame(0);
 					}
 				}
 			}
 		} catch (Exception e) {
 			System.out.println("Error: Input must be either 1, 2, 3, 4 or \"set view_mode=gui\"\n");
-			this.loadMenu();
+			loadMenu();
 		}
 	}
 }
