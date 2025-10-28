@@ -1,5 +1,5 @@
 target/
 .mvn/
-db/
 .env
-docker-compose.yml
+db/data
+dependency-reduced-pom.xml

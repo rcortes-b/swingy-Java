@@ -1,4 +1,4 @@
-
+package me.rcortesb.swingy.models;
 
 public class Hero {
 	private String		name;
@@ -9,4 +9,8 @@ public class Hero {
 	private int			defenseDmg;
 	private int			hp;
 	private Artifact	artifact;
+
+	public String getName() {
+		return name;
+	}
 }

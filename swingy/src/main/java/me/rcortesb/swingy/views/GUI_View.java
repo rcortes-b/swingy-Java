@@ -10,6 +10,7 @@ public class GUI_View implements ViewModel {
 	private JPanel mainPanel;  //mainPanel.add(menuPanel, "menu");
 	private CardLayout cardLayout; //cardLayout.show(mainPanel, "menu");
 	private boolean	firstCard = true;
+	private Controller controller = Controller.getController();
 
 	public GUI_View() {
 		this.frame = new JFrame("Achieve The Border");
@@ -27,13 +28,15 @@ public class GUI_View implements ViewModel {
 		this.frame.setLocationRelativeTo(null);
 	}
 
+	//public void actionPerformed(ActionEvent e) {}
+
 	public void	setView() {
-		GameStatus status = Controller.getController().getStatus();
+		GameStatus status = controller.getStatus();
 		switch (status) {
 			case IN_MENU:
 				this.loadMenu();
 				break ;
-			case IN_CREATE_HERO:
+			case IN_HERO_MENU:
 				this.loadMenu();
 				System.out.println("Load in create hero");
 				break ;
@@ -45,14 +48,13 @@ public class GUI_View implements ViewModel {
 		}
 	}
 
-	public void actionPerformed(ActionEvent e) {}
-
 	public void loadMenu() {
+		controller.setStatus(GameStatus.IN_MENU);
 		for (Component c : mainPanel.getComponents()) {
 			if (c.getName().equals("menu")) {
 				frame.setVisible(true);
 				cardLayout.show(mainPanel, "menu");
-				Controller.getController().setStatus(GameStatus.IN_MENU);
+				controller.setStatus(GameStatus.IN_MENU);
 				return;
 			}
 		}
@@ -64,7 +66,7 @@ public class GUI_View implements ViewModel {
 
 	public void changeViewMode() {
 		this.frame.setVisible(false);
-		Controller.getController().loadConsole(false);
+		controller.loadConsole(false);
 	}
 
 	public void deleteGUI() {

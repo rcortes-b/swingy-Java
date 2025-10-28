@@ -95,3 +95,20 @@ Encapsulates object construction logic in a separate Builder class.
 
 	- JavaFX can be open only one time per JVM
 	- It has launch lifecyle limits
+
+
+At what point am i right now? What are the next steps?
+
+	- Create the database with docker
+	- Fetch the database and look for heroes -> Store them in Controller List<Hero>
+	- Implement the Hero Class with validators
+	- Create "install.sh" to install the database, compile and programm and generate the executable "run.sh"
+	- Protect the "install.sh" of replcations.
+
+
+## Setup
+	- Create a file named .env with the environment variables needed:
+		- POSTGRES_USER
+		- POSTGRES_PASSWORD
+		- POSTGRES_DB
+	You can define those as you want.

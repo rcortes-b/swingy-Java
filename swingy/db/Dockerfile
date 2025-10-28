@@ -1,0 +1,12 @@
+FROM postgres:17
+
+COPY ./db/init.sql /docker-entrypoint-initdb.d/
+
+ARG POSTGRES_USER
+ARG POSTGRES_PASSWORD
+ARG POSTGRES_DB
+
+ENV POSTGRES_USER=${POSTGRES_USER:-defaultUser}
+ENV POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-defaultPassword}
+ENV POSTGRES_DB=${POSTGRES_DB:-swingy_db}
+
