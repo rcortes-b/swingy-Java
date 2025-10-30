@@ -28,8 +28,6 @@ public class GUI_View implements ViewModel {
 		this.frame.setLocationRelativeTo(null);
 	}
 
-	//public void actionPerformed(ActionEvent e) {}
-
 	public void	setView() {
 		GameStatus status = controller.getStatus();
 		switch (status) {
@@ -71,6 +69,5 @@ public class GUI_View implements ViewModel {
 
 	public void deleteGUI() {
 		this.frame.dispose();
-		System.exit(0);
 	}
 }

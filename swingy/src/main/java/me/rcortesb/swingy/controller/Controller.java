@@ -1,6 +1,7 @@
 package me.rcortesb.swingy.controller;
 import me.rcortesb.swingy.views.*;
 import me.rcortesb.swingy.models.*;
+import me.rcortesb.swingy.db_backend.DBHandler;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -10,6 +11,7 @@ import java.util.Properties;
 
 public class Controller {
 	private static Controller controller = new Controller();
+	private static DBHandler db_handler;
 	private static GUI_View gui;
 	private static Console_View console;
 	private static GameStatus status;  
@@ -17,11 +19,11 @@ public class Controller {
 	private static List<Hero> heroes;
 
 	private Controller() {
+		this.db_handler = null;
 		this.gui = null;
 		this.console = null;
 		this.status = GameStatus.IN_MENU;
 		this.heroes = null;
- 
 	}
 
 	public static Controller getController() {
@@ -61,26 +63,14 @@ public class Controller {
 	}
 
 	public static List<Hero> getHeroes() {
-		if (heroes == null) {
-			final String url = "jdbc:postgresql://localhost:5432/postgres";
-			final Properties props = new Properties();
-			props.setProperty("user", "defaultUser");
-			props.setProperty("password", "defaultPassword");
-			try {
-            // Force-load the PostgreSQL driver
-            Class.forName("org.postgresql.Driver");
-
-            try (Connection conn = DriverManager.getConnection(url, props)) {
-                System.out.println("Connected to PostgreSQL version: " +
-                    conn.getMetaData().getDatabaseProductVersion());
-            }
-        } catch (ClassNotFoundException e) {
-            System.err.println("❌ PostgreSQL JDBC Driver not found on classpath.");
-        } catch (SQLException e) {
-            System.err.println("❌ SQL error: " + e.getMessage());
-            e.printStackTrace();
-        }
-		}
 		return heroes;
+	}
+
+	public static void cleanup(int exitCode) {
+		if (gui != null)
+			gui.deleteGUI();
+		if (console != null)
+			console.deleteConsole(consoleMode);
+		System.exit(exitCode);
 	}
 }

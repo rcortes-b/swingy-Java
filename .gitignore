@@ -1,5 +1,7 @@
 target/
 .mvn/
 .env
-db/data
+./swingy/db/data/
 dependency-reduced-pom.xml
+test/
+*_exe.sh

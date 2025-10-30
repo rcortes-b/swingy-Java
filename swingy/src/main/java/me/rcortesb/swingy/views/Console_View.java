@@ -45,7 +45,7 @@ public class Console_View implements ViewModel {
 			String userInput = myObj.nextLine();
 			handleMenuInput(userInput);
 		} catch (Exception e) {
-			exitFromGame(1);
+			controller.cleanup(1);
 		}
 	}
 	
@@ -63,7 +63,7 @@ public class Console_View implements ViewModel {
 			//if all the values are correct, add hero to database and add hero to list<Heroes> from the Controller (same behaviour in GUI_View)
 
 		} catch (Exception e) {
-			exitFromGame(1);
+			controller.cleanup(1);
 		}
 	}
 
@@ -87,9 +87,10 @@ public class Console_View implements ViewModel {
 		loadMenu();
 	}
 
-	private void exitFromGame(int exitCode) {
-		System.out.println("\n\nThanks for playing, we hope to see you soon!\n");
-		System.exit(exitCode);
+	public void deleteConsole(boolean print_msg) {
+		myObj.close();
+		if (print_msg)
+			System.out.println("\n\nThanks for playing, we hope to see you soon!\n");
 	}
 
 	public void changeViewMode() {
@@ -119,7 +120,7 @@ public class Console_View implements ViewModel {
 								this.changeViewMode();
 								break;
 						case 4:
-								exitFromGame(0);
+								controller.cleanup(0);
 					}
 				}
 			}

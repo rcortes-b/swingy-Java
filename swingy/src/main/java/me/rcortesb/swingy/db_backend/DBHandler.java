@@ -1,0 +1,92 @@
+package me.rcortesb.swingy.db_backend;
+import me.rcortesb.swingy.controller.Controller;
+import me.rcortesb.swingy.models.*;
+import java.sql.*;
+import java.util.Arrays;
+import java.util.Properties;
+
+/*
+	How do I handle the DB?
+		What's the best for: performance and security?
+			- Security -> Don't let the DB open, crash/leak the connection may remain openned
+			- Performance -> Creating a connection for every query or write operation is not optimal.
+							 In this project I won't use a pool / proxy
+		What have I done?
+			I open a connection if a "list heroes" or a game is triggered and then run a read operation
+			(store in Lists: heroes and to avoid openning a new connection I also store the default villains and artifacts)
+			At this point not read operation will be required anymore.
+			Whenever i create a hero or finish a game I run a write operation and update the List with the new hero or the hero values
+			updated so I don't need to do another read operation.
+*/
+/*
+	Why it is not a Singleton Pattern if I just need one instance?
+		- Because db may not be required. Maybe you start the game but you not to play.
+*/
+
+public class DBHandler {
+	private Connection db_connection;
+	private Statement st;
+	private Controller controller;
+
+	DBHandler() {
+		db_connection = null;
+		st = null;
+		controller = Controller.getController();
+	}
+
+	public void loadDatabase() {
+		final String url = "jdbc:postgresql://localhost:5432/postgres";
+		final Properties props = new Properties();
+		if (System.getenv("SWINGY_DB_USER") == null || System.getenv("SWINGY_DB_PASSWORD") == null) {
+			System.out.println("Necessary environment variables are not defined SWINGY_DB_USER, SWINGY_DB_PASSWORD");
+			System.exit(1);
+		}
+		System.out.println(System.getenv("SWINGY_DB_USER"));
+		System.out.println(System.getenv("SWINGY_DB_PASSWORD"));
+		props.setProperty("user", System.getenv("SWINGY_DB_USER"));
+		props.setProperty("password", System.getenv("SWINGY_DB_PASSWORD"));
+		try {
+            Class.forName("org.postgresql.Driver");
+            try (Connection connection = DriverManager.getConnection(url, props)) {
+				//I'm not sure but maybe cause it is a try-with the db is automatically closed!!! CHECK!!!
+                System.out.println("Connected to PostgreSQL version: " +
+                    connection.getMetaData().getDatabaseProductVersion());
+				db_connection = connection;
+				st = db_connection.createStatement();
+            }
+        } catch (ClassNotFoundException e) {
+            System.err.println("❌ PostgreSQL JDBC Driver not found on classpath.");
+        } catch (SQLException e) {
+            System.err.println("❌ SQL error: " + e.getMessage());
+            e.printStackTrace();
+        }
+	}
+
+	public void readOperation() {
+		if (db_connection == null && st == null)
+			this.loadDatabase();
+		String[] models = {"heroes", "villains", "artifacts"};
+		try {
+			ResultSet rs;
+			for (String model : models) {
+				rs = st.executeQuery("SELECT * FROM " + model);
+				while (rs.next()) {
+					if (model.equals("heroes")) {
+						controller.getHeroes().add(new Hero(rs.getString("name"), rs.getString("classType"), rs.getInt("level"),
+						rs.getInt("experience"), rs.getInt("attackDmg"), rs.getInt("armorDefense"), rs.getInt("helmHP")));
+					}
+					else if (model.equals("villains")) {
+						controller.getVillains().add(new Villain(rs.getString("name"), rs.getString("classType"),
+						rs.getInt("attackDmg"), rs.getInt("armorDefense"), rs.getInt("helmHP")));
+					} else {
+						controller.getArtifacts().add(new Artifact(rs.getString("name"), rs.getString("type"),
+						rs.getInt("level"), rs.getInt("value"), rs.getString("description")));
+					}
+				}
+				rs.close();
+			}
+		} catch (Exception e) {
+			System.out.println("Error in read operation: ");
+		}
+	}
+}

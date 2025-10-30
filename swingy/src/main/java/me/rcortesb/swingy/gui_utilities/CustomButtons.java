@@ -21,10 +21,9 @@ public class CustomButtons {
 				break ;
 			case "Change to Console Mode":
 				button.addActionListener(e -> Controller.getController().getGUI().changeViewMode());
-
 				break ;
 			case "Exit":
-				button.addActionListener(e -> Controller.getController().getGUI().deleteGUI());
+				button.addActionListener(e -> Controller.getController().cleanup(0));
 		}
 		return button;
 	}
