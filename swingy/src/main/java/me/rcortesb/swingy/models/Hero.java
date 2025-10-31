@@ -5,19 +5,19 @@ public class Hero {
 	private String		classType;
 	private int			level;
 	private int			experience;
-	private int			attackDmg;
-	private int			defenseDmg;
+	private int			attack;
+	private int			defense;
 	private int			hp;
 	private Artifact	artifact;
 
-	public Hero(String p_name, String p_classType, int p_level, int p_exp, int p_attackDmg,
-		int p_defenseDmg, int p_hp) {
+	public Hero(String p_name, String p_classType, int p_level, int p_exp, int p_attack,
+		int p_defense, int p_hp) {
 		this.name = p_name;
 		this.classType = p_classType;
 		this.level = p_level;
 		this.experience = p_exp;
-		this.attackDmg = p_attackDmg;
-		this.defenseDmg = p_defenseDmg;
+		this.attack = p_attack;
+		this.defense = p_defense;
 		this.hp = p_hp;
 		this.artifact = null;
 	}
@@ -34,12 +34,16 @@ public class Hero {
 		return level;
 	}
 
+	public int getExperience() {
+		return experience;
+	}
+
 	public int getAttack() {
-		return attackDmg;
+		return attack;
 	}
 
 	public int getDefense() {
-		return defenseDmg;
+		return defense;
 	}
 
 	public int getHP() {

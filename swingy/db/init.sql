@@ -4,12 +4,12 @@ CREATE TABLE IF NOT EXISTS heroes (
 	classType VARCHAR(7),
 	level INT,
 	experience INT,
-	attackDmg INT,
-	armorDefense INT,
-	helmHP INT
+	attack INT,
+	defense INT,
+	hp INT
 );
 
-INSERT INTO heroes (name, classType, level, experience, attackDmg, armorDefense, helmHP)
+INSERT INTO heroes (name, classType, level, experience, attack, defense, hp)
 VALUES	('defaultWizard', 'Wizard', 1, 0, 15, 7, 15),
 		('defaultWarrior', 'Warrior', 1, 0, 10, 10, 18),
 		('defaultHealer', 'Healer', 1, 0, 7, 5, 25);
@@ -21,12 +21,12 @@ VALUES	('defaultWizard', 'Wizard', 1, 0, 15, 7, 15),
 CREATE TABLE IF NOT EXISTS villains (
 	name VARCHAR(14) UNIQUE NOT NULL,
 	classType VARCHAR(7),
-	attackDmg INT,
-	armorDefense INT,
-	helmHP INT
+	attack INT,
+	defense INT,
+	hp INT
 );
 
-INSERT INTO villains (name, classType, attackDmg, armorDefense, helmHP)
+INSERT INTO villains (name, classType, attack, defense, hp)
 VALUES	('Vicious Goblin', 'Goblins', 5, 1, 9),
 		('Filthy Orc', 'Orcs', 12, 5, 12),
 		('Rotten Troll', 'Trolls', 20, 2, 20);

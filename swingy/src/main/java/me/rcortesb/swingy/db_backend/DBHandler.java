@@ -32,6 +32,15 @@ public class DBHandler {
 		st = null;
 	}
 
+	public void deleteDB() {
+		try {
+			st.close();
+			db_connection.close();
+		} catch (SQLException e) {
+			System.out.println("SQLException Error: " + e.getMessage());
+		}
+	}
+
 	public void loadDatabase() {
 		final String url = "jdbc:postgresql://localhost:5432/swingy_db";
 		final Properties props = new Properties();
@@ -63,11 +72,11 @@ public class DBHandler {
 				while (rs.next()) {
 					if (model.equals("heroes")) {
 						gameModel.getHeroes().add(new Hero(rs.getString("name"), rs.getString("classType"), rs.getInt("level"),
-						rs.getInt("experience"), rs.getInt("attackDmg"), rs.getInt("armorDefense"), rs.getInt("helmHP")));
+						rs.getInt("experience"), rs.getInt("attack"), rs.getInt("defense"), rs.getInt("hp")));
 					}
 					else if (model.equals("villains")) {
 						gameModel.getVillains().add(new Villain(rs.getString("name"), rs.getString("classType"),
-						rs.getInt("attackDmg"), rs.getInt("armorDefense"), rs.getInt("helmHP")));
+						rs.getInt("attack"), rs.getInt("defense"), rs.getInt("hp")));
 					} else {
 						gameModel.getArtifacts().add(new Artifact(rs.getString("name"), rs.getString("type"),
 						rs.getInt("value"), rs.getString("description")));
@@ -79,4 +88,35 @@ public class DBHandler {
 			System.out.println("Error in read operation: " + e.getMessage());
 		}
 	}
+
+	public void addHeroToDatabase(Hero hero) {
+		try {
+			String strInsert = "insert into heroes (name, classType, level, experience, attack, defense, hp) values ('";
+			String strValues =  hero.getName() + "','" + hero.getClassType() + "',1,0," + hero.getAttack() + "," + hero.getDefense() + "," + hero.getHP();
+			st.executeUpdate(strInsert + strValues + ")");
+		} catch (Exception e) {
+			System.out.println("Error: Value cannot be added. " + e.getMessage());
+		}
+	}
+
+	public void updateHeroToDatabase(Hero hero) {
+		try {
+			String preStr = "update heroes set ";
+			String postStr = " where name='" + hero.getName() + "'";
+			String[] updateValue = {"level=" + hero.getLevel(),
+									"experience=" + hero.getExperience(),
+									"attack=" + hero.getAttack(),
+									"defense=" + hero.getDefense(),
+									"hp=" + hero.getHP()
+									};
+			for (int i = 0; i < 5; i++) {
+				st.executeUpdate(preStr + updateValue[i] + postStr);
+			}
+		} catch (Exception e) {
+			System.out.println("Error: Value cannot be updated. " + e.getMessage());
+		}
+	//update heroes set experience=100 where name='defaultWarrior' (st.execute())
+	}
+	//INSERT INTO heroes (name, classtype, level, experience, attackdmg, armordefense, helmhp) values ('pepe', 'lagarto', 1, 0, 100,200,300);
 }
+

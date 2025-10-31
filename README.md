@@ -105,6 +105,10 @@ At what point am i right now? What are the next steps?
 	- Create "install.sh" to install the database, compile and programm and generate the executable "run.sh"
 	- Protect the "install.sh" of replcations.
 
+Know bugs:
+	- When a hero is created with a name that already exists it is added to the list when it shouldnt be added + the message of "hero has been succesfully created" is printed.
+	- 
+
 
 ## Setup
 	- Create a file named .env with the environment variables needed:

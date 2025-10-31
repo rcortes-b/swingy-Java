@@ -164,9 +164,9 @@ public class Console_View implements ViewModel {
 			}
 			System.out.println("");
 		}
-		controller.getGameModel().getHeroes().add(new Hero(value[0], value[1], 1, 0, Integer.parseInt(value[2]),
-															Integer.parseInt(value[3]), Integer.parseInt(value[4])));
-		// ADD THE NEW HERO TO THE DATABASE
+		Hero new_hero = new Hero(value[0], value[1], 1, 0, Integer.parseInt(value[2]),
+															Integer.parseInt(value[3]), Integer.parseInt(value[4]));
+		controller.addHero(new_hero);
 		System.out.println("Hero has been succesfully created!\n");
 		this.loadCreateHero();
 	}

@@ -75,11 +75,18 @@ public class Controller {
 		return status;
 	}
 
+	public void addHero(Hero new_hero) {
+		this.db_handler.addHeroToDatabase(new_hero);
+		this.gameModel.getHeroes().add(new_hero);
+	}
+
 	public static void cleanup(int exitCode) {
 		if (gui != null)
 			gui.deleteGUI();
 		if (console != null)
 			console.deleteConsole(consoleMode);
+		if (db_handler != null)
+			db_handler.deleteDB();
 		System.exit(exitCode);
 	}
 }
