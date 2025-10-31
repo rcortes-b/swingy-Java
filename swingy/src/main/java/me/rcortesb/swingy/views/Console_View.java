@@ -57,7 +57,7 @@ public class Console_View implements ViewModel {
 			System.out.println("\t2 - List your heroes");
 			System.out.println("\t3 - Change to GUI mode");
 			System.out.println("\t4 - Go back to menu\n");
-			System.out.println("Introduce option: ");
+			System.out.print("Introduce option: ");
 			String userInput = myObj.nextLine();
 			handleHeroInput(userInput);
 			//if all the values are correct, add hero to database and add hero to list<Heroes> from the Controller (same behaviour in GUI_View)
@@ -66,19 +66,57 @@ public class Console_View implements ViewModel {
 			controller.cleanup(1);
 		}
 	}
+	public void printValue(Hero hero, int i, int size) {
+		int str_size = 0;
+		String str = "";
 
+		switch (i) {
+			case 0:
+				str = hero.getName();
+				break;
+			case 1:
+				str = hero.getClassType();
+				break;
+			case 2:
+				str = String.valueOf(hero.getLevel());
+					break;
+			case 3:
+				str = String.valueOf(hero.getAttack());
+					break;
+			case 4:
+				str = String.valueOf(hero.getDefense());
+					break;
+			case 5:
+				str = String.valueOf(hero.getHP());
+					break;
+			default:
+				for (int j = 0; j < size; j++)
+					System.out.print("-");
+				System.out.println("");
+				return ;
+		}
+		System.out.print(" | " + str);
+		str_size = size - str.length();
+		for (int j = 0; j < str_size; j++)
+			System.out.print(" "); 
+	}
 	public void listHeroes() {
 		try {
 			List<Hero> heroes = controller.getGameModel().getHeroes();
-			System.out.println("");
+			int[]		table_size = {15, 7, 3, 3, 3, 3};
+			System.out.println("\n | name            | class   | lvl | atk | def | hp |");
 			for (Hero hero : heroes) {
-				System.out.println("- Name: " + hero.getName() + "...");
+				printValue(null, 6, 53);
+				for (int i = 0; i < 6; i++) {
+					printValue(hero, i, table_size[i]);
+				}
+				System.out.println("|");
 			}
+			printValue(null, 6, 53);
+			this.loadCreateHero();
 		} catch (Exception e) {
-			System.out.println("wth");
+			System.out.println("Error: Something went wrong listing the heroes\n" + e.getMessage());
 		}
-		//if lsit exists --> display list
-			//if not exists --> fetch database and store it to list
 	}
 
 	public void displayGameOptions() {
@@ -99,6 +137,38 @@ public class Console_View implements ViewModel {
 
 	public void changeViewMode() {
 		controller.loadGUI();
+	}
+
+	public void createHero() {
+		String heroName, heroClass, attack, defense, hp;
+		String[] input_msg = {"Name: ", "Hero Class (1 to Warrior, 2 to Wizard, 3 to Healer): ", "Attack Points: ",
+						"Defense Points: ", "Heal Points: " };
+		String[] value = new String[5];
+		
+		System.out.println("\nCustomize your hero as your like!\n");
+		for (int i = 0; i < 5; i++) {
+			System.out.print(input_msg[i]);
+			value[i] = myObj.nextLine();
+			if (i == 1 && !value[i].equals("1") && !value[i].equals("2") && !value[i].equals("3")) {
+				System.out.println("Bad input: Class must be either Warrior, Wizard or Healer (1-3)");
+				i = 0;
+				continue ;
+			}
+			else if (i == 1) {
+				if (value[i].equals("1"))
+					value[i] = "Warrior";
+				else if (value[i].equals("2"))
+					value[i] = "Wizard";
+				else
+					value[i]  = "Healer";
+			}
+			System.out.println("");
+		}
+		controller.getGameModel().getHeroes().add(new Hero(value[0], value[1], 1, 0, Integer.parseInt(value[2]),
+															Integer.parseInt(value[3]), Integer.parseInt(value[4])));
+		// ADD THE NEW HERO TO THE DATABASE
+		System.out.println("Hero has been succesfully created!\n");
+		this.loadCreateHero();
 	}
 
 	private void handleMenuInput(String userInput) {
@@ -148,7 +218,7 @@ public class Console_View implements ViewModel {
 				else {
 					switch (value) {
 						case 1:
-								System.out.println("Here goes the real create hero");
+								this.createHero();
 								break;
 						case 2:
 								this.listHeroes();

@@ -25,4 +25,24 @@ public class Hero {
 	public String getName() {
 		return name;
 	}
+
+	public String getClassType() {
+		return classType;
+	}
+
+	public int getLevel() {
+		return level;
+	}
+
+	public int getAttack() {
+		return attackDmg;
+	}
+
+	public int getDefense() {
+		return defenseDmg;
+	}
+
+	public int getHP() {
+		return hp;
+	}
 }
