@@ -26,43 +26,33 @@ import java.util.Properties;
 public class DBHandler {
 	private Connection db_connection;
 	private Statement st;
-	private Controller controller;
 
-	DBHandler() {
+	public DBHandler() {
 		db_connection = null;
 		st = null;
-		controller = Controller.getController();
 	}
 
 	public void loadDatabase() {
-		final String url = "jdbc:postgresql://localhost:5432/postgres";
+		final String url = "jdbc:postgresql://localhost:5432/swingy_db";
 		final Properties props = new Properties();
 		if (System.getenv("SWINGY_DB_USER") == null || System.getenv("SWINGY_DB_PASSWORD") == null) {
 			System.out.println("Necessary environment variables are not defined SWINGY_DB_USER, SWINGY_DB_PASSWORD");
-			System.exit(1);
+			Controller.cleanup(1);
 		}
-		System.out.println(System.getenv("SWINGY_DB_USER"));
-		System.out.println(System.getenv("SWINGY_DB_PASSWORD"));
 		props.setProperty("user", System.getenv("SWINGY_DB_USER"));
 		props.setProperty("password", System.getenv("SWINGY_DB_PASSWORD"));
 		try {
             Class.forName("org.postgresql.Driver");
-            try (Connection connection = DriverManager.getConnection(url, props)) {
-				//I'm not sure but maybe cause it is a try-with the db is automatically closed!!! CHECK!!!
-                System.out.println("Connected to PostgreSQL version: " +
-                    connection.getMetaData().getDatabaseProductVersion());
-				db_connection = connection;
-				st = db_connection.createStatement();
-            }
-        } catch (ClassNotFoundException e) {
-            System.err.println("❌ PostgreSQL JDBC Driver not found on classpath.");
-        } catch (SQLException e) {
-            System.err.println("❌ SQL error: " + e.getMessage());
-            e.printStackTrace();
+			db_connection = DriverManager.getConnection(url, props);
+            /*System.out.println("Debug: Connected to PostgreSQL version: " +
+            	((connection.getMetaData().getDatabaseProductVersion());*/
+			st = db_connection.createStatement();
+        } catch (ClassNotFoundException | SQLException e) {
+            System.err.println("❌ DB Connection error: " + e.getMessage());
         }
 	}
 
-	public void readOperation() {
+	public void readOperation(GameModel gameModel) {
 		if (db_connection == null && st == null)
 			this.loadDatabase();
 		String[] models = {"heroes", "villains", "artifacts"};
@@ -72,21 +62,21 @@ public class DBHandler {
 				rs = st.executeQuery("SELECT * FROM " + model);
 				while (rs.next()) {
 					if (model.equals("heroes")) {
-						controller.getHeroes().add(new Hero(rs.getString("name"), rs.getString("classType"), rs.getInt("level"),
+						gameModel.getHeroes().add(new Hero(rs.getString("name"), rs.getString("classType"), rs.getInt("level"),
 						rs.getInt("experience"), rs.getInt("attackDmg"), rs.getInt("armorDefense"), rs.getInt("helmHP")));
 					}
 					else if (model.equals("villains")) {
-						controller.getVillains().add(new Villain(rs.getString("name"), rs.getString("classType"),
+						gameModel.getVillains().add(new Villain(rs.getString("name"), rs.getString("classType"),
 						rs.getInt("attackDmg"), rs.getInt("armorDefense"), rs.getInt("helmHP")));
 					} else {
-						controller.getArtifacts().add(new Artifact(rs.getString("name"), rs.getString("type"),
-						rs.getInt("level"), rs.getInt("value"), rs.getString("description")));
+						gameModel.getArtifacts().add(new Artifact(rs.getString("name"), rs.getString("type"),
+						rs.getInt("value"), rs.getString("description")));
 					}
 				}
 				rs.close();
 			}
 		} catch (Exception e) {
-			System.out.println("Error in read operation: ");
+			System.out.println("Error in read operation: " + e.getMessage());
 		}
 	}
 }

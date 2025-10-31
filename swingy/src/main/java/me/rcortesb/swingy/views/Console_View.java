@@ -68,10 +68,14 @@ public class Console_View implements ViewModel {
 	}
 
 	public void listHeroes() {
-		List<Hero> heroes = controller.getHeroes();
-		System.out.println("");
-		for (Hero hero : heroes) {
-			System.out.println("- Name: " + hero.getName() + "...");
+		try {
+			List<Hero> heroes = controller.getGameModel().getHeroes();
+			System.out.println("");
+			for (Hero hero : heroes) {
+				System.out.println("- Name: " + hero.getName() + "...");
+			}
+		} catch (Exception e) {
+			System.out.println("wth");
 		}
 		//if lsit exists --> display list
 			//if not exists --> fetch database and store it to list

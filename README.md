@@ -99,8 +99,8 @@ Encapsulates object construction logic in a separate Builder class.
 
 At what point am i right now? What are the next steps?
 
-	- Create the database with docker ✅
-	- Fetch the database and look for heroes -> CREATE A NEW MODEL, GAMECONTROLLER TO STORE ALL THE HEROES,VILLAINS,ARTIFACTS AND CALL IT READ DB
+	- ✅Create the database with docker
+	- ✅Fetch the database and look for heroes -> CREATE A NEW MODEL, GAMECONTROLLER TO STORE ALL THE HEROES,VILLAINS,ARTIFACTS AND CALL IT READ DB
 	- Implement the Hero Class with validators
 	- Create "install.sh" to install the database, compile and programm and generate the executable "run.sh"
 	- Protect the "install.sh" of replcations.

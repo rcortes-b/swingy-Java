@@ -16,26 +16,39 @@ public class Controller {
 	private static Console_View console;
 	private static GameStatus status;  
 	private static boolean	consoleMode;
-	private static List<Hero> heroes;
+	private static GameModel gameModel;
 
 	private Controller() {
 		this.db_handler = null;
 		this.gui = null;
 		this.console = null;
 		this.status = GameStatus.IN_MENU;
-		this.heroes = null;
+		this.gameModel = null;
 	}
 
 	public static Controller getController() {
 		return controller;
 	}
-	
+
+	public static GameModel getGameModel() {
+		if (gameModel == null) {
+			gameModel = new GameModel();
+		}
+		return gameModel;
+	}
+
 	public static GUI_View getGUI() {
 		return gui;
 	}
 
 	public static Console_View getConsole() {
 		return console;
+	}
+
+	public static DBHandler getDBHandler() {
+		if (db_handler == null)
+			db_handler = new DBHandler();
+		return db_handler;
 	}
 
 	public static void loadConsole(boolean launchMode) {
@@ -60,10 +73,6 @@ public class Controller {
 	}
 	public static GameStatus getStatus() {
 		return status;
-	}
-
-	public static List<Hero> getHeroes() {
-		return heroes;
 	}
 
 	public static void cleanup(int exitCode) {
