@@ -32,10 +32,12 @@ public class DBHandler {
 		st = null;
 	}
 
-	public void deleteDB() {
+	public void closeDB() {
 		try {
 			st.close();
+			st = null;
 			db_connection.close();
+			db_connection = null;
 		} catch (SQLException e) {
 			System.out.println("SQLException Error: " + e.getMessage());
 		}
@@ -62,10 +64,9 @@ public class DBHandler {
 	}
 
 	public void readOperation(GameModel gameModel) {
-		if (db_connection == null && st == null)
-			this.loadDatabase();
 		String[] models = {"heroes", "villains", "artifacts"};
 		try {
+			this.loadDatabase();
 			ResultSet rs;
 			for (String model : models) {
 				rs = st.executeQuery("SELECT * FROM " + model);
@@ -83,6 +84,7 @@ public class DBHandler {
 					}
 				}
 				rs.close();
+				this.closeDB();
 			}
 		} catch (Exception e) {
 			System.out.println("Error in read operation: " + e.getMessage());
@@ -91,9 +93,11 @@ public class DBHandler {
 
 	public void addHeroToDatabase(Hero hero) {
 		try {
+			this.loadDatabase(); //added without thinking
 			String strInsert = "insert into heroes (name, classType, level, experience, attack, defense, hp) values ('";
 			String strValues =  hero.getName() + "','" + hero.getClassType() + "',1,0," + hero.getAttack() + "," + hero.getDefense() + "," + hero.getHP();
 			st.executeUpdate(strInsert + strValues + ")");
+			this.closeDB();
 		} catch (Exception e) {
 			System.out.println("Error: Value cannot be added. " + e.getMessage());
 		}
@@ -101,6 +105,7 @@ public class DBHandler {
 
 	public void updateHeroToDatabase(Hero hero) {
 		try {
+			this.loadDatabase(); //added without thinking
 			String preStr = "update heroes set ";
 			String postStr = " where name='" + hero.getName() + "'";
 			String[] updateValue = {"level=" + hero.getLevel(),
@@ -112,6 +117,7 @@ public class DBHandler {
 			for (int i = 0; i < 5; i++) {
 				st.executeUpdate(preStr + updateValue[i] + postStr);
 			}
+			this.closeDB();
 		} catch (Exception e) {
 			System.out.println("Error: Value cannot be updated. " + e.getMessage());
 		}

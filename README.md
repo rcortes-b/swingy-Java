@@ -102,12 +102,10 @@ At what point am i right now? What are the next steps?
 	- ✅Create the database with docker
 	- ✅Fetch the database and look for heroes -> CREATE A NEW MODEL, GAMECONTROLLER TO STORE ALL THE HEROES,VILLAINS,ARTIFACTS AND CALL IT READ DB
 	- Implement the Hero Class with validators
-	- Create "install.sh" to install the database, compile and programm and generate the executable "run.sh"
-	- Protect the "install.sh" of replcations.
 
-Know bugs:
+Known bugs:
 	- When a hero is created with a name that already exists it is added to the list when it shouldnt be added + the message of "hero has been succesfully created" is printed.
-	- 
+	- Input protection in "Create Hero"
 
 
 ## Setup

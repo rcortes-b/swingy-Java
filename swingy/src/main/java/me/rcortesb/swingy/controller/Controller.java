@@ -85,8 +85,6 @@ public class Controller {
 			gui.deleteGUI();
 		if (console != null)
 			console.deleteConsole(consoleMode);
-		if (db_handler != null)
-			db_handler.deleteDB();
 		System.exit(exitCode);
 	}
 }
