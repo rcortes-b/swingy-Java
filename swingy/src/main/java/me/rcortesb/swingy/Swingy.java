@@ -2,6 +2,8 @@ package me.rcortesb.swingy;
 import me.rcortesb.swingy.controller.Controller;
 import me.rcortesb.swingy.views.Console_View;
 import me.rcortesb.swingy.views.GUI_View;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 public class Swingy {
 
@@ -20,12 +22,10 @@ public class Swingy {
 	}
 
 	public static void main(String[] args) {
+		Logger.getLogger("org.hibernate.validator.internal.util.Version").setLevel(Level.OFF);
 		String mode = handle_input(args);
 		Controller controller = Controller.getController();
 
-		if (mode.equals("gui"))
-			controller.loadGUI();
-		else
-			controller.loadConsole(true);
+		controller.launchApp(mode);
     }
 }

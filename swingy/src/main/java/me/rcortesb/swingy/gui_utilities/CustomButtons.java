@@ -20,7 +20,7 @@ public class CustomButtons {
 				//button.addActionListener(e -> System.out.println("Create a hero from the menu still to develop"));
 				break ;
 			case "Change to Console Mode":
-				button.addActionListener(e -> Controller.getController().getGUI().changeViewMode());
+				button.addActionListener(e -> Controller.getController().getGUI().changeView());
 				break ;
 			case "Exit":
 				button.addActionListener(e -> Controller.getController().cleanup(0));

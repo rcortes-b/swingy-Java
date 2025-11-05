@@ -84,8 +84,8 @@ public class DBHandler {
 					}
 				}
 				rs.close();
-				this.closeDB();
 			}
+			this.closeDB();
 		} catch (Exception e) {
 			System.out.println("Error in read operation: " + e.getMessage());
 		}

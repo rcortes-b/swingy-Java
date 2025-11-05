@@ -27,6 +27,9 @@ public class GUI_View implements ViewModel {
 		this.frame.pack();
 		this.frame.setLocationRelativeTo(null);
 	}
+	public void launch() {
+		this.loadMenu();
+	}
 
 	public void	setView() {
 		GameStatus status = controller.getStatus();
@@ -62,9 +65,9 @@ public class GUI_View implements ViewModel {
 		frame.setVisible(true);
 	}
 
-	public void changeViewMode() {
+	public void changeView() {
 		this.frame.setVisible(false);
-		controller.loadConsole(false);
+		controller.changeView();
 	}
 
 	public void deleteGUI() {

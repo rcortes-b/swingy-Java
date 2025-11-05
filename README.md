@@ -102,10 +102,11 @@ At what point am i right now? What are the next steps?
 	- ✅Create the database with docker
 	- ✅Fetch the database and look for heroes -> CREATE A NEW MODEL, GAMECONTROLLER TO STORE ALL THE HEROES,VILLAINS,ARTIFACTS AND CALL IT READ DB
 	- Implement the Hero Class with validators
+	- Implement the GUI ViewMode up to the Console ViewMode
+	- Test everything and check if database is working correctly. Also check the change between ViewModes and if the data / screen is the requested
 
 Known bugs:
-	- When a hero is created with a name that already exists it is added to the list when it shouldnt be added + the message of "hero has been succesfully created" is printed.
-	- Input protection in "Create Hero"
+	- 
 
 
 ## Setup

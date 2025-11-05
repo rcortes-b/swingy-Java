@@ -12,22 +12,81 @@ import java.util.Properties;
 public class Controller {
 	private static Controller controller = new Controller();
 	private static DBHandler db_handler;
+	private static ViewModel viewModel;
 	private static GUI_View gui;
 	private static Console_View console;
 	private static GameStatus status;  
 	private static boolean	consoleMode;
 	private static GameModel gameModel;
 
+	/* Constructor */
+
 	private Controller() {
 		this.db_handler = null;
+		this.viewModel = null;
 		this.gui = null;
 		this.console = null;
 		this.status = GameStatus.IN_MENU;
 		this.gameModel = null;
 	}
 
+	/* View */
+
+	public static void launchApp(String mode) {
+		if (mode.equals("gui")) {
+			consoleMode = false;
+			gui = new GUI_View();
+			viewModel = gui;
+		} else {
+			consoleMode = true;
+			console = new Console_View();
+			viewModel = console;
+		}
+		viewModel.launch();
+	}
+
+	public static void changeView() {
+		if (consoleMode == true) {
+			if (gui == null)
+				gui = new GUI_View();
+			viewModel = gui;
+				
+			consoleMode = false;
+		}
+		else {
+			if (console == null)
+				console = new Console_View();
+			viewModel = console;
+			consoleMode = true;
+		}
+		viewModel.setView();
+	}
+
+	/* Model and Database */
+
+	public void addHero(Hero new_hero) {
+		this.db_handler.addHeroToDatabase(new_hero);
+		this.gameModel.getHeroes().add(new_hero);
+	}
+
+	/* General Functions */
+
+	public static void cleanup(int exitCode) {
+		if (gui != null)
+			gui.deleteGUI();
+		if (console != null)
+			console.deleteConsole(consoleMode);
+		System.exit(exitCode);
+	}
+
+	/* Getters */
+
 	public static Controller getController() {
 		return controller;
+	}
+
+	public static GameStatus getStatus() {
+		return status;
 	}
 
 	public static GameModel getGameModel() {
@@ -51,40 +110,9 @@ public class Controller {
 		return db_handler;
 	}
 
-	public static void loadConsole(boolean launchMode) {
-		consoleMode = true; 
-		if (console == null)
-			console = new Console_View();
-		if (launchMode == true)
-			console.launchConsole();
-		else
-			console.setView();
-	}
-	
-	public static void loadGUI() {
-		consoleMode = false;
-		if (gui == null)
-			gui = new GUI_View();
-		gui.setView();
-	}
+		/* Setters */
 
 	public static void setStatus(GameStatus mode) {
 		status = mode;
-	}
-	public static GameStatus getStatus() {
-		return status;
-	}
-
-	public void addHero(Hero new_hero) {
-		this.db_handler.addHeroToDatabase(new_hero);
-		this.gameModel.getHeroes().add(new_hero);
-	}
-
-	public static void cleanup(int exitCode) {
-		if (gui != null)
-			gui.deleteGUI();
-		if (console != null)
-			console.deleteConsole(consoleMode);
-		System.exit(exitCode);
 	}
 }

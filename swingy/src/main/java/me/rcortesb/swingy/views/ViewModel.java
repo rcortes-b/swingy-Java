@@ -2,7 +2,8 @@ package me.rcortesb.swingy.views;
 import me.rcortesb.swingy.controller.*;
 
 public interface ViewModel {
-	void changeViewMode();
-	void loadMenu();
+	void launch();
 	void setView();
+	void changeView();
+	void loadMenu();
 }
