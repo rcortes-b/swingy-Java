@@ -128,19 +128,19 @@ public class GUIBuilder {
 		JPanel gridPanel = new JPanel(new GridLayout(row_size + 1, col_size));
 		gridPanel.setBackground(Color.DARK_GRAY);
 
-		gridPanel.add(createLabel("NAME", true));
-		gridPanel.add(createLabel("CLASS", true));
-		gridPanel.add(createLabel("ATTACK", true));
-		gridPanel.add(createLabel("DEFENSE", true));
-		gridPanel.add(createLabel("HP", true));
+		gridPanel.add(createLabel("NAME", true, 28, Color.white));
+		gridPanel.add(createLabel("CLASS", true, 28, Color.white));
+		gridPanel.add(createLabel("ATTACK", true, 28, Color.white));
+		gridPanel.add(createLabel("DEFENSE", true, 28, Color.white));
+		gridPanel.add(createLabel("HP", true, 28, Color.white));
 
 		for (int row = 0; row < row_size; row++) {
 			Hero hero = heroes.get(row);
-			gridPanel.add(createLabel(hero.getName(), false));
-			gridPanel.add(createLabel(hero.getClassType(), false));
-			gridPanel.add(createLabel(String.valueOf(hero.getAttack()), false));
-			gridPanel.add(createLabel(String.valueOf(hero.getDefense()), false));
-			gridPanel.add(createLabel(String.valueOf(hero.getHP()), false));
+			gridPanel.add(createLabel(hero.getName(), false, 16, Color.white));
+			gridPanel.add(createLabel(hero.getClassType(), false, 16, Color.white));
+			gridPanel.add(createLabel(String.valueOf(hero.getAttack()), false, 16, Color.white));
+			gridPanel.add(createLabel(String.valueOf(hero.getDefense()), false, 16, Color.white));
+			gridPanel.add(createLabel(String.valueOf(hero.getHP()), false, 16, Color.white));
 		}
 
 		/* Button of "Ok" --> redirects to HeroMenu */
@@ -161,15 +161,72 @@ public class GUIBuilder {
 		return bigPanel;	
 	}
 
-	private JLabel createLabel(String txt, boolean isTitle) {
+	private JLabel createLabel(String txt, boolean isTitle, int size, Color color) {
 		JLabel label = new JLabel(txt, SwingConstants.CENTER);
 		if (isTitle == true)
-			label.setFont(new Font("SansSerif", Font.BOLD, 28));
+			label.setFont(new Font("SansSerif", Font.BOLD, size));
 		else
-			label.setFont(new Font("SansSerif", Font.PLAIN, 16));
-		label.setForeground(Color.white);
+			label.setFont(new Font("SansSerif", Font.PLAIN, size));
+		label.setForeground(color);
 		label.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		return label;
 	}
-	//heroList --> get panel component --> add new row --> add values
+	
+	public JPanel buildHeroCreation() {
+
+		JLabel titleLabel = new JLabel("CUSTOMIZE YOUR OWN HERO!");
+		titleLabel.setFont(new Font("SansSerif", Font.BOLD, 24));
+		titleLabel.setForeground(Color.white);
+		titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+
+		JPanel gridPanel = new JPanel(new GridLayout(5, 2));
+	
+		gridPanel.add(createLabel("NAME", false, 24, Color.black));
+		gridPanel.add(new JTextField());
+
+		gridPanel.add(createLabel("CLASS", false, 24, Color.black));
+		gridPanel.add(new JTextField());
+
+		gridPanel.add(createLabel("ATTACK", false, 24, Color.black));
+		gridPanel.add(new JTextField());
+
+		gridPanel.add(createLabel("DEFENSE", false, 24, Color.black));
+		gridPanel.add(new JTextField());
+
+		gridPanel.add(createLabel("HP", false, 24, Color.black));
+		gridPanel.add(new JTextField());
+		
+		JButton acceptButton = new JButton("ACCEPT");
+		acceptButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		acceptButton.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		JButton cancelButton = new JButton("CANCEL");
+		cancelButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		cancelButton.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		cancelButton.addActionListener(e -> Controller.getGUI().loadHeroMenu());
+
+		JLabel infoLabel = createLabel("*Class must either be: Warrior, Wizard or Healer", false, 18, Color.white);
+		infoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		infoLabel.setBorder(null);
+
+		JPanel topPanel = new JPanel();
+		topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
+		topPanel.setBackground(Color.DARK_GRAY);
+		topPanel.add(Box.createVerticalStrut(40));
+		topPanel.add(titleLabel);
+		topPanel.add(Box.createVerticalStrut(80));
+		topPanel.add(gridPanel);
+		topPanel.add(Box.createVerticalStrut(40));
+		topPanel.add(acceptButton);
+		topPanel.add(Box.createVerticalStrut(10));
+		topPanel.add(cancelButton);
+		topPanel.add(Box.createVerticalStrut(20));
+		topPanel.add(infoLabel);
+
+		JPanel bigPanel = new JPanel();
+		bigPanel.setBackground(Color.DARK_GRAY);
+		bigPanel.add(topPanel);
+		bigPanel.setName("heroCreation");
+		return bigPanel;	
+	}
 }

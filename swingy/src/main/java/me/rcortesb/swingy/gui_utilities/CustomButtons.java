@@ -35,7 +35,7 @@ public class CustomButtons {
 		button.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		switch (buttonText) {
 			case "Create Hero":
-				button.addActionListener(e -> System.out.println("Start game from the menu still to develop"));
+				button.addActionListener(e -> Controller.getController().getGUI().loadHeroCreation());
 				break ;
 			case "List Heroes":
 				button.addActionListener(e -> Controller.getController().getGUI().loadListHeroes());

@@ -84,13 +84,22 @@ public class GUI_View implements ViewModel {
 	}
 
 	public void loadListHeroes() {
-		controller.setStatus(GameStatus.IN_HERO_MENU);
 		if (loadViewIfExists("heroListing") == false) {
 			mainPanel.add(GUIBuilder.getGUIBuilder().buildHeroListing(), "heroListing");
 			mainPanel.revalidate();
 			mainPanel.repaint();
 			frame.setVisible(true);
 			loadViewIfExists("heroListing");
+		}
+	}
+
+	public void loadHeroCreation() {
+		if (loadViewIfExists("heroCreation") == false) {
+			mainPanel.add(GUIBuilder.getGUIBuilder().buildHeroCreation(), "heroCreation");
+			mainPanel.revalidate();
+			mainPanel.repaint();
+			frame.setVisible(true);
+			loadViewIfExists("heroCreation");
 		}
 	}
 
