@@ -6,8 +6,11 @@ import java.awt.event.*;
 
 public class GUIBuilder {
 	private static GUIBuilder guiBuilder =  new GUIBuilder();
+	private static CustomButtons buttons;
 
-	private GUIBuilder() {}
+	private GUIBuilder() {
+		buttons = new CustomButtons();
+	}
 
 	public static GUIBuilder getGUIBuilder() {
 		return guiBuilder;
@@ -17,7 +20,6 @@ public class GUIBuilder {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-		CustomButtons buttons = new CustomButtons();
 		JButton startGameButton = buttons.getMenuButton("Start Game");
 		JButton createHeroButton = buttons.getMenuButton("Create a Hero");
 		JButton changeUIButton = buttons.getMenuButton("Change to Console Mode");
@@ -42,12 +44,12 @@ public class GUIBuilder {
 
 		JPanel bigPanel = new JPanel(new BorderLayout());
 		bigPanel.add(panel, BorderLayout.CENTER);
-		bigPanel.add(menuBanner(), BorderLayout.SOUTH);
+		bigPanel.add(bannerItem(), BorderLayout.SOUTH);
 		bigPanel.setName("menu");
 		return bigPanel;
 	}
 
-	private static JPanel menuBanner() {
+	private static JPanel bannerItem() {
 		JLabel socialMessage = new JLabel("Check out my social media and my contact info!");
 		socialMessage.setFont(new Font("SansSerif", Font.BOLD, 16));
 		socialMessage.setForeground(Color.YELLOW);
@@ -79,4 +81,36 @@ public class GUIBuilder {
 		return southWrapper;
 	}
 
+	public static JPanel buildHeroMenu() {
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+		JButton startGameButton = buttons.getHeroMenuButton("Create Hero");
+		JButton createHeroButton = buttons.getHeroMenuButton("List Heroes");
+		JButton changeUIButton = buttons.getHeroMenuButton("Change to Console Mode");
+		JButton exitGameButton = buttons.getHeroMenuButton("Back To Menu");
+
+		JLabel gameTitle = new JLabel("Welcome to Hero manager!");
+		gameTitle.setFont(new Font("Serif", Font.BOLD, 28));
+		gameTitle.setForeground(Color.WHITE);
+    	gameTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+		panel.setBackground(Color.DARK_GRAY);
+		panel.add(Box.createVerticalStrut(20));
+		panel.add(gameTitle);
+		panel.add(Box.createVerticalStrut(60));
+		panel.add(startGameButton);
+		panel.add(Box.createVerticalStrut(30));
+		panel.add(createHeroButton);
+		panel.add(Box.createVerticalStrut(30));
+		panel.add(changeUIButton);
+		panel.add(Box.createVerticalStrut(30));
+		panel.add(exitGameButton);
+
+		JPanel bigPanel = new JPanel(new BorderLayout());
+		bigPanel.add(panel, BorderLayout.CENTER);
+		bigPanel.add(bannerItem(), BorderLayout.SOUTH);
+		bigPanel.setName("heroMenu");
+		return bigPanel;	
+	}
 }

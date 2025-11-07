@@ -6,4 +6,5 @@ public interface ViewModel {
 	void setView();
 	void changeView();
 	void loadMenu();
+	void loadHeroMenu();
 }

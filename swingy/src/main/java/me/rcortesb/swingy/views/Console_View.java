@@ -25,7 +25,7 @@ public class Console_View implements ViewModel {
 				this.loadMenu();
 				break ;
 			case IN_HERO_MENU:
-				System.out.println("Load in create hero");
+				this.loadHeroMenu();
 				break ;
 			case IN_GAME:
 				System.out.println("Load in game");
@@ -81,7 +81,7 @@ public class Console_View implements ViewModel {
 								System.out.println("Here goes the game");
 								break;
 						case 2:
-								this.loadCreateHero();
+								this.loadHeroMenu();
 								break;
 						case 3:
 								this.changeView();
@@ -99,7 +99,7 @@ public class Console_View implements ViewModel {
 
 	/* Hero Creation and Listing */
 
-	public void loadCreateHero() {
+	public void loadHeroMenu() {
 		try {
 			controller.setStatus(GameStatus.IN_HERO_MENU);
 			System.out.println("\nWelcome to the hero factory!\n"); //Validations!!!!
@@ -146,7 +146,7 @@ public class Console_View implements ViewModel {
 			}
 		} catch (Exception e) {
 			System.out.println("Error: Input must be either 1, 2, 3, 4 or \"set view_mode=gui\"\n");
-			loadCreateHero();
+			loadHeroMenu();
 		}
 	}
 
@@ -181,7 +181,7 @@ public class Console_View implements ViewModel {
 				controller.addHero(new_hero);
 				System.out.println("Hero has been succesfully created!");
 			}
-			this.loadCreateHero();
+			this.loadHeroMenu();
 		} catch (Exception e) {
 			controller.cleanup(1);
 		}
@@ -218,7 +218,7 @@ public class Console_View implements ViewModel {
 				System.out.println("|");
 			}
 			printValue(null, 6, 53);
-			this.loadCreateHero();
+			this.loadHeroMenu();
 		} catch (Exception e) {
 			System.out.println("Error: Something went wrong listing the heroes\n" + e.getMessage());
 		}

@@ -38,8 +38,7 @@ public class GUI_View implements ViewModel {
 				this.loadMenu();
 				break ;
 			case IN_HERO_MENU:
-				this.loadMenu();
-				System.out.println("Load in create hero");
+				this.loadHeroMenu();
 				break ;
 			case IN_GAME:
 				break ;
@@ -48,21 +47,39 @@ public class GUI_View implements ViewModel {
 				break ;
 		}
 	}
+ 
+ 	/* View Loader */
+
+	public boolean loadViewIfExists(String viewName) {
+		for (Component c : mainPanel.getComponents()) {
+			if (c.getName().equals(viewName)) {
+				frame.setVisible(true);
+				cardLayout.show(mainPanel, viewName);
+				return true;
+			}
+		}
+		return false;
+	}
 
 	public void loadMenu() {
 		controller.setStatus(GameStatus.IN_MENU);
-		for (Component c : mainPanel.getComponents()) {
-			if (c.getName().equals("menu")) {
-				frame.setVisible(true);
-				cardLayout.show(mainPanel, "menu");
-				controller.setStatus(GameStatus.IN_MENU);
-				return;
-			}
+		if (loadViewIfExists("menu") == false) {
+			mainPanel.add(GUIBuilder.getGUIBuilder().buildMenu(), "menu");
+			mainPanel.revalidate();
+			mainPanel.repaint();
+			frame.setVisible(true);
 		}
-		mainPanel.add(GUIBuilder.getGUIBuilder().buildMenu(), "menu");
-		mainPanel.revalidate();
-		mainPanel.repaint();
-		frame.setVisible(true);
+	}
+
+	public void loadHeroMenu() {
+		controller.setStatus(GameStatus.IN_HERO_MENU);
+		if (loadViewIfExists("heroMenu") == false) {
+			mainPanel.add(GUIBuilder.getGUIBuilder().buildHeroMenu(), "heroMenu");
+			mainPanel.revalidate();
+			mainPanel.repaint();
+			frame.setVisible(true);
+			loadViewIfExists("heroMenu");
+		}
 	}
 
 	public void changeView() {
