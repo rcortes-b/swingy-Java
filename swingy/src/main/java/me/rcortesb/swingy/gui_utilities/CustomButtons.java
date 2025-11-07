@@ -38,7 +38,7 @@ public class CustomButtons {
 				button.addActionListener(e -> System.out.println("Start game from the menu still to develop"));
 				break ;
 			case "List Heroes":
-				button.addActionListener(e -> /*Controller.getController().getGUI().loadHeroManager()*/ System.out.println("List hero buttons"));
+				button.addActionListener(e -> Controller.getController().getGUI().loadListHeroes());
 				//button.addActionListener(e -> System.out.println("Create a hero from the menu still to develop"));
 				break ;
 			case "Change to Console Mode":

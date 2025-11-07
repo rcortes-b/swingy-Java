@@ -68,6 +68,7 @@ public class GUI_View implements ViewModel {
 			mainPanel.revalidate();
 			mainPanel.repaint();
 			frame.setVisible(true);
+			loadViewIfExists("menu");
 		}
 	}
 
@@ -79,6 +80,17 @@ public class GUI_View implements ViewModel {
 			mainPanel.repaint();
 			frame.setVisible(true);
 			loadViewIfExists("heroMenu");
+		}
+	}
+
+	public void loadListHeroes() {
+		controller.setStatus(GameStatus.IN_HERO_MENU);
+		if (loadViewIfExists("heroListing") == false) {
+			mainPanel.add(GUIBuilder.getGUIBuilder().buildHeroListing(), "heroListing");
+			mainPanel.revalidate();
+			mainPanel.repaint();
+			frame.setVisible(true);
+			loadViewIfExists("heroListing");
 		}
 	}
 
