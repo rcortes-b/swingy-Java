@@ -26,18 +26,18 @@ public class GameModel {
 
 	/* utils */
 
-	public boolean heroExists(Hero newHero) {
-		String heroName = newHero.getName();
+	public boolean heroExists(String heroName) {
 		for (Hero hero : heroes) {
 			if (hero.getName().equals(heroName)) {
-				System.out.println("Error: A hero with name " + heroName + " already exists.");
+				if (controller.isConsoleMode() == true)
+					System.out.println("Error: A hero with name " + heroName + " already exists");
 				return true;
 			}
 		}
 		return false;
 	}
 
-	public boolean isHeroValid(Hero new_hero) {
+	public boolean isHeroValid(Hero new_hero, List<String> error_log) {
 		try {
 
 		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
@@ -47,13 +47,35 @@ public class GameModel {
 		if (violations.size() == 0)
 			return true;
 		for (ConstraintViolation<Hero> violation : violations) {
-            System.out.println("Wrong value at creation: " + violation.getMessage());
+			if (error_log != null)
+				error_log.add("Wrong value at creation: " + violation.getMessage());
+			else
+          		System.out.println("Wrong value at creation: " + violation.getMessage());
         }
 		return false;
 		} catch (Exception e) {
-			System.out.println("Erorr: " + e.getMessage());
+			System.out.println("Error: " + e.getMessage());
 		}
 		return false;
+	}
+
+	public boolean validateHeroInput(String value, int loop) {
+		if (loop == 1) {
+			if (!value.equals("1") && !value.equals("2") && !value.equals("3")) {
+				System.out.println("Bad input: Class must be either Warrior, Wizard or Healer (1-3)");
+				return false;
+			}
+		}
+		else if (loop >= 2 && loop <= 4) {
+			for (int i = 0; i < value.length(); i++) {
+				if (!Character.isDigit(value.charAt(i))) {
+					if (controller.isConsoleMode() == true)
+						System.out.println("Bad input: Value must be only numeric");
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 
 	/* Getters */

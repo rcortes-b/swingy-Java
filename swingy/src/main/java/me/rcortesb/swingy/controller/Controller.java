@@ -62,6 +62,10 @@ public class Controller {
 		viewModel.setView();
 	}
 
+	public boolean isConsoleMode() {
+		return consoleMode;
+	}
+
 	/* Model and Database */
 
 	public void addHero(Hero new_hero) {
@@ -115,4 +119,5 @@ public class Controller {
 	public static void setStatus(GameStatus mode) {
 		status = mode;
 	}
+
 }

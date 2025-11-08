@@ -1,7 +1,9 @@
 package me.rcortesb.swingy.views;
 import me.rcortesb.swingy.gui_utilities.*;
 import me.rcortesb.swingy.controller.Controller;
+import me.rcortesb.swingy.models.GameModel;
 import me.rcortesb.swingy.models.Hero;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
 import java.awt.*;
@@ -125,7 +127,7 @@ public class GUIBuilder {
 		int col_size = 5;
 
 		/* GridLayout Listing*/
-		JPanel gridPanel = new JPanel(new GridLayout(row_size + 1, col_size));
+		JPanel gridPanel = new JPanel(new GridLayout(0, col_size));
 		gridPanel.setBackground(Color.DARK_GRAY);
 
 		gridPanel.add(createLabel("NAME", true, 28, Color.white));
@@ -161,6 +163,31 @@ public class GUIBuilder {
 		return bigPanel;	
 	}
 
+	public void updateList(JPanel c) {
+		List<Hero> heroes = Controller.getGameModel().getHeroes();
+		JScrollPane scrollPane = (JScrollPane) c.getComponent(0);
+		JPanel gridPanel = (JPanel) scrollPane.getViewport().getView();
+
+		/* Checks if the list size is the same than the number of heroes that are already in the list */
+		int sizeGap = heroes.size() - ((gridPanel.getComponentCount() / 5) - 1);
+		if (sizeGap == 0)
+			return;
+		/* If the size differes, get the index of heroes who are not present in the list (recently created) */
+		sizeGap = heroes.size() - sizeGap;
+
+		while (sizeGap < heroes.size()) {
+			Hero hero = heroes.get(sizeGap);
+			gridPanel.add(createLabel(hero.getName(), false, 16, Color.white));
+			gridPanel.add(createLabel(hero.getClassType(), false, 16, Color.white));
+			gridPanel.add(createLabel(String.valueOf(hero.getAttack()), false, 16, Color.white));
+			gridPanel.add(createLabel(String.valueOf(hero.getDefense()), false, 16, Color.white));
+			gridPanel.add(createLabel(String.valueOf(hero.getHP()), false, 16, Color.white));
+			sizeGap++;
+		}
+		gridPanel.revalidate();
+		gridPanel.repaint();
+	}
+
 	private JLabel createLabel(String txt, boolean isTitle, int size, Color color) {
 		JLabel label = new JLabel(txt, SwingConstants.CENTER);
 		if (isTitle == true)
@@ -172,8 +199,9 @@ public class GUIBuilder {
 		return label;
 	}
 	
-	public JPanel buildHeroCreation() {
-
+	public JPanel buildHeroCreation(JFrame frame) {
+		String[] labelGrid = {"NAME", "CLASS", "ATTACK", "DEFENSE", "HP"};
+		JTextField[] fieldValues = new JTextField[5];
 		JLabel titleLabel = new JLabel("CUSTOMIZE YOUR OWN HERO!");
 		titleLabel.setFont(new Font("SansSerif", Font.BOLD, 24));
 		titleLabel.setForeground(Color.white);
@@ -182,24 +210,22 @@ public class GUIBuilder {
 
 		JPanel gridPanel = new JPanel(new GridLayout(5, 2));
 	
-		gridPanel.add(createLabel("NAME", false, 24, Color.black));
-		gridPanel.add(new JTextField());
-
-		gridPanel.add(createLabel("CLASS", false, 24, Color.black));
-		gridPanel.add(new JTextField());
-
-		gridPanel.add(createLabel("ATTACK", false, 24, Color.black));
-		gridPanel.add(new JTextField());
-
-		gridPanel.add(createLabel("DEFENSE", false, 24, Color.black));
-		gridPanel.add(new JTextField());
-
-		gridPanel.add(createLabel("HP", false, 24, Color.black));
-		gridPanel.add(new JTextField());
+		for (int i = 0; i < 5; i++) {
+			gridPanel.add(createLabel(labelGrid[i], false, 24, Color.black));
+			fieldValues[i] = new JTextField();
+			fieldValues[i].setFont(new Font("SansSerif", Font.PLAIN, 24));
+			gridPanel.add(fieldValues[i]);
+		}
 		
 		JButton acceptButton = new JButton("ACCEPT");
 		acceptButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		acceptButton.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		acceptButton.addActionListener(new ActionListener() {  
+            public void actionPerformed(ActionEvent e) {  
+                handleHeroCreation(fieldValues, frame);
+				Controller.getGUI().loadHeroMenu();
+            }  
+        });
 		JButton cancelButton = new JButton("CANCEL");
 		cancelButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		cancelButton.setFont(new Font("SansSerif", Font.PLAIN, 18));
@@ -228,5 +254,61 @@ public class GUIBuilder {
 		bigPanel.add(topPanel);
 		bigPanel.setName("heroCreation");
 		return bigPanel;	
+	}
+	/*Step-by-Step getItems for JTextField --> validate them (valid string, valid numbers)
+	--> validateHero not exits --> do real Validation --> write into DB */
+	private void handleHeroCreation(JTextField txtFields[], JFrame frame) {
+		String[] value = new String[5];
+		List<String> error_log = new ArrayList<>();
+		int i = 0;
+		for (; i < 5; i++)
+			value[i] = txtFields[i].getText();
+		i = 0;
+		if (Controller.getGameModel().heroExists(value[i]) == true)
+			error_log.add("Error: A hero with name " + value[i] + " already exists.");
+		i++;
+		if (!(value[i].equals("Warrior") || value[i].equals("Wizard") || value[i].equals("Healer")))
+			error_log.add("Bad input: Hero class must either be: Warrior, Wizard or Healer");
+		i++;
+		for(; i < 5; i++) {
+			if (Controller.getGameModel().validateHeroInput(value[i], i) == false)
+				value[i] = "0";
+		}
+		Hero new_hero = new Hero(value[0], value[1], 1, 0, Integer.parseInt(value[2]),
+									Integer.parseInt(value[3]), Integer.parseInt(value[4]));
+		if (Controller.getGameModel().isHeroValid(new_hero, error_log));
+		if (error_log.size() == 0) {
+			Controller.getController().addHero(new_hero);
+		}
+		else
+			showErrorPopUp(error_log, frame);
+	}
+
+	private void showErrorPopUp(List<String> error_log, JFrame frame) {
+		JDialog dialog = new JDialog(frame, "ERROR LOG", true);
+		
+		JPanel dialogPanel= new JPanel();
+		dialogPanel.setLayout(new BoxLayout(dialogPanel, BoxLayout.Y_AXIS));
+		for (String err_msg : error_log) {
+			JLabel label = createLabel("- " + err_msg, false, 16, Color.black);
+			label.setBorder(null);
+			dialogPanel.add(Box.createVerticalStrut(20));
+       		dialogPanel.add(label);
+		}
+
+		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JButton button = new JButton("OK");
+		button.setAlignmentX(Component.CENTER_ALIGNMENT);
+        button.addActionListener(e -> dialog.setVisible(false)); 
+		buttonPanel.add(button);
+        
+		dialogPanel.add(Box.createVerticalStrut(20));
+		dialogPanel.add(buttonPanel);   
+		dialog.add(dialogPanel); 
+
+		/* Size is adaptable to the amount of message errors. 200 height to one error + additional 40 for each error */
+		dialog.setSize((int)(frame.getSize().width / 1.5), 200 + ((error_log.size() - 1) * 40));
+   	    dialog.setLocationRelativeTo(frame);
+        dialog.setVisible(true);
 	}
 }

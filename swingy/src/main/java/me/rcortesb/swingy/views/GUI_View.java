@@ -53,6 +53,8 @@ public class GUI_View implements ViewModel {
 	public boolean loadViewIfExists(String viewName) {
 		for (Component c : mainPanel.getComponents()) {
 			if (c.getName().equals(viewName)) {
+				if (viewName.equals("heroListing"))
+					GUIBuilder.getGUIBuilder().updateList((JPanel)c);
 				frame.setVisible(true);
 				cardLayout.show(mainPanel, viewName);
 				return true;
@@ -95,7 +97,7 @@ public class GUI_View implements ViewModel {
 
 	public void loadHeroCreation() {
 		if (loadViewIfExists("heroCreation") == false) {
-			mainPanel.add(GUIBuilder.getGUIBuilder().buildHeroCreation(), "heroCreation");
+			mainPanel.add(GUIBuilder.getGUIBuilder().buildHeroCreation(this.frame), "heroCreation");
 			mainPanel.revalidate();
 			mainPanel.repaint();
 			frame.setVisible(true);

@@ -161,7 +161,7 @@ public class Console_View implements ViewModel {
 			for (; loop_c < 5; loop_c++) {
 				System.out.print(input_msg[loop_c]);
 				value[loop_c] = myObj.nextLine();
-				if (this.validateHeroInput(value[loop_c], loop_c) == false) {;
+				if (controller.getGameModel().validateHeroInput(value[loop_c], loop_c) == false) {
 					loop_c--;
 					continue ;
 				}
@@ -177,7 +177,7 @@ public class Console_View implements ViewModel {
 			}
 			Hero new_hero = new Hero(value[0], value[1], 1, 0, Integer.parseInt(value[2]),
 									Integer.parseInt(value[3]), Integer.parseInt(value[4]));
-			if (controller.getGameModel().heroExists(new_hero) == false && controller.getGameModel().isHeroValid(new_hero) == true) {
+			if (controller.getGameModel().heroExists(value[0]) == false && controller.getGameModel().isHeroValid(new_hero, null) == true) {
 				controller.addHero(new_hero);
 				System.out.println("Hero has been succesfully created!");
 			}
@@ -187,7 +187,7 @@ public class Console_View implements ViewModel {
 		}
 	}	
 
-	public boolean validateHeroInput(String value, int loop) {
+	/*public boolean validateHeroInput(String value, int loop) {
 		if (loop == 1) {
 			if (!value.equals("1") && !value.equals("2") && !value.equals("3")) {
 				System.out.println("Bad input: Class must be either Warrior, Wizard or Healer (1-3)");
@@ -203,7 +203,7 @@ public class Console_View implements ViewModel {
 			}
 		}
 		return true;
-	}
+	}*/
 
 	public void listHeroes() {
 		try {
