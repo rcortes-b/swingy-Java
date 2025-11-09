@@ -17,7 +17,6 @@ public class CustomButtons {
 				break ;
 			case "Create a Hero":
 				button.addActionListener(e -> Controller.getController().getGUI().loadHeroMenu());
-				//button.addActionListener(e -> System.out.println("Create a hero from the menu still to develop"));
 				break ;
 			case "Change to Console Mode":
 				button.addActionListener(e -> Controller.getController().getGUI().changeView());
@@ -35,11 +34,10 @@ public class CustomButtons {
 		button.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		switch (buttonText) {
 			case "Create Hero":
-				button.addActionListener(e -> Controller.getController().getGUI().loadHeroCreation());
+				button.addActionListener(e -> Controller.getController().getGUI().createHero());
 				break ;
 			case "List Heroes":
-				button.addActionListener(e -> Controller.getController().getGUI().loadListHeroes());
-				//button.addActionListener(e -> System.out.println("Create a hero from the menu still to develop"));
+				button.addActionListener(e -> Controller.getController().getGUI().listHeroes());
 				break ;
 			case "Change to Console Mode":
 				button.addActionListener(e -> Controller.getController().getGUI().changeView());

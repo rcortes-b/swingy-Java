@@ -5,12 +5,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class GUI_View implements ViewModel {
+public class GUI_View extends ViewModel {
 	private JFrame frame;
 	private JPanel mainPanel;  //mainPanel.add(menuPanel, "menu");
 	private CardLayout cardLayout; //cardLayout.show(mainPanel, "menu");
-	private boolean	firstCard = true;
-	private Controller controller = Controller.getController();
 
 	public GUI_View() {
 		this.frame = new JFrame("Achieve The Border");
@@ -26,26 +24,6 @@ public class GUI_View implements ViewModel {
 		this.frame.add(this.mainPanel);
 		this.frame.pack();
 		this.frame.setLocationRelativeTo(null);
-	}
-	public void launch() {
-		this.loadMenu();
-	}
-
-	public void	setView() {
-		GameStatus status = controller.getStatus();
-		switch (status) {
-			case IN_MENU:
-				this.loadMenu();
-				break ;
-			case IN_HERO_MENU:
-				this.loadHeroMenu();
-				break ;
-			case IN_GAME:
-				break ;
-			case IN_BATTLE:
-				System.out.println("Load in battle");
-				break ;
-		}
 	}
  
  	/* View Loader */
@@ -85,7 +63,7 @@ public class GUI_View implements ViewModel {
 		}
 	}
 
-	public void loadListHeroes() {
+	public void listHeroes() {
 		if (loadViewIfExists("heroListing") == false) {
 			mainPanel.add(GUIBuilder.getGUIBuilder().buildHeroListing(), "heroListing");
 			mainPanel.revalidate();
@@ -95,7 +73,7 @@ public class GUI_View implements ViewModel {
 		}
 	}
 
-	public void loadHeroCreation() {
+	public void createHero() {
 		if (loadViewIfExists("heroCreation") == false) {
 			mainPanel.add(GUIBuilder.getGUIBuilder().buildHeroCreation(this.frame), "heroCreation");
 			mainPanel.revalidate();

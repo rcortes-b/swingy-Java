@@ -5,36 +5,10 @@ import java.util.Scanner;
 import java.util.List;
 import java.util.ArrayList;
 
-public class Console_View implements ViewModel {
+public class Console_View extends ViewModel {
 	private static Scanner myObj = new Scanner(System.in);
-	private static Controller controller = Controller.getController();
 
 	/* Key Functions */
-
-	public void launch() {
-		System.out.println("\n--------------------------------------------\n");
-		System.out.println("Welcome to Achieve The Border!!");
-		System.out.println("Currently you're in view_mode=console, type \"set view_mode=gui\" to change to a graphic interface");
-		loadMenu();
-	}
-
-	public void	setView() {
-		GameStatus status = controller.getStatus();
-		switch (status) {
-			case IN_MENU:
-				this.loadMenu();
-				break ;
-			case IN_HERO_MENU:
-				this.loadHeroMenu();
-				break ;
-			case IN_GAME:
-				System.out.println("Load in game");
-				break ;
-			case IN_BATTLE:
-				System.out.println("Load in battle");
-				break ;
-		}
-	}
 
 	public void deleteConsole(boolean print_msg) {
 		myObj.close();
@@ -185,25 +159,7 @@ public class Console_View implements ViewModel {
 		} catch (Exception e) {
 			controller.cleanup(1);
 		}
-	}	
-
-	/*public boolean validateHeroInput(String value, int loop) {
-		if (loop == 1) {
-			if (!value.equals("1") && !value.equals("2") && !value.equals("3")) {
-				System.out.println("Bad input: Class must be either Warrior, Wizard or Healer (1-3)");
-				return false;
-			}
-		}
-		else if (loop >= 2 && loop <= 4) {
-			for (int i = 0; i < value.length(); i++) {
-				if (!Character.isDigit(value.charAt(i))) {
-					System.out.println("Bad input: Value must be only numeric");
-					return false;
-				}
-			}
-		}
-		return true;
-	}*/
+	}
 
 	public void listHeroes() {
 		try {
