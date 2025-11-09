@@ -220,12 +220,7 @@ public class GUIBuilder {
 		JButton acceptButton = new JButton("ACCEPT");
 		acceptButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		acceptButton.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		acceptButton.addActionListener(new ActionListener() {  
-            public void actionPerformed(ActionEvent e) {  
-                handleHeroCreation(fieldValues, frame);
-				Controller.getGUI().loadHeroMenu();
-            }  
-        });
+		acceptButton.addActionListener(e -> handleHeroCreation(fieldValues, frame));
 		JButton cancelButton = new JButton("CANCEL");
 		cancelButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		cancelButton.setFont(new Font("SansSerif", Font.PLAIN, 18));
@@ -279,6 +274,7 @@ public class GUIBuilder {
 		if (Controller.getGameModel().isHeroValid(new_hero, error_log));
 		if (error_log.size() == 0) {
 			Controller.getController().addHero(new_hero);
+			Controller.getGUI().loadHeroMenu();
 		}
 		else
 			showErrorPopUp(error_log, frame);
