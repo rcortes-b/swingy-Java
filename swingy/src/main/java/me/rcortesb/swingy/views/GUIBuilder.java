@@ -1,6 +1,6 @@
 package me.rcortesb.swingy.views;
 import me.rcortesb.swingy.gui_utilities.*;
-import me.rcortesb.swingy.controller.Controller;
+import me.rcortesb.swingy.controller.*;
 import me.rcortesb.swingy.models.GameModel;
 import me.rcortesb.swingy.models.Hero;
 import java.util.ArrayList;
@@ -88,7 +88,7 @@ public class GUIBuilder {
 		return southWrapper;
 	}
 
-	public static JPanel buildHeroMenu() {
+	public static JPanel buildHeroMenu(String viewLabel) {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
@@ -97,27 +97,29 @@ public class GUIBuilder {
 		gameTitle.setForeground(Color.WHITE);
     	gameTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-		JButton startGameButton = buttons.getHeroMenuButton("Create Hero");
-		JButton createHeroButton = buttons.getHeroMenuButton("List Heroes");
+		JButton createHeroButton = buttons.getHeroMenuButton("Create Hero");
+		JButton displayHeroesButton = buttons.getHeroMenuButton("List Heroes");
+		if (viewLabel.equals("gameMenu"))
+			displayHeroesButton.setText("Select Hero");
 		JButton changeUIButton = buttons.getHeroMenuButton("Change to Console Mode");
-		JButton exitGameButton = buttons.getHeroMenuButton("Back To Menu");
+		JButton goMenuButton = buttons.getHeroMenuButton("Back To Menu");
 
 		panel.setBackground(Color.DARK_GRAY);
 		panel.add(Box.createVerticalStrut(20));
 		panel.add(gameTitle);
 		panel.add(Box.createVerticalStrut(60));
-		panel.add(startGameButton);
-		panel.add(Box.createVerticalStrut(30));
 		panel.add(createHeroButton);
+		panel.add(Box.createVerticalStrut(30));
+		panel.add(displayHeroesButton);
 		panel.add(Box.createVerticalStrut(30));
 		panel.add(changeUIButton);
 		panel.add(Box.createVerticalStrut(30));
-		panel.add(exitGameButton);
+		panel.add(goMenuButton);
 
 		JPanel bigPanel = new JPanel(new BorderLayout());
 		bigPanel.add(panel, BorderLayout.CENTER);
 		bigPanel.add(bannerItem(), BorderLayout.SOUTH);
-		bigPanel.setName("heroMenu");
+		bigPanel.setName(viewLabel);
 		return bigPanel;	
 	}
 
@@ -125,6 +127,13 @@ public class GUIBuilder {
 		List<Hero> heroes = Controller.getGameModel().getHeroes();
 		int row_size = heroes.size();
 		int col_size = 5;
+		boolean inGame = false;
+		List<JButton> selectButtons = new ArrayList<>();
+
+		if (Controller.getStatus() == GameStatus.IN_GAME_MENU) {
+			inGame = true;
+			col_size++;
+		}
 
 		/* GridLayout Listing*/
 		JPanel gridPanel = new JPanel(new GridLayout(0, col_size));
@@ -135,7 +144,9 @@ public class GUIBuilder {
 		gridPanel.add(createLabel("ATTACK", true, 28, Color.white));
 		gridPanel.add(createLabel("DEFENSE", true, 28, Color.white));
 		gridPanel.add(createLabel("HP", true, 28, Color.white));
-
+		if (inGame == true)
+			gridPanel.add(createLabel("", true, 28, Color.white));
+		
 		for (int row = 0; row < row_size; row++) {
 			Hero hero = heroes.get(row);
 			gridPanel.add(createLabel(hero.getName(), false, 16, Color.white));
@@ -143,14 +154,22 @@ public class GUIBuilder {
 			gridPanel.add(createLabel(String.valueOf(hero.getAttack()), false, 16, Color.white));
 			gridPanel.add(createLabel(String.valueOf(hero.getDefense()), false, 16, Color.white));
 			gridPanel.add(createLabel(String.valueOf(hero.getHP()), false, 16, Color.white));
+			if (inGame == true) {
+				JButton selectButton = new JButton("Select");
+				selectButton.addActionListener(e -> System.out.println("Hero NAME: " + hero.getName()));
+				gridPanel.add(selectButton);
+			}
 		}
 
 		/* Button of "Ok" --> redirects to HeroMenu */
 		JButton button = new JButton("OK");
+		if (inGame == true)
+			button.setText("CANCEL");
 		button.setAlignmentX(Component.CENTER_ALIGNMENT);
 		button.setFocusPainted(false);
 		button.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		button.addActionListener(e -> Controller.getGUI().loadHeroMenu());
+		/* If inGame is true ... */
+		button.addActionListener(e -> Controller.getGUI().setView());
 
 		/* Vertical ScrollBar linked to the GridLayout */
 		JScrollPane scrollPane = new JScrollPane(gridPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -159,7 +178,10 @@ public class GUIBuilder {
 		JPanel bigPanel = new JPanel(new BorderLayout());
 		bigPanel.add(scrollPane, BorderLayout.CENTER);
 		bigPanel.add(button, BorderLayout.SOUTH);
-		bigPanel.setName("heroListing");
+		if (inGame == true)
+			bigPanel.setName("heroSelect");
+		else
+			bigPanel.setName("heroListing");
 		return bigPanel;	
 	}
 
@@ -167,11 +189,15 @@ public class GUIBuilder {
 		List<Hero> heroes = Controller.getGameModel().getHeroes();
 		JScrollPane scrollPane = (JScrollPane) c.getComponent(0);
 		JPanel gridPanel = (JPanel) scrollPane.getViewport().getView();
-
+		boolean isSelect = false;
+		if (Controller.getStatus() == GameStatus.IN_GAME_MENU)
+			isSelect = true;
+		int row_size = 5 + (isSelect ? 1 : 0);
 		/* Checks if the list size is the same than the number of heroes that are already in the list */
-		int sizeGap = heroes.size() - ((gridPanel.getComponentCount() / 5) - 1);
+		int sizeGap = heroes.size() - ((gridPanel.getComponentCount() / row_size) - 1);
 		if (sizeGap == 0)
 			return;
+		System.out.println("Here arrives");
 		/* If the size differes, get the index of heroes who are not present in the list (recently created) */
 		sizeGap = heroes.size() - sizeGap;
 
@@ -182,6 +208,11 @@ public class GUIBuilder {
 			gridPanel.add(createLabel(String.valueOf(hero.getAttack()), false, 16, Color.white));
 			gridPanel.add(createLabel(String.valueOf(hero.getDefense()), false, 16, Color.white));
 			gridPanel.add(createLabel(String.valueOf(hero.getHP()), false, 16, Color.white));
+			if (isSelect == true) {
+				JButton selectButton = new JButton("Select");
+				selectButton.addActionListener(e -> System.out.println("Hero NAME: " + hero.getName()));
+				gridPanel.add(selectButton);
+			}
 			sizeGap++;
 		}
 		gridPanel.revalidate();
@@ -224,7 +255,7 @@ public class GUIBuilder {
 		JButton cancelButton = new JButton("CANCEL");
 		cancelButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		cancelButton.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		cancelButton.addActionListener(e -> Controller.getGUI().loadHeroMenu());
+		cancelButton.addActionListener(e -> Controller.getGUI().setView());
 
 		JLabel infoLabel = createLabel("*Class must either be: Warrior, Wizard or Healer", false, 18, Color.white);
 		infoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -261,10 +292,7 @@ public class GUIBuilder {
 		i = 0;
 		if (Controller.getGameModel().heroExists(value[i]) == true)
 			error_log.add("Error: A hero with name " + value[i] + " already exists.");
-		i++;
-		if (!(value[i].equals("Warrior") || value[i].equals("Wizard") || value[i].equals("Healer")))
-			error_log.add("Bad input: Hero class must either be: Warrior, Wizard or Healer");
-		i++;
+		i = 2;
 		for(; i < 5; i++) {
 			if (Controller.getGameModel().validateHeroInput(value[i], i) == false)
 				value[i] = "0";
@@ -274,7 +302,12 @@ public class GUIBuilder {
 		if (Controller.getGameModel().isHeroValid(new_hero, error_log));
 		if (error_log.size() == 0) {
 			Controller.getController().addHero(new_hero);
-			Controller.getGUI().loadHeroMenu();
+			if (Controller.getStatus() == GameStatus.IN_HERO_MENU)
+					Controller.getGUI().loadHeroMenu();
+			else {
+				//set New Hero to use in Game
+				System.out.println("HERE I START GAME WITH THE CREATED HERO");
+			}
 		}
 		else
 			showErrorPopUp(error_log, frame);

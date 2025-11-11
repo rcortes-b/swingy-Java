@@ -20,7 +20,7 @@ public class Console_View extends ViewModel {
 		controller.changeView();
 	}
 
-	/* Menu Related */
+	/* Load Views */
 
 	public void loadMenu() {
 		try {
@@ -32,46 +32,11 @@ public class Console_View extends ViewModel {
 			System.out.println("\t4 - Exit\n");
 			System.out.print("Introduce option: ");
 			String userInput = myObj.nextLine();
-			handleMenuInput(userInput);
+			handleInput(userInput);
 		} catch (Exception e) {
 			controller.cleanup(1);
 		}
 	}
-
-	private void handleMenuInput(String userInput) {
-		try {
-			if (userInput.equals("set view_mode=gui"))
-				this.changeView();
-			else {
-				int value = Character.getNumericValue(userInput.charAt(0));
-				if (userInput.length() != 1 || (value < 1 || value > 4)) {
-					if (userInput.equals("set view_mode=console"))
-						System.out.println("\nYou already are in console mode!");
-					throw new Exception();
-				}
-				else {
-					switch (value) {
-						case 1:
-								System.out.println("Here goes the game");
-								break;
-						case 2:
-								this.loadHeroMenu();
-								break;
-						case 3:
-								this.changeView();
-								break;
-						case 4:
-								controller.cleanup(0);
-					}
-				}
-			}
-		} catch (Exception e) {
-			System.out.println("Error: Input must be either 1, 2, 3, 4 or \"set view_mode=gui\"\n");
-			loadMenu();
-		}
-	}
-
-	/* Hero Creation and Listing */
 
 	public void loadHeroMenu() {
 		try {
@@ -83,7 +48,7 @@ public class Console_View extends ViewModel {
 			System.out.println("\t4 - Go back to menu\n");
 			System.out.print("Introduce option: ");
 			String userInput = myObj.nextLine();
-			handleHeroInput(userInput);
+			handleInput(userInput);
 			//if all the values are correct, add hero to database and add hero to list<Heroes> from the Controller (same behaviour in GUI_View)
 
 		} catch (Exception e) {
@@ -91,42 +56,25 @@ public class Console_View extends ViewModel {
 		}
 	}
 
-	private void handleHeroInput(String userInput) {
+	public void loadGameMenu() {
 		try {
-			if (userInput.equals("set view_mode=gui"))
-				this.changeView();
-			else {
-				int value = Character.getNumericValue(userInput.charAt(0));
-				if (userInput.length() != 1 || (value < 1 || value > 4)) {
-					if (userInput.equals("set view_mode=console"))
-						System.out.println("\nYou already are in console mode!");
-					throw new Exception();
-				}
-				else {
-					switch (value) {
-						case 1:
-								this.createHero();
-								break;
-						case 2:
-								this.listHeroes();
-								break;
-						case 3:
-								this.changeView();
-								break;
-						case 4:
-								this.loadMenu();
-					}
-				}
-			}
+			controller.setStatus(GameStatus.IN_GAME_MENU);
+			System.out.println("\nBegin the game selecting a hero or creating one");
+			System.out.println("\t1 - Select Hero");
+			System.out.println("\t2 - Create Hero");
+			System.out.println("\t3 - Change to GUI mode");
+			System.out.println("\t4 - Go Back To Menu\n");
+			System.out.print("Introduce option: ");
+			String userInput = myObj.nextLine();
+			handleInput(userInput);
 		} catch (Exception e) {
-			System.out.println("Error: Input must be either 1, 2, 3, 4 or \"set view_mode=gui\"\n");
-			loadHeroMenu();
+			controller.cleanup(1);
 		}
 	}
 
 	public void createHero() {
 		String heroName, heroClass, attack, defense, hp;
-		String[] input_msg = {"Name: ", "Hero Class (1 to Warrior, 2 to Wizard, 3 to Healer): ", "Attack Points: ",
+		String[] input_msg = {"Name: ", "Hero Class: ", "Attack Points: ",
 						"Defense Points: ", "Heal Points: " };
 		String[] value = new String[5];
 		int loop_c = 0;
@@ -135,27 +83,28 @@ public class Console_View extends ViewModel {
 			for (; loop_c < 5; loop_c++) {
 				System.out.print(input_msg[loop_c]);
 				value[loop_c] = myObj.nextLine();
-				if (controller.getGameModel().validateHeroInput(value[loop_c], loop_c) == false) {
+				if (value[loop_c].equals("exit")) {
+					this.setView();
+					return ;
+				}
+				else if ((loop_c == 0 && controller.getGameModel().heroExists(value[loop_c]) == true) ||
+							(loop_c != 0 && controller.getGameModel().validateHeroInput(value[loop_c], loop_c) == false))
+				{
 					loop_c--;
 					continue ;
-				}
-				else if (loop_c == 1) {
-					if (value[loop_c].equals("1"))
-						value[loop_c] = "Warrior";
-					else if (value[loop_c].equals("2"))
-						value[loop_c] = "Wizard";
-					else
-						value[loop_c]  = "Healer";
 				}
 				System.out.println("");
 			}
 			Hero new_hero = new Hero(value[0], value[1], 1, 0, Integer.parseInt(value[2]),
 									Integer.parseInt(value[3]), Integer.parseInt(value[4]));
-			if (controller.getGameModel().heroExists(value[0]) == false && controller.getGameModel().isHeroValid(new_hero, null) == true) {
+			if (controller.getGameModel().isHeroValid(new_hero, null) == true) {
 				controller.addHero(new_hero);
 				System.out.println("Hero has been succesfully created!");
 			}
-			this.loadHeroMenu();
+			if (controller.getStatus() == GameStatus.IN_HERO_MENU)
+				loadHeroMenu();
+			else
+				System.out.println("FULL LOAD GAME HERE"); /*****MODIFY*****/
 		} catch (Exception e) {
 			controller.cleanup(1);
 		}
@@ -174,7 +123,7 @@ public class Console_View extends ViewModel {
 				System.out.println("|");
 			}
 			printValue(null, 6, 53);
-			this.loadHeroMenu();
+			this.loadHeroMenu(); /*depends if game or not game */
 		} catch (Exception e) {
 			System.out.println("Error: Something went wrong listing the heroes\n" + e.getMessage());
 		}
@@ -213,6 +162,26 @@ public class Console_View extends ViewModel {
 		str_size = size - str.length();
 		for (int j = 0; j < str_size; j++)
 			System.out.print(" "); 
+	}
+
+	private void handleInput(String userInput) {
+		try {
+			if (userInput.equals("set view_mode=gui"))
+				this.changeView();
+			else {
+				int value = Character.getNumericValue(userInput.charAt(0));
+				if (userInput.length() != 1 || (value < 1 || value > 4)) {
+					if (userInput.equals("set view_mode=console"))
+						System.out.println("\nYou already are in console mode!");
+					throw new Exception();
+				}
+				else
+					ConsoleUtils.setOptions(value, this);
+			}
+		} catch (Exception e) {
+			System.out.println("Error: Input must be either 1, 2, 3, 4 or \"set view_mode=gui\"\n");
+			this.setView();
+		}
 	}
 }
 

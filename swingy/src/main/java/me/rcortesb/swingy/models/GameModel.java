@@ -59,10 +59,15 @@ public class GameModel {
 		return false;
 	}
 
+
+	/* 
+		First loop is only for console mode, to validate if the class chosen is correct 
+		Second loop is for both, to validate if the value in Attacd-Defense-HP is numeric
+	*/
 	public boolean validateHeroInput(String value, int loop) {
 		if (loop == 1) {
-			if (!value.equals("1") && !value.equals("2") && !value.equals("3")) {
-				System.out.println("Bad input: Class must be either Warrior, Wizard or Healer (1-3)");
+			if (!value.equals("Warrior") && !value.equals("Wizard") && !value.equals("Healer")) {
+				System.out.println("Bad input: Class must be either Warrior, Wizard or Healer");
 				return false;
 			}
 		}

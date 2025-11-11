@@ -3,16 +3,21 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 
 public class Hero {
-	@NotNull(message = "Name cannot be null")
-	@Size(min=1, max=15, message= "The name must be maximum 15 characters")
+	@NotEmpty(message = "Name not specified")
+	@Size(min=1, max=15, message= "Name must be between 1 to 15 characters")
 	private String		name;
 
+	@Pattern(regexp = "Warrior|Wizard|Healer", message = "Class must be either Warrior, Wizard or Healer")
 	private String		classType;
 
+	@Min(value=1, message="Minimum level is 1")
 	private int			level;
 
+	@Min(value=0, message="Minumun amount of XP is 0")
 	private int			experience;
 
 	@Min(value = 7, message = "The minimun attack stat valid is 7")

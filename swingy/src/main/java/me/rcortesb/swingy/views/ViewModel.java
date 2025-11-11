@@ -22,11 +22,11 @@ public abstract class ViewModel {
 			case IN_HERO_MENU:
 				this.loadHeroMenu();
 				break ;
+			case IN_GAME_MENU:
+				this.loadGameMenu();
+				break ;
 			case IN_GAME:
 				System.out.println("Load in Game");
-				break ;
-			case IN_BATTLE:
-				System.out.println("Load in Battle");
 				break ;
 		}
 	}
@@ -35,4 +35,5 @@ public abstract class ViewModel {
 	public abstract void loadHeroMenu();
 	public abstract void createHero();
 	public abstract void listHeroes();
+	public abstract void loadGameMenu();
 }

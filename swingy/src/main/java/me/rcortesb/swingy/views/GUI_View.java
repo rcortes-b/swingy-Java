@@ -31,7 +31,7 @@ public class GUI_View extends ViewModel {
 	public boolean loadViewIfExists(String viewName) {
 		for (Component c : mainPanel.getComponents()) {
 			if (c.getName().equals(viewName)) {
-				if (viewName.equals("heroListing"))
+				if (viewName.equals("heroListing") || viewName.equals("heroSelect") )
 					GUIBuilder.getGUIBuilder().updateList((JPanel)c);
 				frame.setVisible(true);
 				cardLayout.show(mainPanel, viewName);
@@ -55,7 +55,7 @@ public class GUI_View extends ViewModel {
 	public void loadHeroMenu() {
 		controller.setStatus(GameStatus.IN_HERO_MENU);
 		if (loadViewIfExists("heroMenu") == false) {
-			mainPanel.add(GUIBuilder.getGUIBuilder().buildHeroMenu(), "heroMenu");
+			mainPanel.add(GUIBuilder.getGUIBuilder().buildHeroMenu("heroMenu"), "heroMenu");
 			mainPanel.revalidate();
 			mainPanel.repaint();
 			frame.setVisible(true);
@@ -64,12 +64,15 @@ public class GUI_View extends ViewModel {
 	}
 
 	public void listHeroes() {
-		if (loadViewIfExists("heroListing") == false) {
-			mainPanel.add(GUIBuilder.getGUIBuilder().buildHeroListing(), "heroListing");
+		String createHeroView = "heroListing";
+		if (Controller.getStatus() == GameStatus.IN_GAME_MENU)
+			createHeroView = "heroSelect";
+		if (loadViewIfExists(createHeroView) == false) {
+			mainPanel.add(GUIBuilder.getGUIBuilder().buildHeroListing(), createHeroView);
 			mainPanel.revalidate();
 			mainPanel.repaint();
 			frame.setVisible(true);
-			loadViewIfExists("heroListing");
+			loadViewIfExists(createHeroView);
 		}
 	}
 
@@ -80,6 +83,17 @@ public class GUI_View extends ViewModel {
 			mainPanel.repaint();
 			frame.setVisible(true);
 			loadViewIfExists("heroCreation");
+		}
+	}
+
+	public void loadGameMenu() {
+		controller.setStatus(GameStatus.IN_GAME_MENU);
+		if (loadViewIfExists("gameMenu") == false) {
+			mainPanel.add(GUIBuilder.getGUIBuilder().buildHeroMenu("gameMenu"), "gameMenu");
+			mainPanel.revalidate();
+			mainPanel.repaint();
+			frame.setVisible(true);
+			loadViewIfExists("gameMenu");
 		}
 	}
 

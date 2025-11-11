@@ -13,7 +13,7 @@ public class CustomButtons {
 		button.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		switch (buttonText) {
 			case "Start Game":
-				button.addActionListener(e -> System.out.println("Start game from the menu still to develop"));
+				button.addActionListener(e -> Controller.getController().getGUI().loadGameMenu());
 				break ;
 			case "Create a Hero":
 				button.addActionListener(e -> Controller.getController().getGUI().loadHeroMenu());
