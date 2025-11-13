@@ -15,7 +15,7 @@ public class Controller {
 	private static ViewModel viewModel;
 	private static GUI_View gui;
 	private static Console_View console;
-	private static GameStatus status;  
+	private static GameStatus status;
 	private static boolean	consoleMode;
 	private static GameModel gameModel;
 
@@ -118,6 +118,10 @@ public class Controller {
 
 	public static void setStatus(GameStatus mode) {
 		status = mode;
+	}
+
+	public static void startGame(Hero hero) {
+		new Game(gameModel, hero);
 	}
 
 }

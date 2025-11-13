@@ -156,7 +156,7 @@ public class GUIBuilder {
 			gridPanel.add(createLabel(String.valueOf(hero.getHP()), false, 16, Color.white));
 			if (inGame == true) {
 				JButton selectButton = new JButton("Select");
-				selectButton.addActionListener(e -> System.out.println("Hero NAME: " + hero.getName()));
+				selectButton.addActionListener(e -> Controller.startGame(hero));
 				gridPanel.add(selectButton);
 			}
 		}
@@ -305,7 +305,7 @@ public class GUIBuilder {
 			if (Controller.getStatus() == GameStatus.IN_HERO_MENU)
 					Controller.getGUI().loadHeroMenu();
 			else {
-				//set New Hero to use in Game
+				Controller.startGame(new_hero); //
 				System.out.println("HERE I START GAME WITH THE CREATED HERO");
 			}
 		}
@@ -340,4 +340,10 @@ public class GUIBuilder {
    	    dialog.setLocationRelativeTo(frame);
         dialog.setVisible(true);
 	}
+
+	//public JPanel buildGame() {
+		//Controller.setGame(); // build map, generate villains
+
+		
+	//}
 }

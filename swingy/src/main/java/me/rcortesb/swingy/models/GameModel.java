@@ -24,6 +24,13 @@ public class GameModel {
 		this.controller.getDBHandler().readOperation(this);
 	}
 
+	public GameModel(GameModel model) {
+		this.controller = model.controller;
+		this.heroes = model.heroes;
+		this.villains = model.villains;
+		this.artifacts = model.artifacts;
+	}
+
 	/* utils */
 
 	public boolean heroExists(String heroName) {
