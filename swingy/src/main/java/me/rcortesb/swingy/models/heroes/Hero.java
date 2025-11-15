@@ -1,0 +1,107 @@
+package me.rcortesb.swingy.models.heroes;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.NotEmpty;
+
+/*	| Hero    | HP | ATK | DEF | HP/Lvl | ATK/Lvl | DEF/Lvl |
+	| ------- | -- | --- | --- | ------ | ------- | ------- |
+	| Warrior | 60 | 14  | 8   | +10    | +3      | +2      |
+	| Wizard  | 45 | 18  | 4   | +8     | +4      | +1      |
+	| Healer  | 55 | 10  | 7   | +9     | +2      | +2      |
+ */
+
+/* A childHero can be:
+					- Default Hero (no param constructor)
+					- New hero (name)
+					- Existing hero loaded from DB (name, level, exp, atk, def, hp)
+*/
+public abstract class Hero {
+	@NotEmpty(message = "Name not specified")
+	@Size(min=1, max=15, message= "Name must be between 1 to 15 characters")
+	protected String	name;
+	
+	@Min(value=1, message="Minimum level is 1")
+	@Max(value=10, message="Maximum level is 10")
+	protected int		level;
+	
+	protected int		experience; //This needs a Custom Class Validation depending of the level
+	protected int		attack; //This needs a Custom Class Validation depending of the level
+	protected int		defense; //This needs a Custom Class Validation depending of the level
+
+	@Min(value = 1, message="This hero is not available due to")
+	protected int		hp;
+	protected Artifact	artifact;
+
+	public abstract String getClassType();
+	public abstract void incrementLevel();
+
+	protected Hero(String p_name, int p_level, int p_exp,
+					int p_attack, int p_defense, int p_hp)
+	{
+		this.name = p_name;
+		this.level = p_level;
+		this.experience = p_exp;
+		this.attack = p_attack;
+		this.defense = p_defense;
+		this.hp = p_hp;
+		this.artifact = null;
+	}
+
+	protected String getName() {
+		return name;
+	}
+
+	protected int getLevel() {
+		return level;
+	}
+
+	protected int getExperience() {
+		return experience;
+	}
+
+	protected int getAttack() {
+		return attack;
+	}
+
+	protected int getDefense() {
+		return defense;
+	}
+
+	protected int getHP() {
+		return hp;
+	}
+
+	protected void attachArtifact(Artifact item) {
+		this.artifact = item;
+		this.hp += item.getHP();
+	}
+
+	protected int getDamage() {
+		if (this.artifact != null) {
+			return (attack + artifact.getAttack());
+		}
+		return attack;
+	}
+
+	protected int getResistance() {
+		if (this.artifact != null) {
+			return (defense + artifact.getDefense());
+		}
+		return defense;
+	}
+
+	protected void gainExperience(int amount) {
+		if (this.level == 10)
+			return ;
+
+		int exp_required = this.level * 1000 + ((this.level - 1) * (this.level - 1)) * 450;
+		this.experience += amount;
+		if (this.experience >= exp_required) {
+			if (this.level == 9)
+				this.experience = exp_required;
+			this.incrementLevel();
+		}
+	}
+
+}

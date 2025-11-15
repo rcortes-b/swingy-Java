@@ -5,6 +5,8 @@ public abstract class Villain {
 	protected int	defense;
 	protected int	hp;
 
+	public abstract String getVillainType();
+
 	protected Villain() {}
 
 	protected int getAttack() {

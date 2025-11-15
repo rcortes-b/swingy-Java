@@ -7,6 +7,8 @@ public abstract class Artifact {
 	protected String	rarity;
 	protected String	description;
 
+	public abstract String getType();
+
 	protected Artifact() {
 		int random = (int)(Math.random() * 10);
 		if (random < 3)
@@ -15,13 +17,23 @@ public abstract class Artifact {
 			this.rarity = "Common";
 	}
 
-	public String hasBeenDropped() {
+	protected int getAttack() {
+		return attack;
+	}
+
+	protected int getDefense() {
+		return defense;
+	}
+
+	protected int getHP() {
+		return hp;
+	}
+
+	protected String hasBeenDropped() {
 		return ("A " + this.getType() + " of rarity " + this.rarity + "has been dropped!");
 	}
 
-	public String getDescription() {
+	protected String getDescription() {
 		return this.description;
 	}
-
-	public abstract String getType();
 }

@@ -7,7 +7,7 @@ public class Weapon extends Artifact {
 		this.hp = 0;
 	}
 
-	private void setStats() {
+	public void setStats() {
 		if (this.rarity.equals("Common")) {
 			this.attack = 3;
 			this.defense = 1;

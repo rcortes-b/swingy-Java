@@ -86,8 +86,7 @@
           <version>3.13.0</version>
 		  <configuration>
 			<excludes>
-					<exclude>**/me/rcortesb/swingy/test/*.java</exclude>
-					<exclude>**/me/rcortesb/swingy/test/artifacts/**</exclude>
+					<exclude>**/me/rcortesb/swingy/validations/*.java</exclude>
 			</excludes>
 		  </configuration>
         </plugin>

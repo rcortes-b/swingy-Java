@@ -6,10 +6,9 @@ package me.rcortesb.swingy.models.villains;
 |    |
  */
 
-public class Orc extends Villain {
+public class Goblin extends Villain {
 
-	public Orc(int hero_level) {
-		super();
+	public Goblin(int hero_level) {
 		this.attack = 12 + ((hero_level - 1) * 2);
 		this.defense = 4 + (hero_level - 1);
 		this.hp = 35 + ((hero_level - 1) * 6);

@@ -7,7 +7,7 @@ public class Lifebloom extends Artifact {
 		this.attack = 0;
 	}
 
-	private void setStats() {
+	public void setStats() {
 		if (this.rarity.equals("Common")) {
 			this.defense = 0;
 			this.hp = 12;

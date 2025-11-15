@@ -64,28 +64,15 @@ public class DBHandler {
 	}
 
 	public void readOperation(GameModel gameModel) {
-		String[] models = {"heroes", "villains", "artifacts"};
 		try {
 			this.loadDatabase();
-			ResultSet rs;
-			for (String model : models) {
-				rs = st.executeQuery("SELECT * FROM " + model);
-				while (rs.next()) {
-					if (model.equals("heroes")) {
-						gameModel.getHeroes().add(new Hero(rs.getString("name"), rs.getString("classType"), rs.getInt("level"),
-						rs.getInt("experience"), rs.getInt("attack"), rs.getInt("defense"), rs.getInt("hp")));
-					}
-					else if (model.equals("villains")) {
-						gameModel.getVillains().add(new Villain(rs.getString("name"), rs.getString("classType"),
-						rs.getInt("attack"), rs.getInt("defense"), rs.getInt("hp")));
-					} else {
-						gameModel.getArtifacts().add(new Artifact(rs.getString("name"), rs.getString("type"),
-						rs.getInt("value"), rs.getString("description")));
-					}
-				}
-				rs.close();
+			ResultSet rs = st.executeQuery("SELECT * FROM heroes");
+			while (rs.next()) {
+				gameModel.getHeroes().add(new Hero(rs.getString("name"), rs.getString("classType"), rs.getInt("level"),
+				rs.getInt("experience"), rs.getInt("attack"), rs.getInt("defense"), rs.getInt("hp")));
 			}
-			this.closeDB();
+			rs.close();
+		this.closeDB();
 		} catch (Exception e) {
 			System.out.println("Error in read operation: " + e.getMessage());
 		}
@@ -93,7 +80,7 @@ public class DBHandler {
 
 	public void addHeroToDatabase(Hero hero) {
 		try {
-			this.loadDatabase(); //added without thinking
+			this.loadDatabase();
 			String strInsert = "insert into heroes (name, classType, level, experience, attack, defense, hp) values ('";
 			String strValues =  hero.getName() + "','" + hero.getClassType() + "',1,0," + hero.getAttack() + "," + hero.getDefense() + "," + hero.getHP();
 			st.executeUpdate(strInsert + strValues + ")");

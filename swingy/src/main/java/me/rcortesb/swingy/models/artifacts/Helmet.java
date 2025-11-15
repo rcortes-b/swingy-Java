@@ -7,7 +7,7 @@ public class Helmet extends Artifact {
 		this.attack = 0;
 	}
 
-	private void setStats() {
+	public void setStats() {
 		if (this.rarity.equals("Common")) {
 			this.defense = 2;
 			this.hp = 10;
