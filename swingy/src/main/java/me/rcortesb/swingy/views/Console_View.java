@@ -75,13 +75,12 @@ public class Console_View extends ViewModel {
 
 	public void createHero() {
 		String heroName, heroClass, attack, defense, hp;
-		String[] input_msg = {"Name: ", "Hero Class: ", "Attack Points: ",
-						"Defense Points: ", "Heal Points: " };
-		String[] value = new String[5];
+		String[] input_msg = {"Name: ", "Hero Class: "};
+		String[] value = new String[2];
 		int loop_c = 0;
-		System.out.println("\nCustomize your hero as your like!\n");
+		System.out.println("\nCustomize the hero as you like!\n");
 		try {
-			for (; loop_c < 5; loop_c++) {
+			for (; loop_c < 2; loop_c++) {
 				System.out.print(input_msg[loop_c]);
 				value[loop_c] = myObj.nextLine();
 				if (value[loop_c].equals("exit")) {
@@ -89,15 +88,14 @@ public class Console_View extends ViewModel {
 					return ;
 				}
 				else if ((loop_c == 0 && controller.getGameModel().heroExists(value[loop_c]) == true) ||
-							(loop_c != 0 && controller.getGameModel().validateHeroInput(value[loop_c], loop_c) == false))
+							(loop_c != 0 && controller.getGameModel().isValidClass(value[loop_c]) == false))
 				{
 					loop_c--;
 					continue ;
 				}
 				System.out.println("");
 			}
-			Hero new_hero = new Hero(value[0], value[1], 1, 0, Integer.parseInt(value[2]),
-									Integer.parseInt(value[3]), Integer.parseInt(value[4]));
+			Hero new_hero = controller.getGameModel().generateHero(value[0], value[1]);
 			if (controller.getGameModel().isHeroValid(new_hero, null) == true) {
 				controller.addHero(new_hero);
 				System.out.println("Hero has been succesfully created!");

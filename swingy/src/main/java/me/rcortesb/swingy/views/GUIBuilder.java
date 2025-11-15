@@ -231,17 +231,17 @@ public class GUIBuilder {
 	}
 	
 	public JPanel buildHeroCreation(JFrame frame) {
-		String[] labelGrid = {"NAME", "CLASS", "ATTACK", "DEFENSE", "HP"};
-		JTextField[] fieldValues = new JTextField[5];
+		String[] labelGrid = {"NAME", "CLASS"};
+		JTextField[] fieldValues = new JTextField[2];
 		JLabel titleLabel = new JLabel("CUSTOMIZE YOUR OWN HERO!");
 		titleLabel.setFont(new Font("SansSerif", Font.BOLD, 24));
 		titleLabel.setForeground(Color.white);
 		titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
 
-		JPanel gridPanel = new JPanel(new GridLayout(5, 2));
+		JPanel gridPanel = new JPanel(new GridLayout(2, 2));
 	
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 2; i++) {
 			gridPanel.add(createLabel(labelGrid[i], false, 24, Color.black));
 			fieldValues[i] = new JTextField();
 			fieldValues[i].setFont(new Font("SansSerif", Font.PLAIN, 24));
@@ -284,21 +284,17 @@ public class GUIBuilder {
 	/*Step-by-Step getItems for JTextField --> validate them (valid string, valid numbers)
 	--> validateHero not exits --> do real Validation --> write into DB */
 	private void handleHeroCreation(JTextField txtFields[], JFrame frame) {
-		String[] value = new String[5];
+		String[] value = new String[2];
 		List<String> error_log = new ArrayList<>();
-		int i = 0;
-		for (; i < 5; i++)
+
+		for (int i = 0; i < 2; i++)
 			value[i] = txtFields[i].getText();
-		i = 0;
-		if (Controller.getGameModel().heroExists(value[i]) == true)
-			error_log.add("Error: A hero with name " + value[i] + " already exists.");
-		i = 2;
-		for(; i < 5; i++) {
-			if (Controller.getGameModel().validateHeroInput(value[i], i) == false)
-				value[i] = "0";
-		}
-		Hero new_hero = new Hero(value[0], value[1], 1, 0, Integer.parseInt(value[2]),
-									Integer.parseInt(value[3]), Integer.parseInt(value[4]));
+		if (Controller.getGameModel().heroExists(value[0]) == true)
+			error_log.add("Error: A hero with name " + value[0] + " already exists.");
+		if (Controller.getGameModel().isValidClass(value[1]) == false)
+			error_log.add("Bad input: Class must be either Warrior, Wizard or Healer");
+
+		Hero new_hero = Controller.getGameModel().generateHero(value[0], value[1]);
 		if (Controller.getGameModel().isHeroValid(new_hero, error_log));
 		if (error_log.size() == 0) {
 			Controller.getController().addHero(new_hero);

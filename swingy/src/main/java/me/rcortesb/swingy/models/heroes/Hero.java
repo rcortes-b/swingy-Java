@@ -30,7 +30,7 @@ public abstract class Hero {
 	protected int		attack; //This needs a Custom Class Validation depending of the level
 	protected int		defense; //This needs a Custom Class Validation depending of the level
 
-	@Min(value = 1, message="This hero is not available due to")
+	@Min(value = 1, message="HP??? CHANGE MSG OR DELETE VALIDATION")
 	protected int		hp;
 	protected Artifact	artifact;
 

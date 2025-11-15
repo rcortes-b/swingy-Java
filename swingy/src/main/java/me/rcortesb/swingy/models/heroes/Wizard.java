@@ -2,10 +2,6 @@ package me.rcortesb.swingy.models.heroes;
 
 public class Wizard extends Hero {
 
-	public Wizard() {
-		super("Magic Wizard", 1, 0, 18, 4, 45);
-	}
-
 	public Wizard(String name) {
 		super(name, 1, 0, 18, 4, 45);
 	}

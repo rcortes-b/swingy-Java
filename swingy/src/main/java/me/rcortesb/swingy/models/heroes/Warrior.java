@@ -2,10 +2,6 @@ package me.rcortesb.swingy.models.heroes;
 
 public class Warrior extends Hero {
 
-	public Warrior() {
-		super("Furious Warrior", 1, 0, 14, 8, 60);
-	}
-
 	public Warrior(String name) {
 		super(name, 1, 0, 14, 8, 60);
 	}

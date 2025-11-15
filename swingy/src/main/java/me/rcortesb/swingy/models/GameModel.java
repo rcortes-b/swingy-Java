@@ -16,6 +16,8 @@ import jakarta.validation.ConstraintViolation;
 public class GameModel {
 	private static Controller controller;
 	private List<Hero> heroes;
+	final private String[] defaultHeroes = {"Furious Warrior", "Magic Wizard", "Gentle Healer"};
+	final private String[] defaultClasses = {"Warrior", "Wizard", "Healer"};
 
 	public GameModel() {
 		this.controller = Controller.getController();
@@ -32,9 +34,17 @@ public class GameModel {
 
 	private void initializeHeroes() {
 		this.heroes = new ArrayList<>();
-		this.heroes.add(new Warrior());
-		this.heroes.add(new Wizard());
-		this.heroes.add(new Healer());
+		this.heroes.add(new Warrior(defaultHeroes[0]));
+		this.heroes.add(new Wizard(defaultHeroes[1]));
+		this.heroes.add(new Healer(defaultHeroes[2]));
+	}
+
+	public Hero generateHero(String name, String classType) {
+		if (classType.equals(defaultClasses[0]))
+			return (new Warrior(name));
+		else if (classType.equals(defaultClasses[1]))
+			return (new Wizard(name));
+		return (new Healer(name));
 	}
 
 	/* utils */
@@ -46,6 +56,22 @@ public class GameModel {
 					System.out.println("Error: A hero with name " + heroName + " already exists");
 				return true;
 			}
+		}
+		return false;
+	}
+
+	public boolean isDefaultName(String name) {
+		for (int i = 0; i < 3; i++) {
+			if (name.equals(defaultHeroes[i]))
+				return true;
+		}
+		return false;
+	}
+
+	public boolean isValidClass(String className) {
+		for (int i = 0; i < 3; i++) {
+			if (className.equals(defaultClasses[i]))
+				return true;
 		}
 		return false;
 	}
