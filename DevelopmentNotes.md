@@ -21,3 +21,9 @@
 
 ## To Refactor
 	- GuiBuilder is ugly code, I can improve something 100% (Some functions are not intuitive due to its multi-use)!!!
+
+
+
+## THOUGHTS
+	- OUT OF GAME THE DB MAY BE MODIFIED, CAREFUL
+	- 

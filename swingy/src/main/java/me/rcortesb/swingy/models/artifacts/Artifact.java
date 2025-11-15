@@ -17,23 +17,23 @@ public abstract class Artifact {
 			this.rarity = "Common";
 	}
 
-	protected int getAttack() {
+	public int getAttack() {
 		return attack;
 	}
 
-	protected int getDefense() {
+	public int getDefense() {
 		return defense;
 	}
 
-	protected int getHP() {
+	public int getHP() {
 		return hp;
 	}
 
-	protected String hasBeenDropped() {
+	public String hasBeenDropped() {
 		return ("A " + this.getType() + " of rarity " + this.rarity + "has been dropped!");
 	}
 
-	protected String getDescription() {
+	public String getDescription() {
 		return this.description;
 	}
 }

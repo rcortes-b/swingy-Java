@@ -9,15 +9,15 @@ public abstract class Villain {
 
 	protected Villain() {}
 
-	protected int getAttack() {
+	public int getAttack() {
 		return attack;
 	}
 
-	protected int getDefense() {
+	public int getDefense() {
 		return defense;
 	}
 
-	protected int getHP() {
+	public int getHP() {
 		return hp;
 	}
 }

@@ -1,4 +1,5 @@
 package me.rcortesb.swingy.models.heroes;
+import me.rcortesb.swingy.models.artifacts.Artifact;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Size;
@@ -48,50 +49,50 @@ public abstract class Hero {
 		this.artifact = null;
 	}
 
-	protected String getName() {
+	public String getName() {
 		return name;
 	}
 
-	protected int getLevel() {
+	public int getLevel() {
 		return level;
 	}
 
-	protected int getExperience() {
+	public int getExperience() {
 		return experience;
 	}
 
-	protected int getAttack() {
+	public int getAttack() {
 		return attack;
 	}
 
-	protected int getDefense() {
+	public int getDefense() {
 		return defense;
 	}
 
-	protected int getHP() {
+	public int getHP() {
 		return hp;
 	}
 
-	protected void attachArtifact(Artifact item) {
+	public void attachArtifact(Artifact item) {
 		this.artifact = item;
 		this.hp += item.getHP();
 	}
 
-	protected int getDamage() {
+	public int getDamage() {
 		if (this.artifact != null) {
 			return (attack + artifact.getAttack());
 		}
 		return attack;
 	}
 
-	protected int getResistance() {
+	public int getResistance() {
 		if (this.artifact != null) {
 			return (defense + artifact.getDefense());
 		}
 		return defense;
 	}
 
-	protected void gainExperience(int amount) {
+	public void gainExperience(int amount) {
 		if (this.level == 10)
 			return ;
 

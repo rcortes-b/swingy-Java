@@ -1,5 +1,6 @@
 package me.rcortesb.swingy.views;
 import me.rcortesb.swingy.controller.*;
+import me.rcortesb.swingy.models.heroes.*;
 import me.rcortesb.swingy.models.*;
 import java.util.Scanner;
 import java.util.List;

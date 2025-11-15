@@ -1,6 +1,7 @@
 package me.rcortesb.swingy.db_backend;
 import me.rcortesb.swingy.controller.Controller;
-import me.rcortesb.swingy.models.*;
+import me.rcortesb.swingy.models.heroes.*;
+import me.rcortesb.swingy.models.GameModel;
 import java.sql.*;
 import java.util.Arrays;
 import java.util.Properties;
@@ -68,11 +69,19 @@ public class DBHandler {
 			this.loadDatabase();
 			ResultSet rs = st.executeQuery("SELECT * FROM heroes");
 			while (rs.next()) {
-				gameModel.getHeroes().add(new Hero(rs.getString("name"), rs.getString("classType"), rs.getInt("level"),
-				rs.getInt("experience"), rs.getInt("attack"), rs.getInt("defense"), rs.getInt("hp")));
+				if (rs.getString("classType").equals("Warrior")) {
+					gameModel.getHeroes().add(new Warrior(rs.getString("name"), rs.getInt("level"),
+					rs.getInt("experience"), rs.getInt("attack"), rs.getInt("defense"), rs.getInt("hp")));
+				} else if (rs.getString("classType").equals("Wizard")) {
+					gameModel.getHeroes().add(new Wizard(rs.getString("name"), rs.getInt("level"),
+					rs.getInt("experience"), rs.getInt("attack"), rs.getInt("defense"), rs.getInt("hp")));
+				} else {
+					gameModel.getHeroes().add(new Healer(rs.getString("name"), rs.getInt("level"),
+					rs.getInt("experience"), rs.getInt("attack"), rs.getInt("defense"), rs.getInt("hp")));
+				}
 			}
 			rs.close();
-		this.closeDB();
+			this.closeDB();
 		} catch (Exception e) {
 			System.out.println("Error in read operation: " + e.getMessage());
 		}

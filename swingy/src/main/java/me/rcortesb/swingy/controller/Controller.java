@@ -1,5 +1,6 @@
 package me.rcortesb.swingy.controller;
 import me.rcortesb.swingy.views.*;
+import me.rcortesb.swingy.models.*;
 import me.rcortesb.swingy.models.heroes.*;
 import me.rcortesb.swingy.db_backend.DBHandler;
 import java.util.List;

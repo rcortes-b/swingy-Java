@@ -1,6 +1,8 @@
 package me.rcortesb.swingy.models;
 import me.rcortesb.swingy.db_backend.DBHandler;
 import me.rcortesb.swingy.controller.*;
+import me.rcortesb.swingy.models.heroes.*;
+import me.rcortesb.swingy.models.*;
 import java.util.List;
 import java.util.Set;
 import java.util.ArrayList;
@@ -9,26 +11,30 @@ import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 import jakarta.validation.ConstraintViolation;
 
+/* GameModel is the one who will generate a random artifact + a random villain */
 
 public class GameModel {
 	private static Controller controller;
 	private List<Hero> heroes;
-	private List<Villain> villains;
-	private List<Artifact> artifacts;
 
 	public GameModel() {
 		this.controller = Controller.getController();
-		this.heroes = new ArrayList<>();
-		this.villains = new ArrayList<>();
-		this.artifacts = new ArrayList<>();
+		this.initializeHeroes();
 		this.controller.getDBHandler().readOperation(this);
 	}
+
+	/* Copy constructor */
 
 	public GameModel(GameModel model) {
 		this.controller = model.controller;
 		this.heroes = model.heroes;
-		this.villains = model.villains;
-		this.artifacts = model.artifacts;
+	}
+
+	private void initializeHeroes() {
+		this.heroes = new ArrayList<>();
+		this.heroes.add(new Warrior());
+		this.heroes.add(new Wizard());
+		this.heroes.add(new Healer());
 	}
 
 	/* utils */
@@ -94,13 +100,5 @@ public class GameModel {
 
 	public List<Hero> getHeroes() {
 		return heroes;
-	}
-
-	public List<Villain> getVillains() {
-		return villains;
-	}
-
-	public List<Artifact> getArtifacts() {
-		return artifacts;
 	}
 }

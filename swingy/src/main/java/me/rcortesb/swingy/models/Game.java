@@ -1,4 +1,5 @@
 package me.rcortesb.swingy.models;
+import me.rcortesb.swingy.models.heroes.*;
 import java.util.ArrayList;
 import java.util.List;
 

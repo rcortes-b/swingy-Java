@@ -2,7 +2,7 @@ package me.rcortesb.swingy.views;
 import me.rcortesb.swingy.gui_utilities.*;
 import me.rcortesb.swingy.controller.*;
 import me.rcortesb.swingy.models.GameModel;
-import me.rcortesb.swingy.models.Hero;
+import me.rcortesb.swingy.models.heroes.*;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
