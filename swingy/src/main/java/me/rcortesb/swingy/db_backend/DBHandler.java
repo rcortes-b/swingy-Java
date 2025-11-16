@@ -123,8 +123,17 @@ public class DBHandler {
 		} catch (Exception e) {
 			System.out.println("Error: Value cannot be updated. " + e.getMessage());
 		}
-	//update heroes set experience=100 where name='defaultWarrior' (st.execute())
 	}
-	//INSERT INTO heroes (name, classtype, level, experience, attackdmg, armordefense, helmhp) values ('pepe', 'lagarto', 1, 0, 100,200,300);
+
+	public void deleteHeroFromDatabase(String hero_name) {
+		try {
+			this.loadDatabase();
+			String req = "delete from heroes where name='" + hero_name + "'";
+			st.executeUpdate(req);
+			this.closeDB();
+		} catch (Exception e) {
+			System.out.println("Error: Hero cannot be deleted. " + e.getMessage());
+		}
+	}
 }
 

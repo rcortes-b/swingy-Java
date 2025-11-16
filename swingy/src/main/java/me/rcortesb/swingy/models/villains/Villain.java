@@ -5,8 +5,8 @@ public abstract class Villain {
 	protected int	defense;
 	protected int	hp;
 
-	public abstract String getVillainType();
-
+	public abstract String	getVillainType();
+	public abstract int		giveExperience();
 	protected Villain() {}
 
 	public int getAttack() {
@@ -19,5 +19,9 @@ public abstract class Villain {
 
 	public int getHP() {
 		return hp;
+	}
+
+	public void takeDamage(int dmg) {
+		this.hp -= dmg;
 	}
 }

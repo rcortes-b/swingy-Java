@@ -1,7 +1,8 @@
 package me.rcortesb.swingy.models.villains;
 
 public class Orc extends Villain {
-
+	private final static int EXP = 450;
+	
 	public Orc(int hero_level) {
 		this.attack = 15 + ((hero_level - 1) * 3);
 		this.defense = 7 + ((hero_level - 1) * 2);
@@ -10,5 +11,9 @@ public class Orc extends Villain {
 
 	public String getVillainType() {
 		return "Orc";
+	}
+
+	public int giveExperience() {
+		return EXP;
 	}
 }

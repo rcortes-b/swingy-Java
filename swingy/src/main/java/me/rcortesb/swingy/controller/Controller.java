@@ -101,6 +101,10 @@ public class Controller {
 		return gameModel;
 	}
 
+	public static ViewModel getViewModel() {
+		return viewModel;
+	}
+
 	public static GUI_View getGUI() {
 		return gui;
 	}

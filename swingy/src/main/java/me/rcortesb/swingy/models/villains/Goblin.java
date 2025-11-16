@@ -7,6 +7,7 @@ package me.rcortesb.swingy.models.villains;
  */
 
 public class Goblin extends Villain {
+	private final static int EXP = 200;
 
 	public Goblin(int hero_level) {
 		this.attack = 12 + ((hero_level - 1) * 2);
@@ -16,5 +17,9 @@ public class Goblin extends Villain {
 
 	public String getVillainType() {
 		return "Goblin";
+	}
+
+	public int giveExperience() {
+		return EXP;
 	}
 }

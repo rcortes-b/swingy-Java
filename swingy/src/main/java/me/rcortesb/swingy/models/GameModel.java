@@ -2,7 +2,8 @@ package me.rcortesb.swingy.models;
 import me.rcortesb.swingy.db_backend.DBHandler;
 import me.rcortesb.swingy.controller.*;
 import me.rcortesb.swingy.models.heroes.*;
-import me.rcortesb.swingy.models.*;
+import me.rcortesb.swingy.models.villains.*;
+import me.rcortesb.swingy.models.artifacts.*;
 import java.util.List;
 import java.util.Set;
 import java.util.ArrayList;
@@ -96,6 +97,29 @@ public class GameModel {
 			System.out.println("Error: " + e.getMessage());
 		}
 		return false;
+	}
+
+	public void generateArtifact(Hero hero) {
+		int random = (int)(Math.random() * 2);
+
+		if (random == 0) {
+			random = (int)(Math.random() * 100);
+			if (random < 33)
+				hero.attachArtifact(new Weapon());
+			else if (random < 66)
+				hero.attachArtifact(new Helmet());
+			else
+				hero.attachArtifact(new Lifebloom());
+		}
+	}
+
+	public Villain generateVillain(int level) {
+		int random = (int)(Math.random() * 100);
+		if (random < 20)
+			return (new Troll(level));
+		else if (random < 55)
+			return (new Orc(level));
+		return new Goblin(level);
 	}
 
 	/* Getters */

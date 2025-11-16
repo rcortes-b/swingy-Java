@@ -102,6 +102,16 @@ public abstract class Hero {
 		return defense;
 	}
 
+	public void takeDamage(int dmg) {
+		this.hp -= dmg;
+	}
+
+	public boolean isAlive() {
+		if (this.hp > 0)
+			return true;
+		return false;
+	}
+
 	public void gainExperience(int amount) {
 		if (this.level == 10)
 			return ;
