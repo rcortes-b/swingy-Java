@@ -76,7 +76,7 @@ public class GameModel {
 		return false;
 	}
 
-	public boolean isHeroValid(Hero new_hero, List<String> error_log) {
+	public boolean validateHero(Hero new_hero, List<String> error_log) {
 		try {
 
 		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
@@ -98,33 +98,13 @@ public class GameModel {
 		return false;
 	}
 
-
-	/* 
-		First loop is only for console mode, to validate if the class chosen is correct 
-		Second loop is for both, to validate if the value in Attacd-Defense-HP is numeric
-	*/
-	public boolean validateHeroInput(String value, int loop) {
-		if (loop == 1) {
-			if (!value.equals("Warrior") && !value.equals("Wizard") && !value.equals("Healer")) {
-				System.out.println("Bad input: Class must be either Warrior, Wizard or Healer");
-				return false;
-			}
-		}
-		else if (loop >= 2 && loop <= 4) {
-			for (int i = 0; i < value.length(); i++) {
-				if (!Character.isDigit(value.charAt(i))) {
-					if (controller.isConsoleMode() == true)
-						System.out.println("Bad input: Value must be only numeric");
-					return false;
-				}
-			}
-		}
-		return true;
-	}
-
 	/* Getters */
 
 	public List<Hero> getHeroes() {
 		return heroes;
+	}
+
+	public String[] getClassTypes() {
+		return defaultClasses;
 	}
 }

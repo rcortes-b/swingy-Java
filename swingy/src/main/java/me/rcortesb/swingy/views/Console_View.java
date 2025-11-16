@@ -96,7 +96,7 @@ public class Console_View extends ViewModel {
 				System.out.println("");
 			}
 			Hero new_hero = controller.getGameModel().generateHero(value[0], value[1]);
-			if (controller.getGameModel().isHeroValid(new_hero, null) == true) {
+			if (controller.getGameModel().validateHero(new_hero, null) == true) {
 				controller.addHero(new_hero);
 				System.out.println("Hero has been succesfully created!");
 			}

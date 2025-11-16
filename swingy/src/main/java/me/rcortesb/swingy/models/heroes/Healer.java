@@ -1,13 +1,15 @@
 package me.rcortesb.swingy.models.heroes;
 
 public class Healer extends Hero {
-
-	public Healer() {
-		super("Gentle Healer", 1, 0, 10, 7, 55);
-	}
-
+	private static int BASE_ATTACK = 10;
+	private static int ATTACK_INCREMENT = 2;
+	private static int BASE_DEFENSE = 7;
+	private static int DEFENSE_INCREMENT = 2;
+	private static int BASE_HP = 55;
+	private static int HP_INCREMENT = 9;
+	
 	public Healer(String name) {
-		super(name, 1, 0, 10, 7, 55);
+		super(name, 1, 0, BASE_ATTACK, BASE_DEFENSE, BASE_HP);
 	}
 
 	public Healer(String p_name, int p_level, int p_exp, int p_attack,
@@ -21,9 +23,15 @@ public class Healer extends Hero {
 
 	public void incrementLevel() {
 		this.level++;
-		this.attack += 2;
-		this.defense += 2;
-		this.hp += 9;
+		this.attack += ATTACK_INCREMENT;
+		this.defense += DEFENSE_INCREMENT;
+		this.hp += HP_INCREMENT;
 	}
 
+	public int getBaseAttack() { return BASE_ATTACK; }
+	public int getBaseDefense() { return BASE_DEFENSE; }
+	public int getBaseHP() { return BASE_HP; }
+	public int getAttackIncrement() { return ATTACK_INCREMENT; }
+	public int getDefenseIncrement() { return DEFENSE_INCREMENT; }
+	public int getHPIncrement() { return HP_INCREMENT; }
 }

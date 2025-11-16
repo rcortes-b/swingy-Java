@@ -1,9 +1,15 @@
 package me.rcortesb.swingy.models.heroes;
 
 public class Wizard extends Hero {
+	private static int BASE_ATTACK = 18;
+	private static int ATTACK_INCREMENT = 4;
+	private static int BASE_DEFENSE = 4;
+	private static int DEFENSE_INCREMENT = 1;
+	private static int BASE_HP = 45;
+	private static int HP_INCREMENT = 8;
 
 	public Wizard(String name) {
-		super(name, 1, 0, 18, 4, 45);
+		super(name, 1, 0, BASE_ATTACK, BASE_DEFENSE, BASE_HP);
 	}
 
 	public Wizard(String p_name, int p_level, int p_exp, int p_attack,
@@ -16,8 +22,15 @@ public class Wizard extends Hero {
 	}
 
 	public void incrementLevel() {
-		this.attack += 4;
-		this.defense += 1;
-		this.hp += 8;
+		this.attack += ATTACK_INCREMENT;
+		this.defense += DEFENSE_INCREMENT;
+		this.hp += HP_INCREMENT;
 	}
+
+	public int getBaseAttack() { return BASE_ATTACK; }
+	public int getBaseDefense() { return BASE_DEFENSE; }
+	public int getBaseHP() { return BASE_HP; }
+	public int getAttackIncrement() { return ATTACK_INCREMENT; }
+	public int getDefenseIncrement() { return DEFENSE_INCREMENT; }
+	public int getHPIncrement() { return HP_INCREMENT; }
 }

@@ -69,16 +69,22 @@ public class DBHandler {
 			this.loadDatabase();
 			ResultSet rs = st.executeQuery("SELECT * FROM heroes");
 			while (rs.next()) {
-				if (rs.getString("classType").equals("Warrior")) {
-					gameModel.getHeroes().add(new Warrior(rs.getString("name"), rs.getInt("level"),
-					rs.getInt("experience"), rs.getInt("attack"), rs.getInt("defense"), rs.getInt("hp")));
-				} else if (rs.getString("classType").equals("Wizard")) {
-					gameModel.getHeroes().add(new Wizard(rs.getString("name"), rs.getInt("level"),
-					rs.getInt("experience"), rs.getInt("attack"), rs.getInt("defense"), rs.getInt("hp")));
-				} else {
-					gameModel.getHeroes().add(new Healer(rs.getString("name"), rs.getInt("level"),
-					rs.getInt("experience"), rs.getInt("attack"), rs.getInt("defense"), rs.getInt("hp")));
+				Hero hero;
+				String classType = rs.getString("classType");
+				if (classType.equals("Warrior")) {
+					hero = new Warrior(rs.getString("name"), rs.getInt("level"),
+					rs.getInt("experience"), rs.getInt("attack"), rs.getInt("defense"), rs.getInt("hp"));
 				}
+				else if (classType.equals("Wizard")) {
+					hero = new Wizard(rs.getString("name"), rs.getInt("level"),
+					rs.getInt("experience"), rs.getInt("attack"), rs.getInt("defense"), rs.getInt("hp"));
+				}
+				else {
+					hero = new Healer(rs.getString("name"), rs.getInt("level"),
+					rs.getInt("experience"), rs.getInt("attack"), rs.getInt("defense"), rs.getInt("hp"));
+				}
+				if (gameModel.validateHero(hero, null) == true)
+					gameModel.getHeroes().add(hero);
 			}
 			rs.close();
 			this.closeDB();

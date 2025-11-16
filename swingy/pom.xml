@@ -86,7 +86,7 @@
           <version>3.13.0</version>
 		  <configuration>
 			<excludes>
-					<exclude>**/me/rcortesb/swingy/validations/*.java</exclude>
+					<!--exclude>**/me/rcortesb/swingy/validations/*.java</exclude-->
 			</excludes>
 		  </configuration>
         </plugin>

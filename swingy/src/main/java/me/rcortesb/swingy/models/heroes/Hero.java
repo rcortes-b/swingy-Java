@@ -1,5 +1,6 @@
 package me.rcortesb.swingy.models.heroes;
 import me.rcortesb.swingy.models.artifacts.Artifact;
+import me.rcortesb.swingy.validations.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Size;
@@ -17,6 +18,9 @@ import jakarta.validation.constraints.NotEmpty;
 					- New hero (name)
 					- Existing hero loaded from DB (name, level, exp, atk, def, hp)
 */
+@ValidAttack
+@ValidDefense
+@ValidExp
 public abstract class Hero {
 	@NotEmpty(message = "Name not specified")
 	@Size(min=1, max=15, message= "Name must be between 1 to 15 characters")
@@ -26,16 +30,22 @@ public abstract class Hero {
 	@Max(value=10, message="Maximum level is 10")
 	protected int		level;
 	
-	protected int		experience; //This needs a Custom Class Validation depending of the level
-	protected int		attack; //This needs a Custom Class Validation depending of the level
-	protected int		defense; //This needs a Custom Class Validation depending of the level
+	protected int		experience;
+	protected int		attack;
+	protected int		defense;
 
-	@Min(value = 1, message="HP??? CHANGE MSG OR DELETE VALIDATION")
+	@Min(value = 1, message="Hero cannot be loaded because it is deceased")
 	protected int		hp;
 	protected Artifact	artifact;
 
 	public abstract String getClassType();
 	public abstract void incrementLevel();
+	public abstract int getBaseAttack();
+	public abstract int getBaseDefense();
+	public abstract int getBaseHP();
+	public abstract int getAttackIncrement();
+	public abstract int getDefenseIncrement();
+	public abstract int getHPIncrement();
 
 	protected Hero(String p_name, int p_level, int p_exp,
 					int p_attack, int p_defense, int p_hp)

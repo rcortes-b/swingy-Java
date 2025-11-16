@@ -295,7 +295,7 @@ public class GUIBuilder {
 			error_log.add("Bad input: Class must be either Warrior, Wizard or Healer");
 
 		Hero new_hero = Controller.getGameModel().generateHero(value[0], value[1]);
-		if (Controller.getGameModel().isHeroValid(new_hero, error_log));
+		if (Controller.getGameModel().validateHero(new_hero, error_log));
 		if (error_log.size() == 0) {
 			Controller.getController().addHero(new_hero);
 			if (Controller.getStatus() == GameStatus.IN_HERO_MENU)
