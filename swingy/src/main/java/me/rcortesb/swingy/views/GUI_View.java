@@ -1,6 +1,9 @@
 package me.rcortesb.swingy.views;
 import me.rcortesb.swingy.gui_utilities.*;
 import me.rcortesb.swingy.controller.*;
+import me.rcortesb.swingy.models.*;
+import me.rcortesb.swingy.models.heroes.Hero;
+import me.rcortesb.swingy.models.villains.Villain;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -10,6 +13,12 @@ public class GUI_View extends ViewModel {
 	private JPanel mainPanel;  //mainPanel.add(menuPanel, "menu");
 	private CardLayout cardLayout; //cardLayout.show(mainPanel, "menu");
 
+
+	public void loadGame(){} //to delete
+	public void showExitFromGame(Game game){} //to delete
+	public void showVictory(){} //to delete
+	public void showDefeat(){} //to delete
+	public void displayBattleResult(Hero hero, Villain villain) {} //to delete
 	public GUI_View() {
 		this.frame = new JFrame("Achieve The Border");
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();

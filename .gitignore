@@ -1,5 +1,4 @@
 target/
-.mvn/
 .env
 ./swingy/db/data/
 dependency-reduced-pom.xml
@@ -7,3 +6,4 @@ test/
 *_exe.sh
 .scannerwork/
 sonar-project.properties
+DevelopmentNotes.md

@@ -11,14 +11,15 @@ import java.util.Arrays;
 import java.util.Properties;
 
 public class Controller {
-	private static Controller controller = new Controller();
-	private static DBHandler db_handler;
-	private static ViewModel viewModel;
-	private static GUI_View gui;
-	private static Console_View console;
-	private static GameStatus status;
-	private static boolean	consoleMode;
-	private static GameModel gameModel;
+	private static Controller	controller = new Controller();
+	private static DBHandler	db_handler;
+	private static ViewModel	viewModel;
+	private static GUI_View		gui;
+	private static Console_View	console;
+	private static GameStatus	status;
+	private static boolean		consoleMode;
+	private static GameModel	gameModel;
+	private static Game			game;
 
 	/* Constructor */
 
@@ -29,6 +30,7 @@ public class Controller {
 		this.console = null;
 		this.status = GameStatus.IN_MENU;
 		this.gameModel = null;
+		this.game = null;
 	}
 
 	/* View */
@@ -84,6 +86,19 @@ public class Controller {
 		System.exit(exitCode);
 	}
 
+	/* Game */
+
+	public static void startGame(Hero hero) {
+		game = new Game(gameModel, hero);
+		viewModel.loadGame();
+	}
+
+	public static void clearGame() {
+		viewModel.loadMenu();
+		game = null;
+		//also delete the game from the CardLayout !!!
+	}
+
 	/* Getters */
 
 	public static Controller getController() {
@@ -99,6 +114,10 @@ public class Controller {
 			gameModel = new GameModel();
 		}
 		return gameModel;
+	}
+
+	public static Game getGame() {
+		return game;
 	}
 
 	public static ViewModel getViewModel() {
@@ -124,9 +143,4 @@ public class Controller {
 	public static void setStatus(GameStatus mode) {
 		status = mode;
 	}
-
-	public static void startGame(Hero hero) {
-		new Game(gameModel, hero);
-	}
-
 }

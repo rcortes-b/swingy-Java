@@ -301,8 +301,7 @@ public class GUIBuilder {
 			if (Controller.getStatus() == GameStatus.IN_HERO_MENU)
 					Controller.getGUI().loadHeroMenu();
 			else {
-				Controller.startGame(new_hero); //
-				System.out.println("HERE I START GAME WITH THE CREATED HERO");
+				Controller.startGame(new_hero);
 			}
 		}
 		else

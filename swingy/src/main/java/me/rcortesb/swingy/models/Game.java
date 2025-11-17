@@ -60,8 +60,7 @@ public class Game extends GameModel {
 		return false;
 	}
 
-	public void runGame(GameMove dir) {
-		hero_pos.updateCoords(dir);
+	public void playTurn() {
 		if (hero_pos.isBorder(this.map_size) == true) {
 			this.endGame(true);
 		}
@@ -82,15 +81,15 @@ public class Game extends GameModel {
 	public void endGame(boolean isWin) {
 		if (isWin == true) {
 			if (controller.getGameModel().isDefaultName(hero.getName()) == false)
-				controller.getDBHandler().updateHeroToDatabase(hero);
-			//show victory Controller.getViewModel().showVictory();
+					controller.getDBHandler().updateHeroToDatabase(hero);
+				controller.getViewModel().showVictory();
 		} else {
 			if (hero.getHP() <= 0) {
 				if (controller.getGameModel().isDefaultName(hero.getName()) == false)
 					controller.getDBHandler().deleteHeroFromDatabase(hero.getName());
-				//show defeat Controller.getViewModel().showDefeat();
+				controller.getViewModel().showDefeat();
 			} else {
-				//show defeat Controller.getViewModel().showExitFromGame(); Are u sure u wanna exit?? all progress will be lost!!
+				controller.getViewModel().showExitFromGame(this);
 			}
 		}
 	}
@@ -107,15 +106,23 @@ public class Game extends GameModel {
 			if (villain.getHP() > 0)
 				hero.takeDamage(villainDamage - heroResistance);
 		}
-		//Controller.getViewModel().displayBattleResult();
+		Controller.getViewModel().displayBattleResult(hero, villain);
 		return villain.giveExperience();
+	}
+
+	public int getMapSize() {
+		return this.map_size;
+	}
+
+	public GameMap getCurrentPosition() {
+		return this.hero_pos;
 	}
 
 	public void debugGame() {
 		System.out.println("Hero: " + hero.getName());
 		System.out.println("Map size: " + this.map_size + "x" + this.map_size);
 		for (GameMap villain : villains_pos) {
-			System.out.println("Villain in pos: " + villain.x + "," + villain.y);
+			System.out.println("Villain in pos: " + villain.y + "," + villain.x);
 		}
 	}
 

@@ -1,5 +1,8 @@
 package me.rcortesb.swingy.views;
 import me.rcortesb.swingy.controller.*;
+import me.rcortesb.swingy.models.*;
+import me.rcortesb.swingy.models.heroes.Hero;
+import me.rcortesb.swingy.models.villains.Villain;
 
 public abstract class ViewModel {
 	protected Controller controller = Controller.getController();
@@ -36,4 +39,9 @@ public abstract class ViewModel {
 	public abstract void createHero();
 	public abstract void listHeroes();
 	public abstract void loadGameMenu();
+	public abstract void loadGame();
+	public abstract void showExitFromGame(Game game);
+	public abstract void showVictory();
+	public abstract void showDefeat();
+	public abstract void displayBattleResult(Hero hero, Villain villain);
 }

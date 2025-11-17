@@ -23,6 +23,20 @@ public class GameMap {
 		return false;
 	}
 
+	public boolean matchCoords(int x, int y) {
+		if (this.x == x && this.y == y)
+			return true;
+		return false;
+	}
+
+	public int getX() {
+		return this.x;
+	}
+
+	public int getY() {
+		return this.y;
+	}
+
 	public void updateCoords(GameMove dir) {
 		if (dir == GameMove.NORTH)
 			this.y--;
@@ -32,7 +46,17 @@ public class GameMap {
 			this.x++;
 		else
 			this.x--;
+	}
 
+	public void updateCoords(int dir) {
+		if (dir == 0)
+			this.y--;
+		else if (dir == 1)
+			this.y++;
+		else if (dir == 2)
+			this.x++;
+		else
+			this.x--;
 	}
 
 	public boolean isBorder(int map_size) {
