@@ -11,8 +11,10 @@ public class Game {
 	Hero hero;
 	GameMap hero_pos;
 	List<GameMap> villains_pos;
+	boolean	isFinished;
 
 	public Game (GameModel model, Hero selectedHero) {
+		this.isFinished = false;
 		this.hero = selectedHero;
 		this.villains_pos = new ArrayList<>();
 		this.controller = Controller.getController();
@@ -81,9 +83,11 @@ public class Game {
 					controller.getDBHandler().updateHeroToDatabase(hero);
 			else
 				hero.setToDefault();
-				controller.getViewModel().showVictory();
+			this.isFinished = true;
+			controller.getViewModel().showVictory();
 		} else {
 			if (hero.getHP() <= 0) {
+				this.isFinished = true;
 				if (controller.getGameModel().isDefaultName(hero.getName()) == false) {
 					controller.getDBHandler().deleteHeroFromDatabase(hero.getName());
 					controller.getGameModel().getHeroes().remove(hero);
@@ -122,6 +126,10 @@ public class Game {
 	}
 
 	public Hero getHero() {
-		return hero;
+		return this.hero;
+	}
+
+	public boolean gameIsFinished() {
+		return this.isFinished;
 	}
 }

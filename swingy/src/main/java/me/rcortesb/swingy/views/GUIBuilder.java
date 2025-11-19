@@ -1,7 +1,7 @@
 package me.rcortesb.swingy.views;
 import me.rcortesb.swingy.gui_utilities.*;
 import me.rcortesb.swingy.controller.*;
-import me.rcortesb.swingy.models.GameModel;
+import me.rcortesb.swingy.models.*;
 import me.rcortesb.swingy.models.heroes.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -305,17 +305,18 @@ public class GUIBuilder {
 			}
 		}
 		else
-			showErrorPopUp(error_log, frame);
+			buildCustomPopUp("ERROR LOG", error_log, frame);
 	}
 
-	private void showErrorPopUp(List<String> error_log, JFrame frame) {
-		JDialog dialog = new JDialog(frame, "ERROR LOG", true);
+	public void buildCustomPopUp(String title, List<String> messages, JFrame frame) {
+		JDialog dialog = new JDialog(frame, title, true);
 		
 		JPanel dialogPanel= new JPanel();
 		dialogPanel.setLayout(new BoxLayout(dialogPanel, BoxLayout.Y_AXIS));
-		for (String err_msg : error_log) {
-			JLabel label = createLabel("- " + err_msg, false, 16, Color.black);
+		for (String msg : messages) {
+			JLabel label = createLabel("- " + msg, false, 16, Color.black);
 			label.setBorder(null);
+			label.setAlignmentX(Component.CENTER_ALIGNMENT);
 			dialogPanel.add(Box.createVerticalStrut(20));
        		dialogPanel.add(label);
 		}
@@ -330,15 +331,120 @@ public class GUIBuilder {
 		dialogPanel.add(buttonPanel);   
 		dialog.add(dialogPanel); 
 
-		/* Size is adaptable to the amount of message errors. 200 height to one error + additional 40 for each error */
-		dialog.setSize((int)(frame.getSize().width / 1.5), 200 + ((error_log.size() - 1) * 40));
+		dialog.setSize((int)(frame.getSize().width / 1.25), 200 + ((messages.size() - 1) * 40));
    	    dialog.setLocationRelativeTo(frame);
         dialog.setVisible(true);
 	}
 
-	//public JPanel buildGame() {
-		//Controller.setGame(); // build map, generate villains
+	public JPanel buildMap(Game game) {
+		int map_size = game.getMapSize();
+		JPanel gridPanel = new JPanel(new GridLayout(map_size, map_size));
+		gridPanel.setBackground(Color.DARK_GRAY);
 
+		for (int y = 0; y < map_size; y++) {
+			for (int x = 0; x < map_size; x++) {
+				JLabel label = new JLabel(" ", SwingConstants.CENTER);
+				label.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+				label.setFont(new Font("Serif", Font.BOLD, 28));
+				label.setForeground(Color.WHITE);
+				if (game.getCurrentPosition().matchCoords(x, y) == true)
+					label.setText("X");
+				gridPanel.add(label);
+			}
+		}
+
+		JPanel bigPanel = new JPanel(new BorderLayout());
+		bigPanel.add(gridPanel, BorderLayout.CENTER);
+		bigPanel.setName("map");
+		return bigPanel;
+	}
+
+	public void updateMap(JPanel c, Game game, GameMove dir) {
+		Component comp = c.getComponent(0);
+		JPanel gridPanel = (JPanel) comp;
+		int map_size = game.getMapSize();
+		int curr_pos = (map_size * game.getCurrentPosition().getY()) + game.getCurrentPosition().getX();
+		JLabel label = (JLabel) gridPanel.getComponent(curr_pos);
+		label.setText(" ");
+		game.getCurrentPosition().updateCoords(dir);
+		curr_pos = (map_size * game.getCurrentPosition().getY()) + game.getCurrentPosition().getX();
+		JLabel label2 = (JLabel) gridPanel.getComponent(curr_pos);
+		label2.setText("X");
+		gridPanel.revalidate();
+		gridPanel.repaint();
+	}
+
+	public void getResultPopUp(JFrame frame, String msg, String title, String button_txt) {
+		JDialog dialog = new JDialog(frame, title, true);
 		
-	//}
+		JPanel dialogPanel= new JPanel();
+		dialogPanel.setLayout(new BoxLayout(dialogPanel, BoxLayout.Y_AXIS));
+		JLabel label = new JLabel(msg, SwingConstants.CENTER);
+		label.setFont(new Font("SansSerif", Font.BOLD, 16));
+		label.setForeground(Color.BLACK);
+		label.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JButton button = new JButton(button_txt);
+		button.setAlignmentX(Component.CENTER_ALIGNMENT);
+		button.addActionListener( new ActionListener() { 
+  			public void actionPerformed(ActionEvent e) { 
+    			dialog.setVisible(false);
+				Controller.getViewModel().loadMenu();
+  			}
+		});
+		buttonPanel.add(button);
+
+        dialogPanel.add(Box.createVerticalStrut(20));
+       	dialogPanel.add(label);
+		dialogPanel.add(Box.createVerticalStrut(20));
+		dialogPanel.add(buttonPanel);   
+
+		dialog.add(dialogPanel); 
+		dialog.setSize((int)(frame.getSize().width / 1.25), 200);
+   	    dialog.setLocationRelativeTo(frame);
+        dialog.setVisible(true);
+	}
+
+	public void getExitPopUp(JFrame frame) {
+		JDialog dialog = new JDialog(frame, "CAUTION", true);
+		
+		JPanel dialogPanel= new JPanel();
+		dialogPanel.setLayout(new BoxLayout(dialogPanel, BoxLayout.Y_AXIS));
+		JLabel label1 = new JLabel("Are you sure you wanna exit?", SwingConstants.CENTER);
+		label1.setFont(new Font("SansSerif", Font.BOLD, 16));
+		label1.setForeground(Color.BLACK);
+		label1.setAlignmentX(Component.CENTER_ALIGNMENT);
+		JLabel label2 = new JLabel("All the progress will be lost", SwingConstants.CENTER);
+		label2.setFont(new Font("SansSerif", Font.BOLD, 16));
+		label2.setForeground(Color.BLACK);
+		label2.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JButton acceptButton = new JButton("GO TO MENU");
+		acceptButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		acceptButton.addActionListener( new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dialog.setVisible(false);
+				Controller.getViewModel().loadMenu();
+			}
+		}); 
+		JButton cancelButton = new JButton("CANCEL");
+		cancelButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		cancelButton.addActionListener( e -> dialog.setVisible(false));
+		buttonPanel.add(acceptButton);
+		buttonPanel.add(cancelButton);
+	
+        dialogPanel.add(Box.createVerticalStrut(20));
+       	dialogPanel.add(label1);
+		dialogPanel.add(Box.createVerticalStrut(20));
+		dialogPanel.add(label2);
+		dialogPanel.add(Box.createVerticalStrut(20));
+		dialogPanel.add(buttonPanel);   
+
+		dialog.add(dialogPanel); 
+		dialog.setSize((int)(frame.getSize().width / 2), 250);
+   	    dialog.setLocationRelativeTo(frame);
+        dialog.setVisible(true);
+	}
 }
