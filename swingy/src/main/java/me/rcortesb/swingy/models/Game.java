@@ -5,7 +5,7 @@ import me.rcortesb.swingy.controller.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Game extends GameModel {
+public class Game {
 	Controller controller;
 	int map_size;
 	Hero hero;
@@ -13,12 +13,10 @@ public class Game extends GameModel {
 	List<GameMap> villains_pos;
 
 	public Game (GameModel model, Hero selectedHero) {
-		super(model);
 		this.hero = selectedHero;
 		this.villains_pos = new ArrayList<>();
 		this.controller = Controller.getController();
 		this.loadMap();
-		this.debugGame();
 	}
 
 	private void loadMap() {
@@ -38,7 +36,6 @@ public class Game extends GameModel {
 		amount /= this.map_size;
 		if (amount == 0)
 			amount = 2;
-		System.out.println("AMOUNT: " + amount);
 		for (int y = 0; y < this.map_size; y++) {
 			villains_pos.add(new GameMap((int)(Math.random() * this.map_size), y));
 			for (int i = 1; i < amount; i++) {
@@ -82,11 +79,17 @@ public class Game extends GameModel {
 		if (isWin == true) {
 			if (controller.getGameModel().isDefaultName(hero.getName()) == false)
 					controller.getDBHandler().updateHeroToDatabase(hero);
+			else
+				hero.setToDefault();
 				controller.getViewModel().showVictory();
 		} else {
 			if (hero.getHP() <= 0) {
-				if (controller.getGameModel().isDefaultName(hero.getName()) == false)
+				if (controller.getGameModel().isDefaultName(hero.getName()) == false) {
 					controller.getDBHandler().deleteHeroFromDatabase(hero.getName());
+					controller.getGameModel().getHeroes().remove(hero);
+				} else {
+					hero.setToDefault();
+				}
 				controller.getViewModel().showDefeat();
 			} else {
 				controller.getViewModel().showExitFromGame(this);
@@ -118,12 +121,7 @@ public class Game extends GameModel {
 		return this.hero_pos;
 	}
 
-	public void debugGame() {
-		System.out.println("Hero: " + hero.getName());
-		System.out.println("Map size: " + this.map_size + "x" + this.map_size);
-		for (GameMap villain : villains_pos) {
-			System.out.println("Villain in pos: " + villain.y + "," + villain.x);
-		}
+	public Hero getHero() {
+		return hero;
 	}
-
 }

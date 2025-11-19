@@ -29,7 +29,7 @@ public abstract class ViewModel {
 				this.loadGameMenu();
 				break ;
 			case IN_GAME:
-				System.out.println("Load in Game");
+				this.loadGame();
 				break ;
 		}
 	}

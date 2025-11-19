@@ -127,6 +127,7 @@ public class DBHandler {
 
 	public void deleteHeroFromDatabase(String hero_name) {
 		try {
+			System.out.println("Delete operation for hero: " + hero_name);
 			this.loadDatabase();
 			String req = "delete from heroes where name='" + hero_name + "'";
 			st.executeUpdate(req);

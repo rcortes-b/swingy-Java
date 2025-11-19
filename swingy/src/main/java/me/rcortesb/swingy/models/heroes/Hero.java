@@ -40,6 +40,7 @@ public abstract class Hero {
 
 	public abstract String getClassType();
 	public abstract void incrementLevel();
+	public abstract void setToDefault();
 	public abstract int getBaseAttack();
 	public abstract int getBaseDefense();
 	public abstract int getBaseHP();

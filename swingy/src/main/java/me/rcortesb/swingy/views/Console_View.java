@@ -43,7 +43,7 @@ public class Console_View extends ViewModel {
 	public void loadHeroMenu() {
 		try {
 			controller.setStatus(GameStatus.IN_HERO_MENU);
-			System.out.println("\nWelcome to the hero factory!\n"); //Validations!!!!
+			System.out.println("\nWelcome to the hero factory!\n");
 			System.out.println("\t1 - Create a new hero");
 			System.out.println("\t2 - List your heroes");
 			System.out.println("\t3 - Change to GUI mode");
@@ -51,8 +51,6 @@ public class Console_View extends ViewModel {
 			System.out.print("Introduce option: ");
 			String userInput = myObj.nextLine();
 			handleInput(userInput);
-			//if all the values are correct, add hero to database and add hero to list<Heroes> from the Controller (same behaviour in GUI_View)
-
 		} catch (Exception e) {
 			controller.cleanup(1);
 		}
@@ -75,7 +73,7 @@ public class Console_View extends ViewModel {
 	}
 
 	public void createHero() {
-		String heroName, heroClass, attack, defense, hp;
+		String heroName, heroClass;
 		String[] input_msg = {"Name: ", "Hero Class: "};
 		String[] value = new String[2];
 		int loop_c = 0;
@@ -123,9 +121,22 @@ public class Console_View extends ViewModel {
 				System.out.println("|");
 			}
 			printValue(null, 6, 53);
-			this.loadHeroMenu(); /*depends if game or not game */
+			if (controller.getStatus() == GameStatus.IN_GAME_MENU) {
+				Hero selected_hero = null;
+				while (true) {
+					System.out.print("\nIntroduce the name of the hero you would like to play with: ");
+					String userInput = myObj.nextLine();
+					selected_hero = ConsoleUtils.handleHeroSelection(heroes, userInput);
+					if (selected_hero != null)
+						controller.startGame(selected_hero);
+				} 
+			}
+			else {
+				loadHeroMenu();
+			}
 		} catch (Exception e) {
-			System.out.println("Error: Something went wrong listing the heroes\n" + e.getMessage());
+			System.out.println("\nError: Something went wrong listing the heroes\n" + e.getMessage());
+			controller.cleanup(1);
 		}
 	}
 
@@ -188,9 +199,10 @@ public class Console_View extends ViewModel {
 		try {
 			controller.setStatus(GameStatus.IN_GAME);
 			Game game = controller.getGame();
+			System.out.println("\nTHESE ARE YOUR GAME OPTIONS:\n");
 			System.out.println("Move the hero using the keyboard keys: w (up), s(down), d(right), a(left)");
-			System.out.print("You can change to GUI mode in game using the \"set view_mode=gui\" command");
-			System.out.println("You can leave the game using the \"exit\" command");
+			System.out.print("You can change to GUI mode in game using the \"set view_mode=gui\" command\n");
+			System.out.println("You can leave the game using the \"exit\" command\n");
 			while (true) {
 				System.out.print("Introduce \"ok\" if you've understood your options: ");
 				if (myObj.nextLine().equals("ok")) {
@@ -237,7 +249,6 @@ public class Console_View extends ViewModel {
 							System.out.println("\nYou already are in console mode!");
 						else if (userInput.equals("exit"))
 							game.endGame(false);
-						throw new Exception();
 					}
 					else {
 						game.getCurrentPosition().updateCoords(index);
@@ -247,21 +258,22 @@ public class Console_View extends ViewModel {
 				}
 			}
 		} catch (Exception e) {
-			System.out.println("Error: Input must be either 1, 2, 3, 4 or \"set view_mode=gui\"\n");
-			this.setView();
+			controller.cleanup(1);
 		}
 
 	}
 
 	public void showExitFromGame(Game game) {
 		try {
-			System.out.println("If you leave the progress done will be lost.");
+			System.out.println("If you leave now, the progress done will be lost.");
 			String userInput;
 			while (true) {
 				System.out.print("Are you sure you want to exit the game (y/n)? ");
 				userInput = myObj.nextLine();
-				if (userInput.equals("y"))
-					this.loadGame();
+				if (userInput.equals("y")) {
+					game.getHero().setToDefault();
+					this.loadMenu();
+				}
 				else {
 					this.showMap(game);
 					this.runGame(game);
@@ -290,12 +302,3 @@ public class Console_View extends ViewModel {
 			System.out.println(hero.getName() + " has been beaten by " + villain.getVillainType());
 	}
 }
-
-/*
-
-	- Menu
-		- this.loadGame() in handleMenuInput()
-	- Hero Creation and Listing
-		- Handle input when insterting new hero values
-		- 
- */

@@ -27,6 +27,14 @@ public class Warrior extends Hero {
 		this.hp += HP_INCREMENT;
 	}
 
+	public void setToDefault() {
+		this.level = 1;
+		this.experience = 0;
+		this.attack = BASE_ATTACK;
+		this.defense = BASE_DEFENSE;
+		this.hp = BASE_HP;
+	}
+
 	public int getBaseAttack() { return BASE_ATTACK; }
 	public int getBaseDefense() { return BASE_DEFENSE; }
 	public int getBaseHP() { return BASE_HP; }

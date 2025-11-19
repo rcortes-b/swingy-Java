@@ -1,5 +1,7 @@
 package me.rcortesb.swingy.views;
 import me.rcortesb.swingy.controller.*;
+import me.rcortesb.swingy.models.heroes.Hero;
+import java.util.List;
 
 public class ConsoleUtils {
 	private ConsoleUtils() {}
@@ -50,7 +52,7 @@ public class ConsoleUtils {
 	public static void setGameOptions(int value, Console_View console) {
 		switch (value) {
 			case 1:
-					System.out.println("Hero goes select hero");
+					console.listHeroes();
 					break;
 			case 2:
 					console.createHero();
@@ -61,6 +63,14 @@ public class ConsoleUtils {
 			case 4:
 					console.loadMenu();
 		}
+	}
+
+	public static Hero handleHeroSelection(List<Hero> heroes, String name) {
+		for (Hero hero : heroes) {
+			if (name.equals(hero.getName()))
+				return hero;
+		}
+		return null;
 	}
 }
 
