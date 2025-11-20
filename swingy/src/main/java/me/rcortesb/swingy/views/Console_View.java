@@ -127,8 +127,10 @@ public class Console_View extends ViewModel {
 					System.out.print("\nIntroduce the name of the hero you would like to play with: ");
 					String userInput = myObj.nextLine();
 					selected_hero = ConsoleUtils.handleHeroSelection(heroes, userInput);
-					if (selected_hero != null)
+					if (selected_hero != null) {
 						controller.startGame(selected_hero);
+						break ;
+					}
 				} 
 			}
 			else {
@@ -240,15 +242,19 @@ public class Console_View extends ViewModel {
 			while (true) {
 				System.out.print("In which direction would you like to move: 'w', 's', 'd', 'a'? ");
 				userInput = myObj.nextLine();
-				if (userInput.equals("set view_mode=gui"))
+				if (userInput.equals("set view_mode=gui")) {
 					this.changeView();
+					break ;
+				}
 				else {
 					index = moves.indexOf(userInput.charAt(0));
 					if (userInput.length() != 1 || index == -1) {
 						if (userInput.equals("set view_mode=console"))
 							System.out.println("\nYou already are in console mode!");
-						else if (userInput.equals("exit"))
+						else if (userInput.equals("exit")) {
 							game.endGame(false);
+							break ;
+						}
 					}
 					else {
 						game.getCurrentPosition().updateCoords(index);
@@ -271,12 +277,14 @@ public class Console_View extends ViewModel {
 				System.out.print("Are you sure you want to exit the game (y/n)? ");
 				userInput = myObj.nextLine();
 				if (userInput.equals("y")) {
-					game.getHero().setToDefault();
+					Controller.removeGame();
 					this.loadMenu();
+					break ;
 				}
-				else {
+				else if (userInput.equals("n")){
 					this.showMap(game);
 					this.runGame(game);
+					break ;
 				}
 			}
 		} catch (Exception e) {
@@ -286,11 +294,13 @@ public class Console_View extends ViewModel {
 
 	public void showVictory() {
 		System.out.println("Congratulations! You've successfully won the game!");
+		Controller.removeGame();
 		this.loadMenu();
 	}
 
 	public void showDefeat() {
 		System.out.println("You've lost the game! We hope to see you soon!");
+		Controller.removeGame();
 		this.loadMenu();
 	}
 

@@ -13,7 +13,8 @@ public class Game {
 	List<GameMap> villains_pos;
 	boolean	isFinished;
 
-	public Game (GameModel model, Hero selectedHero) {
+	public Game (Hero selectedHero) {
+		System.out.println("Game address: " + this);
 		this.isFinished = false;
 		this.hero = selectedHero;
 		this.villains_pos = new ArrayList<>();
@@ -33,18 +34,24 @@ public class Game {
 	*/
 	private void generateVillainsCells() {
 		List<Integer> row_values = new ArrayList<>();
-		int amount = (this.map_size * 2) / 100 * 20;
+		int amount = (this.map_size * this.map_size) / 100 * 20;
+		System.out.println("AMOUNT: " + amount);
+		int first = 0;
 		int random = 0;
 		amount /= this.map_size;
 		if (amount == 0)
 			amount = 2;
-		for (int y = 0; y < this.map_size; y++) {
-			villains_pos.add(new GameMap((int)(Math.random() * this.map_size), y));
+		for (int y = 1; y < this.map_size - 1; y++) {
+			first = (int)((Math.random() * (this.map_size - 2))) + 1;
+			row_values.add(first);
+			villains_pos.add(new GameMap(first, y));
 			for (int i = 1; i < amount; i++) {
-				random = (int)(Math.random() * this.map_size);
+				random = (int)((Math.random() * (this.map_size - 2))) + 1;
 				if (row_values.contains(random) == false) {
 					row_values.add(random);
 					villains_pos.add(new GameMap(random, y));
+				} else {
+					i--;
 				}
 			}
 			row_values.removeAll(row_values);
@@ -53,8 +60,10 @@ public class Game {
 
 	public boolean containVillain() {
 		for (GameMap map : villains_pos) {
-			if (hero_pos.matchCoords(map) == true)
+			if (hero_pos.matchCoords(map) == true) {
+				villains_pos.remove(map);
 				return true;
+			}
 		}
 		return false;
 	}
@@ -77,30 +86,6 @@ public class Game {
 		}
 	}
 
-	public void endGame(boolean isWin) {
-		if (isWin == true) {
-			if (controller.getGameModel().isDefaultName(hero.getName()) == false)
-					controller.getDBHandler().updateHeroToDatabase(hero);
-			else
-				hero.setToDefault();
-			this.isFinished = true;
-			controller.getViewModel().showVictory();
-		} else {
-			if (hero.getHP() <= 0) {
-				this.isFinished = true;
-				if (controller.getGameModel().isDefaultName(hero.getName()) == false) {
-					controller.getDBHandler().deleteHeroFromDatabase(hero.getName());
-					controller.getGameModel().getHeroes().remove(hero);
-				} else {
-					hero.setToDefault();
-				}
-				controller.getViewModel().showDefeat();
-			} else {
-				controller.getViewModel().showExitFromGame(this);
-			}
-		}
-	}
-
 	/* Hero always attacks first and I want it that way :)*/
 	public int simulateBattle(Hero hero, Villain villain) {
 		final int heroDamage = hero.getDamage();
@@ -117,6 +102,28 @@ public class Game {
 		return villain.giveExperience();
 	}
 
+	public void endGame(boolean isWin) {
+		if (isWin == true) {
+			if (controller.getGameModel().isDefaultName(hero.getName()) == false)
+					controller.getDBHandler().updateHeroToDatabase(hero);
+			else
+				hero.setToDefault();
+			controller.getViewModel().showVictory();
+		} else {
+			if (hero.getHP() <= 0) {
+				if (controller.getGameModel().isDefaultName(hero.getName()) == false) {
+					controller.getDBHandler().deleteHeroFromDatabase(hero.getName());
+					controller.getGameModel().getHeroes().remove(hero);
+				} else {
+					hero.setToDefault();
+				}
+				controller.getViewModel().showDefeat();
+			} else {
+				controller.getViewModel().showExitFromGame(this);
+			}
+		}
+	}
+
 	public int getMapSize() {
 		return this.map_size;
 	}
@@ -131,5 +138,9 @@ public class Game {
 
 	public boolean gameIsFinished() {
 		return this.isFinished;
+	}
+
+	public void setAsFinished() {
+		this.isFinished = true;
 	}
 }

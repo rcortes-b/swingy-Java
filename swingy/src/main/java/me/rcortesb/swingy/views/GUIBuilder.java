@@ -387,10 +387,11 @@ public class GUIBuilder {
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton button = new JButton(button_txt);
 		button.setAlignmentX(Component.CENTER_ALIGNMENT);
-		button.addActionListener( new ActionListener() { 
+		button.addActionListener( new ActionListener() {
   			public void actionPerformed(ActionEvent e) { 
+				Controller.getGame().setAsFinished();
     			dialog.setVisible(false);
-				Controller.getViewModel().loadMenu();
+				Controller.removeGame();
   			}
 		});
 		buttonPanel.add(button);
@@ -419,14 +420,19 @@ public class GUIBuilder {
 		label2.setFont(new Font("SansSerif", Font.BOLD, 16));
 		label2.setForeground(Color.BLACK);
 		label2.setAlignmentX(Component.CENTER_ALIGNMENT);
+		JLabel label3 = new JLabel("or", SwingConstants.CENTER);
+		label3.setFont(new Font("SansSerif", Font.BOLD, 16));
+		label3.setForeground(Color.BLACK);
+		label3.setAlignmentX(Component.CENTER_ALIGNMENT);
 
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton acceptButton = new JButton("GO TO MENU");
 		acceptButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		acceptButton.addActionListener( new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Controller.getGame().setAsFinished();
 				dialog.setVisible(false);
-				Controller.getViewModel().loadMenu();
+				Controller.removeGame();
 			}
 		}); 
 		JButton cancelButton = new JButton("CANCEL");
@@ -440,10 +446,25 @@ public class GUIBuilder {
 		dialogPanel.add(Box.createVerticalStrut(20));
 		dialogPanel.add(label2);
 		dialogPanel.add(Box.createVerticalStrut(20));
-		dialogPanel.add(buttonPanel);   
+		dialogPanel.add(buttonPanel);
+		dialogPanel.add(Box.createVerticalStrut(10));
+		dialogPanel.add(label3);
+		dialogPanel.add(Box.createVerticalStrut(10));
+		JPanel buttonPanel2 = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		JButton changeViewButton = new JButton("CHANGE TO CONSOLE");
+		changeViewButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		changeViewButton.addActionListener( new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dialog.setVisible(false);
+				Controller.getGUI().changeView();
+			}
+		}); 
+		buttonPanel2.add(changeViewButton);
+		dialogPanel.add(buttonPanel2);
+
 
 		dialog.add(dialogPanel); 
-		dialog.setSize((int)(frame.getSize().width / 2), 250);
+		dialog.setSize((int)(frame.getSize().width / 2), 320);
    	    dialog.setLocationRelativeTo(frame);
         dialog.setVisible(true);
 	}

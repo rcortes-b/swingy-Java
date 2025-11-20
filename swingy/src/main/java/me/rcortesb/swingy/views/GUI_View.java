@@ -109,19 +109,19 @@ public class GUI_View extends ViewModel {
 		final String viewName = "map";
 		boolean exists = false;
 		for (Component c : mainPanel.getComponents()) {
-			if (c.getName().equals(viewName))
+			if (viewName.equals(c.getName()))
 				exists = true;
 		}
 		if (exists == false) {
-			JPanel component = GUIBuilder.getGUIBuilder().buildMap(game);
-			bindKeys(component, game);
-			mainPanel.add(component, viewName);
+			final JPanel mapPanel = GUIBuilder.getGUIBuilder().buildMap(game);
+			mapPanel.setFocusable(true);
+			bindKeys(mapPanel, game);
+			mainPanel.add(mapPanel, viewName);
 			mainPanel.revalidate();
 			mainPanel.repaint();
-		} 
-		frame.setVisible(true);
-		if (game.gameIsFinished() == false)
-			cardLayout.show(mainPanel, viewName);
+		}
+        cardLayout.show(mainPanel, viewName);
+        frame.setVisible(true);
 	}
 
 	public void loadGame() {
@@ -166,10 +166,21 @@ public class GUI_View extends ViewModel {
 		GUIBuilder.getGUIBuilder().getExitPopUp(frame);
 	}
 
-
 	public void changeView() {
 		this.frame.setVisible(false);
 		controller.changeView();
+	}
+
+	public void deleteMap() {
+		final String viewName = "map";
+		for (Component c : mainPanel.getComponents()) {
+			if (viewName.equals(c.getName())) {
+				mainPanel.remove(c);
+				cardLayout.show(mainPanel, "menu");
+				mainPanel.revalidate();
+				mainPanel.repaint();
+			}
+		}
 	}
 
 	public void deleteGUI() {
@@ -182,15 +193,15 @@ public class GUI_View extends ViewModel {
 		final String MOVE_EAST = "moveEast";
 		final String MOVE_WEST = "moveWest";
 		final String ESC_KEY = "escMenu";
-		component.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke("UP"), MOVE_NORTH);
+		component.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("UP"), MOVE_NORTH);
 		component.getActionMap().put(MOVE_NORTH, new MoveAction(component, GameMove.NORTH, game));
-		component.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke("DOWN"), MOVE_SOUTH);
+		component.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("DOWN"), MOVE_SOUTH);
 		component.getActionMap().put(MOVE_SOUTH, new MoveAction(component, GameMove.SOUTH, game));
-		component.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke("RIGHT"), MOVE_EAST);
+		component.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("RIGHT"), MOVE_EAST);
 		component.getActionMap().put(MOVE_EAST, new MoveAction(component, GameMove.EAST, game));
-		component.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke("LEFT"), MOVE_WEST);
+		component.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("LEFT"), MOVE_WEST);
 		component.getActionMap().put(MOVE_WEST, new MoveAction(component, GameMove.WEST, game));
-		component.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke("ESCAPE"), ESC_KEY);
+		component.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), ESC_KEY);
 		component.getActionMap().put(ESC_KEY, new GameMenuOptions(game));
 	}
 
@@ -208,7 +219,8 @@ public class GUI_View extends ViewModel {
         public void actionPerformed(ActionEvent e) {
 			GUIBuilder.getGUIBuilder().updateMap(panel, game, dir);
 			game.playTurn();
-			loadMap(game);
+			if (!game.gameIsFinished())
+				loadMap(game);
 		}
     }
 

@@ -53,7 +53,6 @@ public class Controller {
 			if (gui == null)
 				gui = new GUI_View();
 			viewModel = gui;
-				
 			consoleMode = false;
 		}
 		else {
@@ -89,7 +88,8 @@ public class Controller {
 	/* Game */
 
 	public static void startGame(Hero hero) {
-		game = new Game(gameModel, hero);
+		game = new Game(hero);
+		System.out.println("Starts new game: " + game);
 		viewModel.loadGame();
 	}
 
@@ -142,5 +142,12 @@ public class Controller {
 
 	public static void setStatus(GameStatus mode) {
 		status = mode;
+	}
+
+	public static void removeGame() {
+		game = null;
+		if (gui != null)
+			gui.deleteMap();
+		System.out.println("This is remove game");
 	}
 }
