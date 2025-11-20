@@ -89,7 +89,6 @@ public class Controller {
 
 	public static void startGame(Hero hero) {
 		game = new Game(hero);
-		System.out.println("Starts new game: " + game);
 		viewModel.loadGame();
 	}
 
@@ -147,7 +146,6 @@ public class Controller {
 	public static void removeGame() {
 		game = null;
 		if (gui != null)
-			gui.deleteMap();
-		System.out.println("This is remove game");
+			gui.deleteView("map");
 	}
 }

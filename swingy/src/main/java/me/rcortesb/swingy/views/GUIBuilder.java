@@ -126,9 +126,8 @@ public class GUIBuilder {
 	public JPanel buildHeroListing() {
 		List<Hero> heroes = Controller.getGameModel().getHeroes();
 		int row_size = heroes.size();
-		int col_size = 5;
+		int col_size = 7;
 		boolean inGame = false;
-		List<JButton> selectButtons = new ArrayList<>();
 
 		if (Controller.getStatus() == GameStatus.IN_GAME_MENU) {
 			inGame = true;
@@ -136,11 +135,13 @@ public class GUIBuilder {
 		}
 
 		/* GridLayout Listing*/
-		JPanel gridPanel = new JPanel(new GridLayout(0, col_size));
+		JPanel gridPanel = new JPanel(new GridLayout(row_size + 1, col_size));
 		gridPanel.setBackground(Color.DARK_GRAY);
 
 		gridPanel.add(createLabel("NAME", true, 28, Color.white));
 		gridPanel.add(createLabel("CLASS", true, 28, Color.white));
+		gridPanel.add(createLabel("LEVEL", true, 28, Color.white));
+		gridPanel.add(createLabel("EXP", true, 28, Color.white));
 		gridPanel.add(createLabel("ATTACK", true, 28, Color.white));
 		gridPanel.add(createLabel("DEFENSE", true, 28, Color.white));
 		gridPanel.add(createLabel("HP", true, 28, Color.white));
@@ -151,72 +152,44 @@ public class GUIBuilder {
 			Hero hero = heroes.get(row);
 			gridPanel.add(createLabel(hero.getName(), false, 16, Color.white));
 			gridPanel.add(createLabel(hero.getClassType(), false, 16, Color.white));
+			gridPanel.add(createLabel(String.valueOf(hero.getLevel()), false, 16, Color.white));
+			gridPanel.add(createLabel(String.valueOf(hero.getExperience()), false, 16, Color.white));
 			gridPanel.add(createLabel(String.valueOf(hero.getAttack()), false, 16, Color.white));
 			gridPanel.add(createLabel(String.valueOf(hero.getDefense()), false, 16, Color.white));
 			gridPanel.add(createLabel(String.valueOf(hero.getHP()), false, 16, Color.white));
 			if (inGame == true) {
 				JButton selectButton = new JButton("Select");
-				selectButton.addActionListener(e -> Controller.startGame(hero));
+				selectButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						Controller.startGame(hero);
+						Controller.getGUI().deleteView("heroListing");
+					}
+				});
 				gridPanel.add(selectButton);
 			}
 		}
 
-		/* Button of "Ok" --> redirects to HeroMenu */
 		JButton button = new JButton("OK");
 		if (inGame == true)
 			button.setText("CANCEL");
 		button.setAlignmentX(Component.CENTER_ALIGNMENT);
 		button.setFocusPainted(false);
 		button.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		/* If inGame is true ... */
-		button.addActionListener(e -> Controller.getGUI().setView());
-
-		/* Vertical ScrollBar linked to the GridLayout */
-		JScrollPane scrollPane = new JScrollPane(gridPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Controller.getGUI().setView();
+				Controller.getGUI().deleteView("heroListing");
+			}
+		});
+		/* Vertical && Horizontal ScrollBar linked to the GridLayout */
+		JScrollPane scrollPane = new JScrollPane(gridPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
 
 		JPanel bigPanel = new JPanel(new BorderLayout());
 		bigPanel.add(scrollPane, BorderLayout.CENTER);
 		bigPanel.add(button, BorderLayout.SOUTH);
-		if (inGame == true)
-			bigPanel.setName("heroSelect");
-		else
-			bigPanel.setName("heroListing");
+		bigPanel.setName("heroListing");
 		return bigPanel;	
-	}
-
-	public void updateList(JPanel c) {
-		List<Hero> heroes = Controller.getGameModel().getHeroes();
-		JScrollPane scrollPane = (JScrollPane) c.getComponent(0);
-		JPanel gridPanel = (JPanel) scrollPane.getViewport().getView();
-		boolean isSelect = false;
-		if (Controller.getStatus() == GameStatus.IN_GAME_MENU)
-			isSelect = true;
-		int row_size = 5 + (isSelect ? 1 : 0);
-		/* Checks if the list size is the same than the number of heroes that are already in the list */
-		int sizeGap = heroes.size() - ((gridPanel.getComponentCount() / row_size) - 1);
-		if (sizeGap == 0)
-			return;
-		System.out.println("Here arrives");
-		/* If the size differes, get the index of heroes who are not present in the list (recently created) */
-		sizeGap = heroes.size() - sizeGap;
-
-		while (sizeGap < heroes.size()) {
-			Hero hero = heroes.get(sizeGap);
-			gridPanel.add(createLabel(hero.getName(), false, 16, Color.white));
-			gridPanel.add(createLabel(hero.getClassType(), false, 16, Color.white));
-			gridPanel.add(createLabel(String.valueOf(hero.getAttack()), false, 16, Color.white));
-			gridPanel.add(createLabel(String.valueOf(hero.getDefense()), false, 16, Color.white));
-			gridPanel.add(createLabel(String.valueOf(hero.getHP()), false, 16, Color.white));
-			if (isSelect == true) {
-				JButton selectButton = new JButton("Select");
-				selectButton.addActionListener(e -> System.out.println("Hero NAME: " + hero.getName()));
-				gridPanel.add(selectButton);
-			}
-			sizeGap++;
-		}
-		gridPanel.revalidate();
-		gridPanel.repaint();
 	}
 
 	private JLabel createLabel(String txt, boolean isTitle, int size, Color color) {

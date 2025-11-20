@@ -25,6 +25,7 @@ public class Wizard extends Hero {
 		this.attack += ATTACK_INCREMENT;
 		this.defense += DEFENSE_INCREMENT;
 		this.hp += HP_INCREMENT;
+		this.level++;
 	}
 
 	public void setToDefault() {

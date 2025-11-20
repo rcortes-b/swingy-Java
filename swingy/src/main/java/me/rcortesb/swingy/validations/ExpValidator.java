@@ -18,8 +18,6 @@ public class ExpValidator implements ConstraintValidator<ValidExp, Hero> {
 			level--;
 			low_limit = level * 1000 + ((level - 1) * (level - 1)) * 450;
 		}
-		System.out.println("low: " + low_limit);
-		System.out.println("high: " + required);
 		return (object.getExperience() >= low_limit && object.getExperience() < required);
     }
 }

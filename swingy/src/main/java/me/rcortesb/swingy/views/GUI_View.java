@@ -37,10 +37,6 @@ public class GUI_View extends ViewModel {
 	public boolean loadViewIfExists(String viewName) {
 		for (Component c : mainPanel.getComponents()) {
 			if (c.getName().equals(viewName)) {
-				if (viewName.equals("heroListing") || viewName.equals("heroSelect") )
-					GUIBuilder.getGUIBuilder().updateList((JPanel)c);
-				else if (viewName.equals("map"))
-					Controller.getGame().playTurn();
 				frame.setVisible(true);
 				cardLayout.show(mainPanel, viewName);
 				return true;
@@ -72,17 +68,15 @@ public class GUI_View extends ViewModel {
 	}
 
 	public void listHeroes() {
-		String viewName = "heroListing";
-		if (Controller.getStatus() == GameStatus.IN_GAME_MENU)
-			viewName = "heroSelect";
-		if (loadViewIfExists(viewName) == false) {
-			mainPanel.add(GUIBuilder.getGUIBuilder().buildHeroListing(), viewName);
-			mainPanel.revalidate();
-			mainPanel.repaint();
-			frame.setVisible(true);
-			loadViewIfExists(viewName);
-		}
+		final String viewName = "heroListing";
+		
+		mainPanel.add(GUIBuilder.getGUIBuilder().buildHeroListing(), viewName);
+		mainPanel.revalidate();
+		mainPanel.repaint();
+		frame.setVisible(true);
+		cardLayout.show(mainPanel, viewName);
 	}
+
 
 	public void createHero() {
 		if (loadViewIfExists("heroCreation") == false) {
@@ -171,12 +165,12 @@ public class GUI_View extends ViewModel {
 		controller.changeView();
 	}
 
-	public void deleteMap() {
-		final String viewName = "map";
+	public void deleteView(String viewName) {
 		for (Component c : mainPanel.getComponents()) {
 			if (viewName.equals(c.getName())) {
 				mainPanel.remove(c);
-				cardLayout.show(mainPanel, "menu");
+				if (viewName.equals("map"))
+					cardLayout.show(mainPanel, "menu");
 				mainPanel.revalidate();
 				mainPanel.repaint();
 			}

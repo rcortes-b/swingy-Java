@@ -22,10 +22,10 @@ public class Healer extends Hero {
 	}
 
 	public void incrementLevel() {
-		this.level++;
 		this.attack += ATTACK_INCREMENT;
 		this.defense += DEFENSE_INCREMENT;
 		this.hp += HP_INCREMENT;
+		this.level++;
 	}
 
 	public void setToDefault() {

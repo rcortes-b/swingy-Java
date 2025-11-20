@@ -14,7 +14,6 @@ public class Game {
 	boolean	isFinished;
 
 	public Game (Hero selectedHero) {
-		System.out.println("Game address: " + this);
 		this.isFinished = false;
 		this.hero = selectedHero;
 		this.villains_pos = new ArrayList<>();
@@ -35,7 +34,6 @@ public class Game {
 	private void generateVillainsCells() {
 		List<Integer> row_values = new ArrayList<>();
 		int amount = (this.map_size * this.map_size) / 100 * 20;
-		System.out.println("AMOUNT: " + amount);
 		int first = 0;
 		int random = 0;
 		amount /= this.map_size;
