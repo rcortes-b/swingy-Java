@@ -144,6 +144,7 @@ public class Controller {
 	}
 
 	public static void removeGame() {
+		game.getHero().dettachArtifact();
 		game = null;
 		if (gui != null)
 			gui.deleteView("map");

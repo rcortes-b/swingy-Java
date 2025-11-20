@@ -4,6 +4,7 @@ import me.rcortesb.swingy.controller.*;
 import me.rcortesb.swingy.models.*;
 import me.rcortesb.swingy.models.heroes.Hero;
 import me.rcortesb.swingy.models.villains.Villain;
+import me.rcortesb.swingy.models.artifacts.Artifact;
 import java.util.List;
 import java.util.ArrayList;
 import javax.swing.*;
@@ -34,42 +35,40 @@ public class GUI_View extends ViewModel {
  
  	/* View Loader */
 
-	public boolean loadViewIfExists(String viewName) {
+	public boolean viewExists(String viewName) {
 		for (Component c : mainPanel.getComponents()) {
-			if (c.getName().equals(viewName)) {
-				frame.setVisible(true);
-				cardLayout.show(mainPanel, viewName);
+			if (viewName.equals(c.getName()))
 				return true;
-			}
 		}
 		return false;
 	}
 
 	public void loadMenu() {
+		final String viewName = "menu";
 		controller.setStatus(GameStatus.IN_MENU);
-		if (loadViewIfExists("menu") == false) {
-			mainPanel.add(GUIBuilder.getGUIBuilder().buildMenu(), "menu");
+		if (viewExists(viewName) == false) {
+			mainPanel.add(GUIBuilder.getGUIBuilder().buildMenu(), viewName);
 			mainPanel.revalidate();
 			mainPanel.repaint();
-			frame.setVisible(true);
-			loadViewIfExists("menu");
 		}
+		frame.setVisible(true);
+		cardLayout.show(mainPanel, viewName);
 	}
 
 	public void loadHeroMenu() {
+		final String viewName = "heroMenu";
 		controller.setStatus(GameStatus.IN_HERO_MENU);
-		if (loadViewIfExists("heroMenu") == false) {
-			mainPanel.add(GUIBuilder.getGUIBuilder().buildHeroMenu("heroMenu"), "heroMenu");
+		if (viewExists(viewName) == false) {
+			mainPanel.add(GUIBuilder.getGUIBuilder().buildHeroMenu(viewName), viewName);
 			mainPanel.revalidate();
 			mainPanel.repaint();
-			frame.setVisible(true);
-			loadViewIfExists("heroMenu");
 		}
+		frame.setVisible(true);
+		cardLayout.show(mainPanel, viewName);
 	}
 
 	public void listHeroes() {
 		final String viewName = "heroListing";
-		
 		mainPanel.add(GUIBuilder.getGUIBuilder().buildHeroListing(), viewName);
 		mainPanel.revalidate();
 		mainPanel.repaint();
@@ -79,24 +78,26 @@ public class GUI_View extends ViewModel {
 
 
 	public void createHero() {
-		if (loadViewIfExists("heroCreation") == false) {
-			mainPanel.add(GUIBuilder.getGUIBuilder().buildHeroCreation(this.frame), "heroCreation");
+		final String viewName = "heroCreation";
+		if (viewExists(viewName) == false) {
+			mainPanel.add(GUIBuilder.getGUIBuilder().buildHeroCreation(this.frame), viewName);
 			mainPanel.revalidate();
 			mainPanel.repaint();
-			frame.setVisible(true);
-			loadViewIfExists("heroCreation");
 		}
+		frame.setVisible(true);
+		cardLayout.show(mainPanel, viewName);
 	}
 
 	public void loadGameMenu() {
+		final String viewName = "gameMenu";
 		controller.setStatus(GameStatus.IN_GAME_MENU);
-		if (loadViewIfExists("gameMenu") == false) {
-			mainPanel.add(GUIBuilder.getGUIBuilder().buildHeroMenu("gameMenu"), "gameMenu");
+		if (viewExists(viewName) == false) {
+			mainPanel.add(GUIBuilder.getGUIBuilder().buildHeroMenu(viewName), viewName);
 			mainPanel.revalidate();
 			mainPanel.repaint();
-			frame.setVisible(true);
-			loadViewIfExists("gameMenu");
 		}
+		frame.setVisible(true);
+		cardLayout.show(mainPanel, viewName);
 	}
 
 	public void loadMap(Game game) {
@@ -160,6 +161,23 @@ public class GUI_View extends ViewModel {
 		GUIBuilder.getGUIBuilder().getExitPopUp(frame);
 	}
 
+	public void showLevelUp(Hero hero) {
+		List<String> messages = new ArrayList<>();
+
+		messages.add(hero.getName() + " is now level " + hero.getLevel() + "!");
+		GUIBuilder.getGUIBuilder().buildCustomPopUp("LEVEL UP", messages, frame);
+	}
+
+	public void showArtifactDropped(Artifact curr_item, Artifact new_item) {
+		GUIBuilder.getGUIBuilder().getArtifactPopUp(curr_item, new_item, frame);
+	}
+
+	public void showArtifactAttached(Artifact item) {
+		List<String> messages = new ArrayList<>();
+		messages.add(item.hasBeenAttached());
+		GUIBuilder.getGUIBuilder().buildCustomPopUp("SHINY ARTIFACT!", messages, frame);
+	}
+
 	public void changeView() {
 		this.frame.setVisible(false);
 		controller.changeView();
@@ -170,7 +188,7 @@ public class GUI_View extends ViewModel {
 			if (viewName.equals(c.getName())) {
 				mainPanel.remove(c);
 				if (viewName.equals("map"))
-					cardLayout.show(mainPanel, "menu");
+					loadMenu();
 				mainPanel.revalidate();
 				mainPanel.repaint();
 			}

@@ -3,6 +3,7 @@ import me.rcortesb.swingy.controller.*;
 import me.rcortesb.swingy.models.*;
 import me.rcortesb.swingy.models.heroes.*;
 import me.rcortesb.swingy.models.villains.Villain;
+import me.rcortesb.swingy.models.artifacts.Artifact;
 import java.util.Scanner;
 import java.util.List;
 import java.util.ArrayList;
@@ -302,6 +303,38 @@ public class Console_View extends ViewModel {
 		System.out.println("You've lost the game! We hope to see you soon!");
 		Controller.removeGame();
 		this.loadMenu();
+	}
+
+	public void showLevelUp(Hero hero) {
+		System.out.println(hero.getName() + " is now level " + hero.getLevel() + "!");
+	}
+
+	public void showArtifactDropped(Artifact curr_item, Artifact new_item) {
+		System.out.println(new_item.hasBeenDropped());
+		try {
+			if (curr_item == null)
+				showArtifactAttached(new_item);
+			else {
+				while (true) {
+					System.out.print("Do you want to change your " + curr_item.getType() + " of rarity " + curr_item.getRarity() + "? (y/n) ");
+					String userInput = myObj.nextLine();
+					if (userInput.equals("y")) {
+						showArtifactAttached(new_item);
+						break ;
+					}
+					else if (userInput.equals("n")) {
+						new_item.setAsNotAttachable();
+						break ;
+					}
+				}
+			}
+		} catch (Exception e) {
+			controller.cleanup(1);
+		}
+	}
+
+	public void showArtifactAttached(Artifact item) {
+		System.out.println(item.hasBeenAttached());
 	}
 
 	public void displayBattleResult(Hero hero, Villain villain) {

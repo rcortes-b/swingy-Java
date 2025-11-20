@@ -1,5 +1,6 @@
 package me.rcortesb.swingy.models.heroes;
 import me.rcortesb.swingy.models.artifacts.Artifact;
+import me.rcortesb.swingy.controller.Controller;
 import me.rcortesb.swingy.validations.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Max;
@@ -85,8 +86,15 @@ public abstract class Hero {
 	}
 
 	public void attachArtifact(Artifact item) {
-		this.artifact = item;
-		this.hp += item.getHP();
+		Controller.getViewModel().showArtifactDropped(this.artifact, item);
+		if (item.isAttachable() == true) {
+			this.artifact = item;
+			this.hp += item.getHP();
+		}
+	}
+
+	public void dettachArtifact() {
+		this.artifact = null;
 	}
 
 	public int getDamage() {
@@ -123,6 +131,7 @@ public abstract class Hero {
 			if (this.level == 9)
 				this.experience = exp_required;
 			this.incrementLevel();
+			Controller.getViewModel().showLevelUp(this);
 		}
 	}
 

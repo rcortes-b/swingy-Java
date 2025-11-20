@@ -3,6 +3,7 @@ import me.rcortesb.swingy.gui_utilities.*;
 import me.rcortesb.swingy.controller.*;
 import me.rcortesb.swingy.models.*;
 import me.rcortesb.swingy.models.heroes.*;
+import me.rcortesb.swingy.models.artifacts.Artifact;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
@@ -438,6 +439,54 @@ public class GUIBuilder {
 
 		dialog.add(dialogPanel); 
 		dialog.setSize((int)(frame.getSize().width / 2), 320);
+   	    dialog.setLocationRelativeTo(frame);
+        dialog.setVisible(true);
+	}
+
+	public void getArtifactPopUp(Artifact curr_item, Artifact new_item, JFrame frame) {
+		JDialog dialog = new JDialog(frame, "ARTIFACT FOUND", true);
+		
+		JPanel dialogPanel= new JPanel();
+		dialogPanel.setLayout(new BoxLayout(dialogPanel, BoxLayout.Y_AXIS));
+		dialogPanel.add(Box.createVerticalStrut(10));
+		JLabel label1 = new JLabel(new_item.hasBeenDropped(), SwingConstants.CENTER);
+		label1.setFont(new Font("SansSerif", Font.PLAIN, 16));
+		label1.setForeground(Color.BLACK);
+		label1.setAlignmentX(Component.CENTER_ALIGNMENT);
+		dialogPanel.add(label1);
+		dialogPanel.add(Box.createVerticalStrut(20));
+		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JButton acceptButton = new JButton("YES!");
+		acceptButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		acceptButton.addActionListener( new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dialog.setVisible(false);
+				Controller.getGUI().showArtifactAttached(new_item);
+			}
+		});
+		buttonPanel.add(acceptButton);
+		if (curr_item != null) {
+			JLabel label2 = new JLabel("Do you want to change your " + curr_item.getType() + " of rarity " + curr_item.getRarity() + "? (y/n) ",
+								SwingConstants.CENTER);
+			label2.setFont(new Font("SansSerif", Font.PLAIN, 16));
+			label2.setForeground(Color.BLACK);
+			label2.setAlignmentX(Component.CENTER_ALIGNMENT);
+			dialogPanel.add(label2);
+			dialogPanel.add(Box.createVerticalStrut(20));
+			JButton cancelButton = new JButton("NO");
+			cancelButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+			cancelButton.addActionListener( new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					dialog.setVisible(false);
+					new_item.setAsNotAttachable();
+				}
+			});
+			buttonPanel.add(cancelButton);
+		}
+		dialogPanel.add(buttonPanel);
+		dialogPanel.add(Box.createVerticalStrut(10));
+		dialog.add(dialogPanel);
+		dialog.setSize((int)(frame.getSize().width / 1.2), 230);
    	    dialog.setLocationRelativeTo(frame);
         dialog.setVisible(true);
 	}

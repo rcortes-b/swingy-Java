@@ -3,6 +3,7 @@ import me.rcortesb.swingy.controller.*;
 import me.rcortesb.swingy.models.*;
 import me.rcortesb.swingy.models.heroes.Hero;
 import me.rcortesb.swingy.models.villains.Villain;
+import me.rcortesb.swingy.models.artifacts.Artifact;
 
 public abstract class ViewModel {
 	protected Controller controller = Controller.getController();
@@ -43,5 +44,8 @@ public abstract class ViewModel {
 	public abstract void showExitFromGame(Game game);
 	public abstract void showVictory();
 	public abstract void showDefeat();
+	public abstract void showLevelUp(Hero hero);
+	public abstract void showArtifactDropped(Artifact curr_item, Artifact new_item);
+	public abstract void showArtifactAttached(Artifact item);
 	public abstract void displayBattleResult(Hero hero, Villain villain);
 }
