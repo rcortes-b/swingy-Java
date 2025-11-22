@@ -22,7 +22,7 @@ public class CustomButtons {
 				button.addActionListener(e -> Controller.getController().getGUI().changeView());
 				break ;
 			case "Exit":
-				button.addActionListener(e -> Controller.getController().cleanup(0));
+				button.addActionListener(e -> Controller.getController().cleanupResources(0));
 		}
 		return button;
 	}

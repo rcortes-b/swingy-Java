@@ -44,6 +44,7 @@ public abstract class ViewModel {
 	public abstract void showExitFromGame(Game game);
 	public abstract void showVictory();
 	public abstract void showDefeat();
+	public abstract void showError(String msg);
 	public abstract void showLevelUp(Hero hero);
 	public abstract void showArtifactDropped(Artifact curr_item, Artifact new_item);
 	public abstract void showArtifactAttached(Artifact item);

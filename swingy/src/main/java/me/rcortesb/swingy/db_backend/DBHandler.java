@@ -47,26 +47,24 @@ public class DBHandler {
 	public void loadDatabase() {
 		final String url = "jdbc:postgresql://localhost:5432/swingy_db";
 		final Properties props = new Properties();
-		if (System.getenv("SWINGY_DB_USER") == null || System.getenv("SWINGY_DB_PASSWORD") == null) {
-			System.out.println("Necessary environment variables are not defined SWINGY_DB_USER, SWINGY_DB_PASSWORD");
-			Controller.cleanup(1);
-		}
-		props.setProperty("user", System.getenv("SWINGY_DB_USER"));
-		props.setProperty("password", System.getenv("SWINGY_DB_PASSWORD"));
 		try {
+			if (System.getenv("SWINGY_DB_USER") == null || System.getenv("SWINGY_DB_PASSWORD") == null)
+				throw new SQLException();
+			props.setProperty("user", System.getenv("SWINGY_DB_USER"));
+			props.setProperty("password", System.getenv("SWINGY_DB_PASSWORD"));
             Class.forName("org.postgresql.Driver");
 			db_connection = DriverManager.getConnection(url, props);
-            /*System.out.println("Debug: Connected to PostgreSQL version: " +
-            	((connection.getMetaData().getDatabaseProductVersion());*/
 			st = db_connection.createStatement();
         } catch (ClassNotFoundException | SQLException e) {
-            System.err.println("❌ DB Connection error: " + e.getMessage());
+			Controller.handleError("DB Connection unexpected error", false);
         }
 	}
 
 	public void readOperation(GameModel gameModel) {
 		try {
 			this.loadDatabase();
+			if (st == null)
+				throw new Exception();
 			ResultSet rs = st.executeQuery("SELECT * FROM heroes");
 			while (rs.next()) {
 				Hero hero;
@@ -89,25 +87,29 @@ public class DBHandler {
 			rs.close();
 			this.closeDB();
 		} catch (Exception e) {
-			System.out.println("Error in read operation: " + e.getMessage());
+			Controller.handleError("Error loading data from the database", false);
 		}
 	}
 
 	public void addHeroToDatabase(Hero hero) {
 		try {
 			this.loadDatabase();
+			if (st == null)
+				throw new Exception();
 			String strInsert = "insert into heroes (name, classType, level, experience, attack, defense, hp) values ('";
 			String strValues =  hero.getName() + "','" + hero.getClassType() + "',1,0," + hero.getAttack() + "," + hero.getDefense() + "," + hero.getHP();
 			st.executeUpdate(strInsert + strValues + ")");
 			this.closeDB();
 		} catch (Exception e) {
-			System.out.println("Error: Value cannot be added. " + e.getMessage());
+			Controller.handleError("Error: Hero cannot be added to database", false);
 		}
 	}
 
 	public void updateHeroToDatabase(Hero hero) {
 		try {
-			this.loadDatabase(); //added without thinking
+			this.loadDatabase();
+			if (st == null)
+				throw new Exception();
 			String preStr = "update heroes set ";
 			String postStr = " where name='" + hero.getName() + "'";
 			String[] updateValue = {"level=" + hero.getLevel(),
@@ -121,18 +123,20 @@ public class DBHandler {
 			}
 			this.closeDB();
 		} catch (Exception e) {
-			System.out.println("Error: Value cannot be updated. " + e.getMessage());
+			Controller.handleError("Error: Hero stats cannot be updated to database", false);
 		}
 	}
 
 	public void deleteHeroFromDatabase(String hero_name) {
 		try {
 			this.loadDatabase();
+			if (st == null)
+				throw new Exception();
 			String req = "delete from heroes where name='" + hero_name + "'";
 			st.executeUpdate(req);
 			this.closeDB();
 		} catch (Exception e) {
-			System.out.println("Error: Hero cannot be deleted. " + e.getMessage());
+			Controller.handleError("Error: Hero cannot be deleted from database", false);
 		}
 	}
 }

@@ -195,6 +195,12 @@ public class GUI_View extends ViewModel {
 		}
 	}
 
+	public void showError(String msg) {
+		List<String> messages = new ArrayList<>();
+		messages.add(msg);
+		GUIBuilder.getGUIBuilder().buildCustomPopUp("ERROR", messages, frame);
+	}
+
 	public void deleteGUI() {
 		this.frame.dispose();
 	}

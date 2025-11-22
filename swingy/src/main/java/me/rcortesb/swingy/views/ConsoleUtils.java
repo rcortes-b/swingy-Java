@@ -29,7 +29,7 @@ public class ConsoleUtils {
 					console.changeView();
 					break;
 			case 4:
-					Controller.cleanup(0);
+					Controller.cleanupResources(0);
 		}
 	}
 

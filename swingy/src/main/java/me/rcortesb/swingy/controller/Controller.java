@@ -77,7 +77,7 @@ public class Controller {
 
 	/* General Functions */
 
-	public static void cleanup(int exitCode) {
+	public static void cleanupResources(int exitCode) {
 		if (gui != null)
 			gui.deleteGUI();
 		if (console != null)
@@ -148,5 +148,11 @@ public class Controller {
 		game = null;
 		if (gui != null)
 			gui.deleteView("map");
+	}
+
+	public static void handleError(String msg, boolean isTerminating) {
+		viewModel.showError(msg);
+		if (isTerminating == true)
+			cleanupResources(1);
 	}
 }

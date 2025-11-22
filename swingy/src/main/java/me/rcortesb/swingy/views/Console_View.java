@@ -37,7 +37,7 @@ public class Console_View extends ViewModel {
 			String userInput = myObj.nextLine();
 			handleInput(userInput);
 		} catch (Exception e) {
-			controller.cleanup(1);
+			controller.handleError("Error: EOF found.", true);
 		}
 	}
 
@@ -53,7 +53,7 @@ public class Console_View extends ViewModel {
 			String userInput = myObj.nextLine();
 			handleInput(userInput);
 		} catch (Exception e) {
-			controller.cleanup(1);
+			controller.handleError("Error: EOF found.", true);
 		}
 	}
 
@@ -69,7 +69,7 @@ public class Console_View extends ViewModel {
 			String userInput = myObj.nextLine();
 			handleInput(userInput);
 		} catch (Exception e) {
-			controller.cleanup(1);
+			controller.handleError("Error: EOF found.", true);
 		}
 	}
 
@@ -105,7 +105,7 @@ public class Console_View extends ViewModel {
 			else
 				controller.startGame(new_hero);
 		} catch (Exception e) {
-			controller.cleanup(1);
+			controller.handleError("Error: EOF found.", true);
 		}
 	}
 
@@ -138,8 +138,7 @@ public class Console_View extends ViewModel {
 				loadHeroMenu();
 			}
 		} catch (Exception e) {
-			System.out.println("\nError: Something went wrong listing the heroes\n" + e.getMessage());
-			controller.cleanup(1);
+			controller.handleError("Error: EOF found.", true);
 		}
 	}
 
@@ -216,7 +215,7 @@ public class Console_View extends ViewModel {
 			showMap(game);
 			runGame(game);
 		} catch (Exception e) {
-			controller.cleanup(1);
+			controller.handleError("Error: EOF found.", true);
 		}		
 	}
 
@@ -265,7 +264,7 @@ public class Console_View extends ViewModel {
 				}
 			}
 		} catch (Exception e) {
-			controller.cleanup(1);
+			controller.handleError("Error: EOF found.", true);
 		}
 
 	}
@@ -289,7 +288,7 @@ public class Console_View extends ViewModel {
 				}
 			}
 		} catch (Exception e) {
-			controller.cleanup(1);
+			controller.handleError("Error: EOF found.", true);
 		}
 	}
 
@@ -303,6 +302,10 @@ public class Console_View extends ViewModel {
 		System.out.println("You've lost the game! We hope to see you soon!");
 		Controller.removeGame();
 		this.loadMenu();
+	}
+
+	public void showError(String msg) {
+		System.err.println(msg);
 	}
 
 	public void showLevelUp(Hero hero) {
@@ -329,7 +332,7 @@ public class Console_View extends ViewModel {
 				}
 			}
 		} catch (Exception e) {
-			controller.cleanup(1);
+			controller.handleError("Error: EOF found.", true);
 		}
 	}
 
