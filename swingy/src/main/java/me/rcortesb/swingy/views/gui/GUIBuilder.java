@@ -1,7 +1,6 @@
-package me.rcortesb.swingy.views;
-import me.rcortesb.swingy.gui_utilities.*;
+package me.rcortesb.swingy.views.gui;
 import me.rcortesb.swingy.controller.*;
-import me.rcortesb.swingy.models.*;
+import me.rcortesb.swingy.models.game.Game;
 import me.rcortesb.swingy.models.heroes.*;
 import me.rcortesb.swingy.models.artifacts.Artifact;
 import java.util.ArrayList;

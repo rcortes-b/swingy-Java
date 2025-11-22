@@ -1,7 +1,9 @@
-package me.rcortesb.swingy.views;
+package me.rcortesb.swingy.views.console;
+import me.rcortesb.swingy.views.ViewModel;
 import me.rcortesb.swingy.controller.*;
-import me.rcortesb.swingy.models.*;
-import me.rcortesb.swingy.models.heroes.*;
+import me.rcortesb.swingy.models.game.Game;
+import me.rcortesb.swingy.models.game.GameMap;
+import me.rcortesb.swingy.models.heroes.Hero;
 import me.rcortesb.swingy.models.villains.Villain;
 import me.rcortesb.swingy.models.artifacts.Artifact;
 import java.util.Scanner;

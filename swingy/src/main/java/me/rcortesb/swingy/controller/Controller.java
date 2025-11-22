@@ -1,8 +1,11 @@
 package me.rcortesb.swingy.controller;
-import me.rcortesb.swingy.views.*;
-import me.rcortesb.swingy.models.*;
-import me.rcortesb.swingy.models.heroes.*;
 import me.rcortesb.swingy.db_backend.DBHandler;
+import me.rcortesb.swingy.views.ViewModel;
+import me.rcortesb.swingy.views.console.Console_View;
+import me.rcortesb.swingy.views.gui.GUI_View;
+import me.rcortesb.swingy.models.game.GameModel;
+import me.rcortesb.swingy.models.game.Game;
+import me.rcortesb.swingy.models.heroes.Hero;
 import java.util.List;
 import java.util.ArrayList;
 

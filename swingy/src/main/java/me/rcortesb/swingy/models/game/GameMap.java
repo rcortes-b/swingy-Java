@@ -1,4 +1,4 @@
-package me.rcortesb.swingy.models;
+package me.rcortesb.swingy.models.game;
 import me.rcortesb.swingy.controller.GameMove;
 
 public class GameMap {

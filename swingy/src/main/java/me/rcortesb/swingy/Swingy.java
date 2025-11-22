@@ -1,7 +1,7 @@
 package me.rcortesb.swingy;
 import me.rcortesb.swingy.controller.Controller;
-import me.rcortesb.swingy.views.Console_View;
-import me.rcortesb.swingy.views.GUI_View;
+import me.rcortesb.swingy.views.console.Console_View;
+import me.rcortesb.swingy.views.gui.GUI_View;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 

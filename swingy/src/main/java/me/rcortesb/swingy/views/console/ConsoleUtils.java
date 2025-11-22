@@ -1,4 +1,4 @@
-package me.rcortesb.swingy.views;
+package me.rcortesb.swingy.views.console;
 import me.rcortesb.swingy.controller.*;
 import me.rcortesb.swingy.models.heroes.Hero;
 import java.util.List;

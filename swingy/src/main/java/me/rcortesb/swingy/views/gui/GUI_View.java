@@ -1,7 +1,7 @@
-package me.rcortesb.swingy.views;
-import me.rcortesb.swingy.gui_utilities.*;
+package me.rcortesb.swingy.views.gui;
+import me.rcortesb.swingy.views.ViewModel;
 import me.rcortesb.swingy.controller.*;
-import me.rcortesb.swingy.models.*;
+import me.rcortesb.swingy.models.game.Game;
 import me.rcortesb.swingy.models.heroes.Hero;
 import me.rcortesb.swingy.models.villains.Villain;
 import me.rcortesb.swingy.models.artifacts.Artifact;
@@ -180,7 +180,7 @@ public class GUI_View extends ViewModel {
 
 	public void changeView() {
 		this.frame.setVisible(false);
-		controller.changeView();
+		Controller.changeView();
 	}
 
 	public void deleteView(String viewName) {

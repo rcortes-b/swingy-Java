@@ -1,7 +1,7 @@
 package me.rcortesb.swingy.db_backend;
 import me.rcortesb.swingy.controller.Controller;
 import me.rcortesb.swingy.models.heroes.*;
-import me.rcortesb.swingy.models.GameModel;
+import me.rcortesb.swingy.models.game.GameModel;
 import java.sql.*;
 import java.util.Arrays;
 import java.util.Properties;

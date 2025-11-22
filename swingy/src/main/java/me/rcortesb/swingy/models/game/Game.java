@@ -1,4 +1,4 @@
-package me.rcortesb.swingy.models;
+package me.rcortesb.swingy.models.game;
 import me.rcortesb.swingy.models.heroes.*;
 import me.rcortesb.swingy.models.villains.Villain;
 import me.rcortesb.swingy.controller.*;

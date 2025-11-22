@@ -1,4 +1,4 @@
-package me.rcortesb.swingy.gui_utilities;
+package me.rcortesb.swingy.views.gui;
 import javax.swing.*;
 import java.awt.*;
 

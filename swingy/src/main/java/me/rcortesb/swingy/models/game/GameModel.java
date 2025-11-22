@@ -1,4 +1,4 @@
-package me.rcortesb.swingy.models;
+package me.rcortesb.swingy.models.game;
 import me.rcortesb.swingy.db_backend.DBHandler;
 import me.rcortesb.swingy.controller.*;
 import me.rcortesb.swingy.models.heroes.*;
