@@ -102,6 +102,7 @@ Encapsulates object construction logic in a separate Builder class.
 	- Install Docker && Maven
 		- yum install docker
 		- yum install maven
+	- Run the "install.sh" script and choose either running "console.sh" or "gui.sh"
 
 ## Project Development
 
