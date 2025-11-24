@@ -1,7 +1,5 @@
 package me.rcortesb.swingy;
 import me.rcortesb.swingy.controller.Controller;
-import me.rcortesb.swingy.views.console.Console_View;
-import me.rcortesb.swingy.views.gui.GUI_View;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
@@ -22,10 +20,13 @@ public class Swingy {
 	}
 
 	public static void main(String[] args) {
-		Logger.getLogger("org.hibernate.validator.internal.util.Version").setLevel(Level.OFF);
-		String mode = handle_input(args);
-		Controller controller = Controller.getController();
-
-		controller.launchApp(mode);
+		try {
+			Logger.getLogger("org.hibernate.validator.internal.util.Version").setLevel(Level.OFF);
+			String mode = handle_input(args);
+			Controller controller = Controller.getController();
+			controller.launchApp(mode);
+		} catch (Exception e) {
+			System.err.println("Error initializing the game: " + e.getMessage());
+		}
     }
 }

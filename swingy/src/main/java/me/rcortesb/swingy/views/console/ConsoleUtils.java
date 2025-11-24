@@ -72,5 +72,40 @@ public class ConsoleUtils {
 		}
 		return null;
 	}
+
+	public static void printValue(Hero hero, int i, int size) {
+		int str_size = 0;
+		String str = "";
+
+		switch (i) {
+			case 0:
+				str = hero.getName();
+				break;
+			case 1:
+				str = hero.getClassType();
+				break;
+			case 2:
+				str = String.valueOf(hero.getLevel());
+					break;
+			case 3:
+				str = String.valueOf(hero.getAttack());
+					break;
+			case 4:
+				str = String.valueOf(hero.getDefense());
+					break;
+			case 5:
+				str = String.valueOf(hero.getHP());
+					break;
+			default:
+				for (int j = 0; j < size; j++)
+					System.out.print("-");
+				System.out.println("");
+				return ;
+		}
+		System.out.print(" | " + str);
+		str_size = size - str.length();
+		for (int j = 0; j < str_size; j++)
+			System.out.print(" "); 
+	}
 }
 

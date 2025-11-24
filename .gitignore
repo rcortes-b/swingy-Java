@@ -7,3 +7,4 @@ test/
 .scannerwork/
 sonar-project.properties
 DevelopmentNotes.md
+.sonar_localhost_token

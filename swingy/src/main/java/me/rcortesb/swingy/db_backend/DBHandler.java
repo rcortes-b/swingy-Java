@@ -26,21 +26,17 @@ import java.util.Properties;
 
 public class DBHandler {
 	private Connection db_connection;
-	private Statement st;
 
 	public DBHandler() {
 		db_connection = null;
-		st = null;
 	}
 
 	public void closeDB() {
 		try {
-			st.close();
-			st = null;
 			db_connection.close();
 			db_connection = null;
 		} catch (SQLException e) {
-			System.out.println("SQLException Error: " + e.getMessage());
+			Controller.handleError("Closing DB Connection unexpected error", false);
 		}
 	}
 
@@ -54,7 +50,6 @@ public class DBHandler {
 			props.setProperty("password", System.getenv("SWINGY_DB_PASSWORD"));
             Class.forName("org.postgresql.Driver");
 			db_connection = DriverManager.getConnection(url, props);
-			st = db_connection.createStatement();
         } catch (ClassNotFoundException | SQLException e) {
 			Controller.handleError("DB Connection unexpected error", false);
         }
@@ -63,9 +58,11 @@ public class DBHandler {
 	public void readOperation(GameModel gameModel) {
 		try {
 			this.loadDatabase();
-			if (st == null)
+			if (db_connection == null)
 				throw new Exception();
-			ResultSet rs = st.executeQuery("SELECT * FROM heroes");
+			final String strSQL = "SELECT * FROM heroes";
+			PreparedStatement ps = db_connection.prepareStatement(strSQL);
+			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				Hero hero;
 				String classType = rs.getString("classType");
@@ -85,6 +82,7 @@ public class DBHandler {
 					gameModel.getHeroes().add(hero);
 			}
 			rs.close();
+			ps.close();
 			this.closeDB();
 		} catch (Exception e) {
 			Controller.handleError("Error loading data from the database", false);
@@ -94,11 +92,17 @@ public class DBHandler {
 	public void addHeroToDatabase(Hero hero) {
 		try {
 			this.loadDatabase();
-			if (st == null)
+			if (db_connection == null)
 				throw new Exception();
-			String strInsert = "insert into heroes (name, classType, level, experience, attack, defense, hp) values ('";
-			String strValues =  hero.getName() + "','" + hero.getClassType() + "',1,0," + hero.getAttack() + "," + hero.getDefense() + "," + hero.getHP();
-			st.executeUpdate(strInsert + strValues + ")");
+			final String strSQL = "INSERT INTO heroes (name, classType, level, experience, attack, defense, hp) VALUES (?, ?, 1, 0, ?, ?, ?)";
+			PreparedStatement ps = db_connection.prepareStatement(strSQL);
+			ps.setString(1, hero.getName());
+			ps.setString(2, hero.getClassType());
+			ps.setInt(3, hero.getAttack());
+			ps.setInt(4, hero.getDefense());
+			ps.setInt(5, hero.getHP());
+			ps.executeUpdate();
+			ps.close();
 			this.closeDB();
 		} catch (Exception e) {
 			Controller.handleError("Error: Hero cannot be added to database", false);
@@ -108,19 +112,18 @@ public class DBHandler {
 	public void updateHeroToDatabase(Hero hero) {
 		try {
 			this.loadDatabase();
-			if (st == null)
+			if (db_connection == null)
 				throw new Exception();
-			String preStr = "update heroes set ";
-			String postStr = " where name='" + hero.getName() + "'";
-			String[] updateValue = {"level=" + hero.getLevel(),
-									"experience=" + hero.getExperience(),
-									"attack=" + hero.getAttack(),
-									"defense=" + hero.getDefense(),
-									"hp=" + hero.getHP()
-									};
-			for (int i = 0; i < 5; i++) {
-				st.executeUpdate(preStr + updateValue[i] + postStr);
-			}
+			final String strSQL = "UPDATE heroes SET level=?, experience=?, attack=?, defense=?, hp=? WHERE name=?";
+			PreparedStatement ps = db_connection.prepareStatement(strSQL);
+			ps.setInt(1, hero.getLevel());
+			ps.setInt(2, hero.getExperience());
+			ps.setInt(3, hero.getAttack());
+			ps.setInt(4, hero.getDefense());
+			ps.setInt(5, hero.getHP());
+			ps.setString(6, hero.getName());
+			ps.executeUpdate();
+			ps.close();
 			this.closeDB();
 		} catch (Exception e) {
 			Controller.handleError("Error: Hero stats cannot be updated to database", false);
@@ -130,10 +133,13 @@ public class DBHandler {
 	public void deleteHeroFromDatabase(String hero_name) {
 		try {
 			this.loadDatabase();
-			if (st == null)
+			if (db_connection == null)
 				throw new Exception();
-			String req = "delete from heroes where name='" + hero_name + "'";
-			st.executeUpdate(req);
+			final String strSQL = "DELETE FROM heroes WHERE name=?";
+			PreparedStatement ps = db_connection.prepareStatement(strSQL);
+			ps.setString(1, hero_name);
+			ps.executeUpdate();
+			ps.close();
 			this.closeDB();
 		} catch (Exception e) {
 			Controller.handleError("Error: Hero cannot be deleted from database", false);

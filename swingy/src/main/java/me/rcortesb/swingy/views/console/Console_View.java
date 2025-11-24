@@ -117,13 +117,13 @@ public class Console_View extends ViewModel {
 			int[]		table_size = {15, 7, 3, 3, 3, 3};
 			System.out.println("\n | name            | class   | lvl | atk | def | hp |");
 			for (Hero hero : heroes) {
-				printValue(null, 6, 53);
+				ConsoleUtils.printValue(null, 6, 53);
 				for (int i = 0; i < 6; i++) {
-					printValue(hero, i, table_size[i]);
+					ConsoleUtils.printValue(hero, i, table_size[i]);
 				}
 				System.out.println("|");
 			}
-			printValue(null, 6, 53);
+			ConsoleUtils.printValue(null, 6, 53);
 			if (controller.getStatus() == GameStatus.IN_GAME_MENU) {
 				Hero selected_hero = null;
 				while (true) {
@@ -142,41 +142,6 @@ public class Console_View extends ViewModel {
 		} catch (Exception e) {
 			controller.handleError("Error: EOF found.", true);
 		}
-	}
-
-	public void printValue(Hero hero, int i, int size) {
-		int str_size = 0;
-		String str = "";
-
-		switch (i) {
-			case 0:
-				str = hero.getName();
-				break;
-			case 1:
-				str = hero.getClassType();
-				break;
-			case 2:
-				str = String.valueOf(hero.getLevel());
-					break;
-			case 3:
-				str = String.valueOf(hero.getAttack());
-					break;
-			case 4:
-				str = String.valueOf(hero.getDefense());
-					break;
-			case 5:
-				str = String.valueOf(hero.getHP());
-					break;
-			default:
-				for (int j = 0; j < size; j++)
-					System.out.print("-");
-				System.out.println("");
-				return ;
-		}
-		System.out.print(" | " + str);
-		str_size = size - str.length();
-		for (int j = 0; j < str_size; j++)
-			System.out.print(" "); 
 	}
 
 	private void handleInput(String userInput) {
